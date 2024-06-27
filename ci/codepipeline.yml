@@ -1,5 +1,3 @@
-Transform:
-  - AWS::LanguageExtensions
 Description: pipeline to deploy aws-sandbox-accounts
 Resources:
   CodeBuildRole:
@@ -83,23 +81,20 @@ Resources:
                 ProjectName: !Ref CodeBuildProject
         - Name: Deploy-Lambdas-To-Live
           Actions:
-            - Fn::ForEach::App:
-              - AppName
-              - - pool-manager
-              - ActionTypeId:
-                  Category: Deploy
-                  Owner: AWS
-                  Version: "1"
-                  Provider: CloudFormation
-                InputArtifacts:
-                  - Name: BuiltSource
-                RunOrder: 1
-                Name: ${AppName}
-                Configuration:
-                  ActionMode: REPLACE_ON_FAILURE
-                  Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                  StackName: live-aws-sandbox-accounts-${AppName}
-                  RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                  TemplatePath: BuiltSource::apps/${AppName}/stacks/sandbox-administrator-account/${AppName}.yml
-                  TemplateConfiguration: BuiltSource::apps/${AppName}/stacks/sandbox-administrator-account/parameters/live.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuiltSource
+              RunOrder: 1
+              Name: Pool-Manager
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-pool-manager
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuiltSource::apps/pool-manager/stacks/sandbox-administrator-account/pool-manager.yml
+                TemplateConfiguration: BuiltSource::apps/pool-manager/stacks/sandbox-administrator-account/parameters/live.json
 
