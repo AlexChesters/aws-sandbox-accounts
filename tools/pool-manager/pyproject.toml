@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pool-manager"
+version = "0.1.0"
+description = "manages aws accounts in the pool"
+authors = ["Alex Chesters <alex@cheste.rs>"]
+readme = "README.md"
+license = "MIT"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+boto3 = "^1.34.135"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
