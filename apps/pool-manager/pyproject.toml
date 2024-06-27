@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "pool-manager"
+version = "0.1.0"
+description = "manages aws accounts in the sandbox accounts pool"
+authors = ["Alex Chesters <alex@cheste.rs>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+aws-lambda-powertools = {extras = ["tracer"], version = "^2.3.1"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
