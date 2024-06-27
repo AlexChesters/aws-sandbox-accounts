@@ -1,0 +1,23 @@
+Description: storage for accounts in the pool
+Parameters:
+  Environment:
+    Description: The infrastructure environment
+    Type: String
+    AllowedValues:
+      - live
+Resources:
+  ReportTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: partition_key
+          AttributeType: S
+      KeySchema:
+        - AttributeName: partition_key
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
