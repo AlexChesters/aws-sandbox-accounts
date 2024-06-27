@@ -96,5 +96,5 @@ Resources:
                 StackName: live-aws-sandbox-accounts-pool-manager
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuiltSource::apps/pool-manager/stacks/sandbox-administrator-account/pool-manager.yml
-                TemplateConfiguration: BuiltSource::apps/pool-manager/stacks/sandbox-administrator-account/parameters/live.json
+                TemplateConfiguration: BuiltSource::apps/pool-manager/stacks/sandbox-administrator-account/parameters/pool-manager/live.json
 
