@@ -12,10 +12,10 @@ Resources:
     UpdateReplacePolicy: Delete
     Properties:
       AttributeDefinitions:
-        - AttributeName: partition_key
+        - AttributeName: pk
           AttributeType: S
       KeySchema:
-        - AttributeName: partition_key
+        - AttributeName: pk
           KeyType: HASH
       BillingMode: PAY_PER_REQUEST
       PointInTimeRecoverySpecification:
