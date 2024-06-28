@@ -1,5 +1,5 @@
 # Table design
-This document dovers the single-table design for this system.
+This document covers the single-table design for this system.
 
 ## Table design
 
