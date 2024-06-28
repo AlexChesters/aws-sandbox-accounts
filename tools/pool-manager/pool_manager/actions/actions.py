@@ -9,3 +9,6 @@ class Actions:
     def list_accounts(self):
         results = self.db_client.list_accounts()
         self.logger.plain(results)
+
+    def remove_account(self, account_id: str):
+        self.db_client.remove_account(account_id)
