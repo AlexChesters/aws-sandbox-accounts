@@ -3,6 +3,8 @@ version: 0.2
 phases:
   build:
     commands:
+      - cd apps/account-manager
       - curl --location "https://github.com/rebuy-de/aws-nuke/releases/download/v2.25.0/aws-nuke-v2.25.0-linux-arm64.tar.gz" -o aws-nuke.tar.gz
       - tar -xvf aws-nuke.tar.gz
-      - aws-nuke-v2.25.0-linux-arm64
+      - echo "running aws-nuke against $ACCOUNT_ID"
+      # - aws-nuke-v2.25.0-linux-arm64 -c aws-nuke.yml

@@ -1,0 +1,111 @@
+regions:
+  - "global"
+  - "eu-west-1"
+  - "eu-west-2"
+account-blocklist:
+  - "008356366354"
+  - "475736912875"
+  - "787730042802"
+  - "595230571379"
+  - "061117604544"
+  - "748997477946"
+  - "874292001393"
+  - "561049784655"
+  - "723247229166"
+  - "559730469291"
+  - "821771470148"
+  - "711661853278"
+  - "982842917604"
+  - "425073104083"
+  - "436633597998"
+  - "969393074135"
+  - "916719361969"
+  - "850818666133"
+  - "443174220326"
+  - "533267119308"
+
+resource-types:
+  excludes:
+    - S3Object # Let the S3Bucket delete all Objects instead of individual objects (optimization)
+
+presets:
+  sso:
+    filters:
+      IAMSAMLProvider:
+        - type: "regex"
+          value: "AWSSSO_.*_DO_NOT_DELETE"
+      IAMRole:
+        - type: "glob"
+          value: "AWSReservedSSO_*"
+      IAMRolePolicyAttachment:
+        - type: "glob"
+          value: "AWSReservedSSO_*"
+  organisation:
+    filters:
+      IAMRole:
+        # AWS Organizations resources
+        - type: "contains"
+          value: "OrganizationAccountAccessRole"
+        # StackSets
+        - type: glob
+          value: "stacksets-exec-*"
+        # horatio
+        - type: glob
+          value: "horatio-*"
+        # default-vpc-deleter
+        - type: glob
+          value: "default-vpc-deleter-*"
+        # event-bridge-sender
+        - type: glob
+          value: "org-wide-event-bridge-*"
+        # log-group-enforcer
+        - type: glob
+          value: "cloudwatch-log-group-enforcer--*"
+      IAMRolePolicy:
+        # AWS Organizations resources
+        - property: RoleName
+          value: "OrganizationAccountAccessRole"
+        # StackSets
+        - type: glob
+          value: "stacksets-exec-*"
+        # horatio
+        - type: glob
+          value: "horatio-*"
+      IAMRolePolicyAttachment:
+        # AWS Organizations resources
+        - property: RoleName
+          value: "OrganizationAccountAccessRole"
+        # StackSets
+        - property: RoleName
+          type: glob
+          value: "stacksets-exec-*"
+        # horatio
+        - property: RoleName
+          type: glob
+          value: "horatio-*"
+      CloudFormationStack:
+        # don't delete stacksets
+        - property: Name
+          type: glob
+          value: StackSet-*
+        # don't delete budgets
+        - property: Name
+          value: budget
+      CloudTrailTrail:
+        - audit-trail
+      SNSTopic:
+        - notification-topic
+
+accounts:
+  "905418121097":
+    presets:
+      - "sso"
+      - "organisation"
+  "891377354273":
+    presets:
+      - "sso"
+      - "organisation"
+  "471112670300":
+    presets:
+      - "sso"
+      - "organisation"

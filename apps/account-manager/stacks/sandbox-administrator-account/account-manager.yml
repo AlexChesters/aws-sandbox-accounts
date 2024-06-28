@@ -100,3 +100,7 @@ Resources:
                   End: true
                   Parameters:
                     ProjectName: !Ref CodeBuildProject
+                    EnvironmentVariablesOverride:
+                      - Type: PLAINTEXT
+                        Name: ACCOUNT_ID
+                        Value.$: $$.Map.Item.Value.sk.S
