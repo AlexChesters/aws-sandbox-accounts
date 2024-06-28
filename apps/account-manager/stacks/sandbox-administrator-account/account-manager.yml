@@ -41,4 +41,14 @@ Resources:
             End: true
             Parameters:
               TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+              IndexName: status
+              KeyConditionExpression: "#pk = :pk AND #sk = :st"
+              ExpressionAttributeNames:
+                "#pk": pk
+                "#sk": status
+              ExpressionAttributeValues:
+                :pk:
+                  S: account
+                :st:
+                  S: initial
             Resource: arn:aws:states:::aws-sdk:dynamodb:query
