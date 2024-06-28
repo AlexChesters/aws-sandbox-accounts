@@ -8,6 +8,7 @@ This document covers the single-table design for this system.
 | ------------------------ | ------------------ | ---------- | ------------------- |
 | account                  | 111111111111       | available  |                     |
 | account                  | 222222222222       | leased     |                     |
+| account                  | 333333333333       | initial    |                     |
 | lease                    | abc123-def456      | active     |                     |
 | user                     | bill.bob@gmail.com |            | lease-abc123-def456 |
 
@@ -22,6 +23,8 @@ This document covers the single-table design for this system.
   - Query main table - `pk=account`
 - Listing all accounts in the pool without an active lease
   - Query status LSI - `pk=account&status=available`
+- Listing all accounts in the pool in the initial state
+  - Query status LSI - `pk=account&status=initial`
 - Removing an account from the pool
   - Delete from main table `pk=account&sk=<ACCOUNT_ID>`
 - Adding an account to the pool
@@ -36,3 +39,12 @@ This document covers the single-table design for this system.
   - Put to main table `pk=lease&sk=<UUID>`
 - Deleting a lease
   - Delete from main table `pk=lease&sk=<UUID>`
+
+## Attribute meanings
+### Status
+- `available`
+  - Account has no current leaseholder
+- `leased`
+  - Account is currently leased to someone
+- `initial`
+  - Account has been added to the pool and is awaiting initialisation
