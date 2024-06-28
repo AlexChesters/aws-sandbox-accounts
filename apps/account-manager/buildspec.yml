@@ -5,4 +5,4 @@ phases:
     commands:
       - curl --location "https://github.com/rebuy-de/aws-nuke/releases/download/v2.25.0/aws-nuke-v2.25.0-linux-arm64.tar.gz" -o aws-nuke.tar.gz
       - tar -xvf aws-nuke.tar.gz
-      - ls -alh
+      - aws-nuke-v2.25.0-linux-arm64
