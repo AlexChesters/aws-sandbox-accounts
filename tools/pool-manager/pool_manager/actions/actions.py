@@ -15,6 +15,7 @@ class Actions:
         self.logger.plain(results)
 
     def remove_account(self):
+        # TODO: verify account has no leases before deleting
         current_accounts = self.db_client.list_accounts()
 
         if not current_accounts:
