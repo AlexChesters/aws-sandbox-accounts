@@ -13,8 +13,11 @@ class DBClient:
         self.serializer = TypeSerializer()
         self.logger = Logger()
 
-    def _deserialise(self, accounts):
-        accounts = [{k: self.deserializer.deserialize(v) for k,v in item.items()} for item in accounts]
+    def _deserialise_one(self, account: dict):
+        return {k: self.deserializer.deserialize(v) for k,v in account.items()}
+
+    def _deserialise_many(self, accounts):
+        accounts = [self._deserialise_one(account) for account in accounts]
 
         return [Account(account["sk"], account["status"]) for account in accounts]
 
@@ -29,7 +32,7 @@ class DBClient:
             }
         )
 
-        return self._deserialise(result["Items"])
+        return self._deserialise_many(result["Items"])
 
     def remove_account(self, account_id):
         self.dynamo.delete_item(
