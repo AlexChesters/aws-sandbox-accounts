@@ -4,6 +4,7 @@ Parameters:
     Description: The infrastructure environment
     Type: String
     AllowedValues:
+      - test
       - live
 Resources:
   ReportTable:
