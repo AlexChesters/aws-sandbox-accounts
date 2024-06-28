@@ -22,6 +22,10 @@ This document covers the single-table design for this system.
   - Query main table - `pk=account`
 - Listing all accounts in the pool without an active lease
   - Query status LSI - `pk=account&status=available`
+- Removing an account from the pool
+  - Delete from main table `pk=account&sk=<ACCOUNT_ID>`
+- Adding an account to the pool
+  - Put to main table `pk=account&sk=<ACCOUNT_ID>`
 - Listing all active leases
   - Query main table - `pk=lease`
 - Retrieving information about a specific lease (e.g. the user that lease is assigned too)
