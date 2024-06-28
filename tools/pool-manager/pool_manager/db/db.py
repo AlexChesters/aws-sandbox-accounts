@@ -1,17 +1,22 @@
 import boto3
 
-def list_accounts(table_name):
-    session = boto3.Session(profile_name="sandbox-administrator")
-    dynamo = session.client("dynamodb")
+class DBClient:
+    def __init__(self):
+        session = boto3.Session(profile_name="sandbox-administrator")
+        self.dynamo = session.client("dynamodb")
 
-    result = dynamo.query(
-        TableName=table_name,
-        KeyConditionExpression="pk = :pk",
-        ExpressionAttributeValues={
-            ":pk": {
-                "S": "account"
+    def list_accounts(self, table_name):
+        result = self.dynamo.query(
+            TableName=table_name,
+            KeyConditionExpression="pk = :pk",
+            ExpressionAttributeValues={
+                ":pk": {
+                    "S": "account"
+                }
             }
-        }
-    )
+        )
 
-    return result["Items"]
+        return result["Items"]
+
+    def remove_account(self, account_id):
+        pass
