@@ -4,10 +4,11 @@ class DBClient:
     def __init__(self):
         session = boto3.Session(profile_name="sandbox-administrator")
         self.dynamo = session.client("dynamodb")
+        self.table_name = "test-aws-sandbox-accounts-account-pool"
 
-    def list_accounts(self, table_name):
+    def list_accounts(self):
         result = self.dynamo.query(
-            TableName=table_name,
+            TableName=self.table_name,
             KeyConditionExpression="pk = :pk",
             ExpressionAttributeValues={
                 ":pk": {
@@ -19,4 +20,11 @@ class DBClient:
         return result["Items"]
 
     def remove_account(self, account_id):
-        pass
+        self.dynamo.delete_item(
+            TableName=self.table_name,
+            Key={
+                "pk": {
+                    "S": account_id
+                }
+            }
+        )
