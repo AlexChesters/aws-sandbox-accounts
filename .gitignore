@@ -163,3 +163,4 @@ cython_debug/
 
 # draw.io temp files
 *.drawio.bkp
+*.drawio.dtmp

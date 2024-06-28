@@ -1,31 +1,24 @@
-<mxfile host="Electron" modified="2024-06-27T21:49:47.549Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="MIfTGF35AYWjnMtkCc4-" version="22.0.3" type="device">
+<mxfile host="Electron" modified="2024-06-28T15:18:41.357Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="168dEVGF224saaQCGqwC" version="22.0.3" type="device">
   <diagram name="pool management" id="JLtX0EM6AOvfy-EA8JGJ">
     <mxGraphModel dx="1242" dy="878" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="UYsE7TLEuGmJ79ljIpVD-2" value="Sandbox Administrator" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_account;strokeColor=#CD2264;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#CD2264;dashed=0;" vertex="1" parent="1">
+        <mxCell id="UYsE7TLEuGmJ79ljIpVD-2" value="Sandbox Administrator" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_account;strokeColor=#CD2264;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#CD2264;dashed=0;" parent="1" vertex="1">
           <mxGeometry x="360" y="160" width="320" height="320" as="geometry" />
         </mxCell>
-        <mxCell id="UYsE7TLEuGmJ79ljIpVD-4" value="Table" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.dynamo_db;fillColor=#2E73B8;gradientColor=none;" vertex="1" parent="UYsE7TLEuGmJ79ljIpVD-2">
-          <mxGeometry x="151.5" y="210" width="72" height="81" as="geometry" />
+        <mxCell id="UYsE7TLEuGmJ79ljIpVD-4" value="Table" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.dynamo_db;fillColor=#2E73B8;gradientColor=none;" parent="UYsE7TLEuGmJ79ljIpVD-2" vertex="1">
+          <mxGeometry x="124" y="119.5" width="72" height="81" as="geometry" />
         </mxCell>
-        <mxCell id="UYsE7TLEuGmJ79ljIpVD-6" value="Pool Manager (validate OUs etc)" style="outlineConnect=0;dashed=0;verticalLabelPosition=top;verticalAlign=bottom;align=center;html=1;shape=mxgraph.aws3.lambda_function;fillColor=#F58534;gradientColor=none;labelPosition=center;" vertex="1" parent="UYsE7TLEuGmJ79ljIpVD-2">
-          <mxGeometry x="153" y="80" width="69" height="72" as="geometry" />
+        <mxCell id="UYsE7TLEuGmJ79ljIpVD-5" value="CLI" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+          <mxGeometry x="110" y="290" width="30" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="UYsE7TLEuGmJ79ljIpVD-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="UYsE7TLEuGmJ79ljIpVD-2" source="UYsE7TLEuGmJ79ljIpVD-6" target="UYsE7TLEuGmJ79ljIpVD-4">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="UYsE7TLEuGmJ79ljIpVD-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="UYsE7TLEuGmJ79ljIpVD-5" target="UYsE7TLEuGmJ79ljIpVD-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="450" y="320" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="UYsE7TLEuGmJ79ljIpVD-3" value="Sandbox Account Alpha (111111111111)" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_account;strokeColor=#CD2264;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#CD2264;dashed=0;" vertex="1" parent="1">
-          <mxGeometry x="800" y="160" width="320" height="320" as="geometry" />
-        </mxCell>
-        <mxCell id="UYsE7TLEuGmJ79ljIpVD-5" value="CLI" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
-          <mxGeometry x="120" y="246" width="30" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="UYsE7TLEuGmJ79ljIpVD-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="UYsE7TLEuGmJ79ljIpVD-5" target="UYsE7TLEuGmJ79ljIpVD-6">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="UYsE7TLEuGmJ79ljIpVD-8" value="add account to pool&lt;br&gt;remove account to pool&lt;br&gt;etc" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="UYsE7TLEuGmJ79ljIpVD-7">
+        <mxCell id="UYsE7TLEuGmJ79ljIpVD-8" value="add account to pool&lt;br&gt;remove account to pool&lt;br&gt;etc" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="UYsE7TLEuGmJ79ljIpVD-7" vertex="1" connectable="0">
           <mxGeometry x="-0.1453" relative="1" as="geometry">
             <mxPoint x="-18" as="offset" />
           </mxGeometry>
