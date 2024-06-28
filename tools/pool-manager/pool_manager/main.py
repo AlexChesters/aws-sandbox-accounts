@@ -9,7 +9,8 @@ answers = inquirer.prompt([
         message="Choose an action",
         choices=[
             ("List accounts in the pool", actions.list_accounts),
-            ("Remove an account from the pool", actions.remove_account)
+            ("Remove an account from the pool", actions.remove_account),
+            ("Add an account to the pool", actions.add_account)
         ]
     )]
 )

@@ -30,3 +30,13 @@ class Actions:
         )
 
         self.db_client.remove_account(answers["account_id"])
+
+    def add_account(self):
+        answers = inquirer.prompt([
+            inquirer.Text(
+                "account_id",
+                message="Enter the account ID"
+            )]
+        )
+
+        self.db_client.add_account(answers["account_id"])
