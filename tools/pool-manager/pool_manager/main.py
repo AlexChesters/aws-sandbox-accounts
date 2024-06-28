@@ -1,3 +1,4 @@
-from pool_manager.utils.logger import Logger
+from pool_manager.actions.actions import Actions
 
-logger = Logger()
+actions = Actions("test-aws-sandbox-accounts-account-pool")
+actions.list_accounts()
