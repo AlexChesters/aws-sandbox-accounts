@@ -33,7 +33,8 @@ Resources:
       Name: !Sub "${Environment}-aws-sandbox-accounts-aws-nuke"
       ServiceRole: !GetAtt CodeBuildRole.Arn
       Source:
-        Type: CODEPIPELINE
+        Type: GITHUB
+        Location: https://github.com/AlexChesters/aws-sandbox-accounts.git
         BuildSpec: apps/account-manager/buildspec.yml
   StateMachineRole:
     Type: AWS::IAM::Role
