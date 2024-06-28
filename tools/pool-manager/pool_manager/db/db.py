@@ -2,6 +2,7 @@ import boto3
 from boto3.dynamodb.types import TypeDeserializer, TypeSerializer
 
 from pool_manager.utils.logger import Logger
+from pool_manager.models.account import Account
 
 class DBClient:
     def __init__(self):
@@ -12,8 +13,10 @@ class DBClient:
         self.serializer = TypeSerializer()
         self.logger = Logger()
 
-    def _deserialise(self, items):
-        return [{k: self.deserializer.deserialize(v) for k,v in item.items()} for item in items]
+    def _deserialise(self, accounts):
+        accounts = [{k: self.deserializer.deserialize(v) for k,v in item.items()} for item in accounts]
+
+        return [Account(account["pk"], account["status"]) for account in accounts]
 
     def list_accounts(self):
         result = self.dynamo.query(
