@@ -96,6 +96,8 @@ Resources:
           ProcessAccounts:
             Type: Map
             End: true
+            ItemSelector:
+              account_id.$: $$.Map.Item.Value.sk.S
             ItemProcessor:
               ProcessorConfig:
                 Mode: INLINE
@@ -110,4 +112,4 @@ Resources:
                     EnvironmentVariablesOverride:
                       - Type: PLAINTEXT
                         Name: ACCOUNT_ID
-                        Value.$: $$.Map.Item.Value.sk.S
+                        Value.$: $.account_id
