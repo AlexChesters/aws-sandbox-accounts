@@ -97,6 +97,24 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/pool-store/pool-store.yml
                 TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/pool-store/parameters/test.json
+        - Name: Deploy-Apps-To-Test
+          Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuiltSource
+              RunOrder: 1
+              Name: Account-Manager
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-account-manager
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/account-manager.yml
+                TemplateConfiguration: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/parameters/account-manager/test.json
         - Name: Deploy-Common-Resources-To-Live
           Actions:
             - ActionTypeId:
