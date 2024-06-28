@@ -8,6 +8,33 @@ Parameters:
       - test
       - live
 Resources:
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+      ManagedPolicyArns:
+        - !ImportValue ci-infrastructure-codebuild-base-iam-policy
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: NO_ARTIFACTS
+      TimeoutInMinutes: 10
+      Description: runs aws-nuke against sandbox accounts
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:7.0
+        Type: LINUX_CONTAINER
+      Name: !Sub "${Environment}-aws-sandbox-accounts-aws-nuke"
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: apps/account-manager/buildspec.yml
   StateMachineRole:
     Type: AWS::IAM::Role
     Properties:
@@ -28,6 +55,11 @@ Resources:
                     - dynamodb:query
                   Resource:
                     - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Environment}-aws-sandbox-accounts-account-pool/index/status"
+                - Effect: Allow
+                  Action:
+                    - codebuild:StartBuild
+                  Resource:
+                    - !GetAtt CodeBuildProject.Arn
   StateMachine:
     Type: AWS::StepFunctions::StateMachine
     Properties:
@@ -39,7 +71,7 @@ Resources:
           FetchAccounts:
             Type: Task
             Resource: arn:aws:states:::aws-sdk:dynamodb:query
-            End: true
+            Next: ProcessAccounts
             Parameters:
               TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
               IndexName: status
@@ -53,3 +85,17 @@ Resources:
                 :st:
                   S: initial
             OutputPath: $.Items
+          ProcessAccounts:
+            Type: Map
+            End: true
+            ItemProcessor:
+              ProcessorConfig:
+                Mode: INLINE
+              StartAt: AWSNuke
+              States:
+                AWSNuke:
+                  Type: Task
+                  Resource: arn:aws:states:::codebuild:startBuild
+                  End: true
+                  Parameters:
+                    ProjectName: !Ref CodeBuildProject
