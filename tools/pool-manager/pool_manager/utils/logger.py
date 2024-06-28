@@ -1,8 +1,13 @@
-from rich import print as rprint
+from rich.console import Console
+
+console = Console()
 
 class Logger:
+    def __format_msg(self, *args):
+        return ", ".join(args)
+
     def plain(self, *args):
-        rprint(args)
+        console.log(self.__format_msg(*args))
 
     def error(self, *args):
-        rprint("[red][ERROR][/red]", args)
+        console.print(f"[red][ERROR][/red] - {self.__format_msg(*args)}")
