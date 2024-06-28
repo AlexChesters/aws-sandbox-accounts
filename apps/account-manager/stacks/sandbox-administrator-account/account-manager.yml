@@ -96,7 +96,7 @@ Resources:
               States:
                 AWSNuke:
                   Type: Task
-                  Resource: arn:aws:states:::codebuild:startBuild
+                  Resource: arn:aws:states:::codebuild:startBuild.sync
                   End: true
                   Parameters:
                     ProjectName: !Ref CodeBuildProject
