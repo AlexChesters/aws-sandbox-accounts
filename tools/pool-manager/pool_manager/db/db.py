@@ -16,7 +16,7 @@ class DBClient:
     def _deserialise(self, accounts):
         accounts = [{k: self.deserializer.deserialize(v) for k,v in item.items()} for item in accounts]
 
-        return [Account(account["pk"], account["status"]) for account in accounts]
+        return [Account(account["sk"], account["status"]) for account in accounts]
 
     def list_accounts(self):
         result = self.dynamo.query(
@@ -36,6 +36,9 @@ class DBClient:
             TableName=self.table_name,
             Key={
                 "pk": {
+                    "S": "account"
+                },
+                "sk": {
                     "S": account_id
                 }
             }
