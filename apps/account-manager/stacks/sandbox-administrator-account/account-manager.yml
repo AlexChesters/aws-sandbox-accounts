@@ -38,6 +38,7 @@ Resources:
         States:
           FetchAccounts:
             Type: Task
+            Resource: arn:aws:states:::aws-sdk:dynamodb:query
             End: true
             Parameters:
               TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
@@ -51,4 +52,4 @@ Resources:
                   S: account
                 :st:
                   S: initial
-            Resource: arn:aws:states:::aws-sdk:dynamodb:query
+            OutputPath: $.Items
