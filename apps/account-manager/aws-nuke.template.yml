@@ -97,15 +97,7 @@ presets:
         - notification-topic
 
 accounts:
-  "905418121097":
-    presets:
-      - "sso"
-      - "organisation"
-  "891377354273":
-    presets:
-      - "sso"
-      - "organisation"
-  "471112670300":
+  REPLACE_ME:
     presets:
       - "sso"
       - "organisation"

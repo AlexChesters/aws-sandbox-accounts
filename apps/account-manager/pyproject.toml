@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "account-manager"
+version = "0.1.0"
+description = "manage aws sandbox accounts"
+authors = ["Alex Chesters <alex@cheste.rs>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+ruamel-yaml = "^0.18.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
