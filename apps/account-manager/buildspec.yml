@@ -13,4 +13,4 @@ phases:
       - make install_poetry
       - make install
       - make nuke-config
-      - ./aws-nuke-v2.25.0-linux-amd64 --config aws-nuke.yml --assume-role-arn "arn:aws:iam::$ACCOUNT_ID:role/aws-sandbox-accounts-aws-nuke"
+      - ./aws-nuke-v2.25.0-linux-amd64 --config aws-nuke.yml --assume-role-arn "arn:aws:iam::$ACCOUNT_ID:role/aws-sandbox-accounts-aws-nuke" --force
