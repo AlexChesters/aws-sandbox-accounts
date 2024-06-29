@@ -13,4 +13,4 @@ install:
 	)
 
 nuke-config:
-	poetry run python nuke.py --account-id $ACCOUNT_ID
+	poetry run python nuke.py --account-id "${ACCOUNT_ID}"
