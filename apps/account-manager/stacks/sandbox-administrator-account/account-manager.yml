@@ -122,7 +122,8 @@ Resources:
                         Name: ACCOUNT_ID
                         Value.$: $.account_id
                   Catch:
-                    - ErrorEquals: States.ALL
+                    - ErrorEquals:
+                        - States.ALL
                       Next: MarkAccountAsFailed
                 MarkAccountAsFailed:
                   Type: Task
