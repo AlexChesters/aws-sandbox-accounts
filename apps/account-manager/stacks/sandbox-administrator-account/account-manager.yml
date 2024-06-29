@@ -1,4 +1,6 @@
-Transform: AWS::Serverless-2016-10-31
+Transform:
+  - AWS::LanguageExtensions
+  - AWS::Serverless-2016-10-31
 Description: Infrastructure for aws-sandbox-accounts account-manager
 Parameters:
   Environment:
@@ -80,74 +82,77 @@ Resources:
     Properties:
       StateMachineName: !Sub "${Environment}-aws-sandbox-accounts-account-manager"
       RoleArn: !GetAtt StateMachineRole.Arn
-      Definition:
-        StartAt: FetchAccounts
-        States:
-          FetchAccounts:
-            Type: Task
-            Resource: arn:aws:states:::aws-sdk:dynamodb:query
-            Next: ProcessAccounts
-            Parameters:
-              TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-              IndexName: status
-              KeyConditionExpression: "#pk = :pk AND #sk = :st"
-              ExpressionAttributeNames:
-                "#pk": pk
-                "#sk": status
-              ExpressionAttributeValues:
-                :pk:
-                  S: account
-                :st:
-                  S: initial
-            OutputPath: $.Items
-          ProcessAccounts:
-            Type: Map
-            End: true
-            ItemSelector:
-              account_id.$: $$.Map.Item.Value.sk.S
-            ItemProcessor:
-              ProcessorConfig:
-                Mode: INLINE
-              StartAt: AWSNuke
-              States:
-                AWSNuke:
-                  Type: Task
-                  Resource: arn:aws:states:::codebuild:startBuild.sync
-                  TimeoutSeconds: 900
-                  Next: MarkAccountAsReady
-                  Parameters:
-                    ProjectName: !Ref CodeBuildProject
-                    EnvironmentVariablesOverride:
-                      - Type: PLAINTEXT
-                        Name: ACCOUNT_ID
-                        Value.$: $.account_id
-                  Catch:
-                    - ErrorEquals:
-                        - States.ALL
-                      Next: MarkAccountAsFailed
-                MarkAccountAsFailed:
-                  Type: Task
-                  Resource: arn:aws:states:::dynamodb:putItem
-                  End: true
-                  Parameters:
-                    TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                    Item:
-                      pk:
-                        S: account
-                      sk:
-                        S.$: $.account_id
-                      status:
-                        S: failed
-                MarkAccountAsReady:
-                  Type: Task
-                  Resource: arn:aws:states:::dynamodb:putItem
-                  End: true
-                  Parameters:
-                    TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                    Item:
-                      pk:
-                        S: account
-                      sk:
-                        S.$: $.account_id
-                      status:
-                        S: ready
+      # Use DefinitionString rather than Definition so that we can use null values
+      DefinitionString:
+        Fn::ToJsonString:
+          StartAt: FetchAccounts
+          States:
+            FetchAccounts:
+              Type: Task
+              Resource: arn:aws:states:::aws-sdk:dynamodb:query
+              Next: ProcessAccounts
+              Parameters:
+                TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+                IndexName: status
+                KeyConditionExpression: "#pk = :pk AND #sk = :st"
+                ExpressionAttributeNames:
+                  "#pk": pk
+                  "#sk": status
+                ExpressionAttributeValues:
+                  :pk:
+                    S: account
+                  :st:
+                    S: initial
+              OutputPath: $.Items
+            ProcessAccounts:
+              Type: Map
+              End: true
+              ItemSelector:
+                account_id.$: $$.Map.Item.Value.sk.S
+              ItemProcessor:
+                ProcessorConfig:
+                  Mode: INLINE
+                StartAt: AWSNuke
+                States:
+                  AWSNuke:
+                    Type: Task
+                    Resource: arn:aws:states:::codebuild:startBuild.sync
+                    TimeoutSeconds: 900
+                    Next: MarkAccountAsReady
+                    Parameters:
+                      ProjectName: !Ref CodeBuildProject
+                      EnvironmentVariablesOverride:
+                        - Type: PLAINTEXT
+                          Name: ACCOUNT_ID
+                          Value.$: $.account_id
+                    Catch:
+                      - ErrorEquals:
+                          - States.ALL
+                        Next: MarkAccountAsFailed
+                        ResultPath: null
+                  MarkAccountAsFailed:
+                    Type: Task
+                    Resource: arn:aws:states:::dynamodb:putItem
+                    End: true
+                    Parameters:
+                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+                      Item:
+                        pk:
+                          S: account
+                        sk:
+                          S.$: $.account_id
+                        status:
+                          S: failed
+                  MarkAccountAsReady:
+                    Type: Task
+                    Resource: arn:aws:states:::dynamodb:putItem
+                    End: true
+                    Parameters:
+                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+                      Item:
+                        pk:
+                          S: account
+                        sk:
+                          S.$: $.account_id
+                        status:
+                          S: ready
