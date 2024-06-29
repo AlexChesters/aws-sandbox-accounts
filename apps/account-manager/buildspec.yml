@@ -13,5 +13,4 @@ phases:
       - make install_poetry
       - make install
       - make nuke-config
-      - cat aws-nuke.yml
-      # - aws-nuke-v2.25.0-linux-arm64 -c aws-nuke.yml
+      - aws-nuke-v2.25.0-linux-arm64 -c aws-nuke.yml
