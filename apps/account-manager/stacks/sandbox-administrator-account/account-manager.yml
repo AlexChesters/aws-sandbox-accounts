@@ -106,6 +106,7 @@ Resources:
                 AWSNuke:
                   Type: Task
                   Resource: arn:aws:states:::codebuild:startBuild.sync
+                  TimeoutSeconds: 900
                   End: true
                   Parameters:
                     ProjectName: !Ref CodeBuildProject
