@@ -59,6 +59,8 @@ Resources:
                 - Effect: Allow
                   Action:
                     - codebuild:StartBuild
+                    - codebuild:StopBuild
+                    - codebuild:BatchGetBuilds
                   Resource:
                     - !GetAtt CodeBuildProject.Arn
                 - Effect: Allow
