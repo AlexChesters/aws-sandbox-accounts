@@ -21,6 +21,7 @@ Resources:
               Service: codebuild.amazonaws.com
       ManagedPolicyArns:
         - !ImportValue ci-infrastructure-codebuild-base-iam-policy
+      RoleName: !Sub "${Environment}-aws-sandbox-accounts-aws-nuke"
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
