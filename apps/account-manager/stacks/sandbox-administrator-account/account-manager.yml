@@ -58,6 +58,11 @@ Resources:
                     - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Environment}-aws-sandbox-accounts-account-pool/index/status"
                 - Effect: Allow
                   Action:
+                    - dynamodb:PutItem
+                  Resource:
+                    - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Environment}-aws-sandbox-accounts-account-pool"
+                - Effect: Allow
+                  Action:
                     - codebuild:StartBuild
                     - codebuild:StopBuild
                     - codebuild:BatchGetBuilds
@@ -109,10 +114,39 @@ Resources:
                   Type: Task
                   Resource: arn:aws:states:::codebuild:startBuild.sync
                   TimeoutSeconds: 900
-                  End: true
+                  Next: MarkAccountAsReady
                   Parameters:
                     ProjectName: !Ref CodeBuildProject
                     EnvironmentVariablesOverride:
                       - Type: PLAINTEXT
                         Name: ACCOUNT_ID
                         Value.$: $.account_id
+                  Catch:
+                    - ErrorEquals: States.ALL
+                      Next: MarkAccountAsFailed
+                MarkAccountAsFailed:
+                  Type: Task
+                  Resource: arn:aws:states:::dynamodb:putItem
+                  End: true
+                  Parameters:
+                    TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+                    Item:
+                      pk:
+                        S: account
+                      sk:
+                        S.$: $.account_id
+                      status:
+                        S: failed
+                MarkAccountAsReady:
+                  Type: Task
+                  Resource: arn:aws:states:::dynamodb:putItem
+                  End: true
+                  Parameters:
+                    TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+                    Item:
+                      pk:
+                        S: account
+                      sk:
+                        S.$: $.account_id
+                      status:
+                        S: ready
