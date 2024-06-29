@@ -7,10 +7,10 @@ phases:
   build:
     commands:
       - cd apps/account-manager
-      - curl --location "https://github.com/rebuy-de/aws-nuke/releases/download/v2.25.0/aws-nuke-v2.25.0-linux-arm64.tar.gz" -o aws-nuke.tar.gz
+      - curl --location "https://github.com/rebuy-de/aws-nuke/releases/download/v2.25.0/aws-nuke-v2.25.0-linux-amd64.tar.gz" -o aws-nuke.tar.gz
       - tar -xvf aws-nuke.tar.gz
       - echo "running aws-nuke against $ACCOUNT_ID"
       - make install_poetry
       - make install
       - make nuke-config
-      - ./aws-nuke-v2.25.0-linux-arm64 -c aws-nuke.yml
+      - ./aws-nuke-v2.25.0-linux-amd64 -c aws-nuke.yml
