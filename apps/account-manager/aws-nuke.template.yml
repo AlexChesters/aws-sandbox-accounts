@@ -42,10 +42,14 @@ presets:
           value: "AWSReservedSSO_*"
   organisation:
     filters:
+      # TODO: lock these globs down
       IAMRole:
         # AWS Organizations resources
         - type: "contains"
           value: "OrganizationAccountAccessRole"
+        # aws-sandbox-accounts
+        - type: glob
+          value: "aws-sandbox-accounts-*"
         # StackSets
         - type: glob
           value: "stacksets-exec-*"
