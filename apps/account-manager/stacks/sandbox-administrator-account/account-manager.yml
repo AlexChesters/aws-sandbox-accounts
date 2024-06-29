@@ -85,8 +85,22 @@ Resources:
       # Use DefinitionString rather than Definition so that we can use null values
       DefinitionString:
         Fn::ToJsonString:
-          StartAt: FetchAccounts
+          StartAt: MarkAccountAsInitial
           States:
+            # TEMP - force one account to always be in the initial state for testing purposes
+            MarkAccountAsInitial:
+              Type: Task
+              Resource: arn:aws:states:::dynamodb:putItem
+              Next: FetchAccounts
+              Parameters:
+                TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+                Item:
+                  pk:
+                    S: account
+                  sk:
+                    S: "905418121097"
+                  status:
+                    S: initial
             FetchAccounts:
               Type: Task
               Resource: arn:aws:states:::aws-sdk:dynamodb:query
