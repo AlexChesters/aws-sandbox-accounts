@@ -6,4 +6,4 @@ tracer = Tracer()
 @tracer.capture_lambda_handler
 @logger.inject_lambda_context(log_event=True)
 def handler(_event, _context):
-    pass
+    return {}
