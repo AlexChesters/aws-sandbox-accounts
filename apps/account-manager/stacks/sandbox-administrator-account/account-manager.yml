@@ -22,6 +22,13 @@ Resources:
       ManagedPolicyArns:
         - !ImportValue ci-infrastructure-codebuild-base-iam-policy
       RoleName: !Sub "${Environment}-aws-sandbox-accounts-aws-nuke"
+  CodeBuildProjectLogGroup:
+    Type: AWS::Logs::LogGroup
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub "${Environment}-aws-sandbox-accounts-aws-nuke"
+      RetentionInDays: 30
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -35,6 +42,10 @@ Resources:
         Type: LINUX_CONTAINER
       Name: !Sub "${Environment}-aws-sandbox-accounts-aws-nuke"
       ServiceRole: !GetAtt CodeBuildRole.Arn
+      LogsConfig:
+        CloudWatchLogs:
+          GroupName: !Ref CodeBuildProjectLogGroup
+          Status: ENABLED
       Source:
         Type: GITHUB
         Location: https://github.com/AlexChesters/aws-sandbox-accounts.git
