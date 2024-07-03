@@ -73,6 +73,7 @@ Resources:
                 - Effect: Allow
                   Action:
                     - dynamodb:PutItem
+                    - dynamodb:UpdateItem
                   Resource:
                     - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Environment}-aws-sandbox-accounts-account-pool"
                 - Effect: Allow
