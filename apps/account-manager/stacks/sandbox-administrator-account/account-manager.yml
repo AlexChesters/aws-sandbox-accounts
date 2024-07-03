@@ -145,6 +145,7 @@ Resources:
                     Resource: arn:aws:states:::codebuild:startBuild.sync
                     TimeoutSeconds: 900
                     Next: MarkAccountAsReady
+                    ResultPath: null
                     Parameters:
                       ProjectName: !Ref CodeBuildProject
                       EnvironmentVariablesOverride:
