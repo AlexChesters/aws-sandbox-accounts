@@ -13,10 +13,10 @@ This document covers the single-table design for this system.
 | user                     | bill.bob@gmail.com |            | lease-abc123-def456 |
 
 ### Status LSI
-| partition key - pk | sort key - status | status     | lease               |
-| ------------------ | ----------------- | ---------- | ------------------- |
-| account            | 111111111111      | available  |                     |
-| account            | 222222222222      | leased     | lease-abc123-def456 |
+| partition key - pk | sort key - status | sk            | lease               |
+| ------------------ | ----------------- | ------------- | ------------------- |
+| account            | available         | 111111111111  |                     |
+| account            | leased            | 222222222222  | lease-abc123-def456 |
 
 ## Access patterns
 - Listing all accounts in the pool, regardless of lease state
