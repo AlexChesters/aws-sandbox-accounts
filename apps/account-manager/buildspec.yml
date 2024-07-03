@@ -13,7 +13,4 @@ phases:
       - make install_poetry
       - make install
       - make nuke-config
-      # TODO: audit resources that would be removed before adding no dry run flag
-      - ./aws-nuke-v2.25.0-linux-amd64 --config aws-nuke.yml --assume-role-arn "arn:aws:iam::$ACCOUNT_ID:role/aws-sandbox-accounts-aws-nuke" --force --force-sleep 3 > nuke_output.txt
-      - echo "the following resources would be removed"
-      - cat nuke_output.txt | grep "would remove"
+      - ./aws-nuke-v2.25.0-linux-amd64 --no-dry-run --config aws-nuke.yml --assume-role-arn "arn:aws:iam::$ACCOUNT_ID:role/aws-sandbox-accounts-aws-nuke" --force --force-sleep 1
