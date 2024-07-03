@@ -102,7 +102,7 @@ Resources:
             # TEMP - force one account to always be in the initial state for testing purposes
             MarkAccountAsInitial:
               Type: Task
-              Resource: arn:aws:states:::dynamodb:transactWriteItems
+              Resource: arn:aws:states:::aws-sdk:dynamodb:transactWriteItems
               Next: FetchAccounts
               Parameters:
                 TransactItems:
