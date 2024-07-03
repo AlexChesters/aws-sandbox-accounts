@@ -4,41 +4,47 @@ This document covers the single-table design for this system.
 ## Table design
 
 ### Main table
-| partition key - pk       | sort key - sk      | status     | lease               |
-| ------------------------ | ------------------ | ---------- | ------------------- |
-| account                  | 111111111111       | available  |                     |
-| account                  | 222222222222       | leased     |                     |
-| account                  | 333333333333       | initial    |                     |
-| lease                    | abc123-def456      | active     |                     |
-| user                     | bill.bob@gmail.com |            | lease-abc123-def456 |
-
-### Status LSI
-| partition key - pk | sort key - status | sk            | lease               |
-| ------------------ | ----------------- | ------------- | ------------------- |
-| account            | available         | 111111111111  |                     |
-| account            | leased            | 222222222222  | lease-abc123-def456 |
+| partition key - pk          | data                                                                         |
+| --------------------------- | ---------------------------------------------------------------------------- |
+| account_id#111111111111     | available                                                                    |
+| account_id#222222222222     | leased                                                                       |
+| account_id#333333333333     | initial                                                                      |
+| lease_id#abc123-def456      | {"state": "active", "account": "111111111111", "user": "bill.bob@gmail.com"} |
+| user_id#bill.bob@gmail.com  | {"lease": "abc123-def456", "account": "111111111111" }                       |
+| account_status#available    |                                                                              |
+| account_status#leased       |                                                                              |
+| account_status#initial      | [222222222222]                                                               |
+| account_status#all          | [111111111111,222222222222,333333333333]                                     |
+| lease_status#active         | [abc123-def456]                                                              |
 
 ## Access patterns
 - Listing all accounts in the pool, regardless of lease state
-  - Query main table - `pk=account`
+  - Query - `pk=account_status#all`
 - Listing all accounts in the pool without an active lease
-  - Query status LSI - `pk=account&status=available`
+  - Query - `pkaccount_status#available`
 - Listing all accounts in the pool in the initial state
-  - Query status LSI - `pk=account&status=initial`
+  - Query - `pk=account_status#initial`
 - Removing an account from the pool
-  - Delete from main table `pk=account&sk=<ACCOUNT_ID>`
+  - Delete - `pk=account_id#<ACCOUNT_ID>`
+  - Update - `pk=account_status#all` to remove `<ACCOUNT_ID>` from the `data` attribute
 - Adding an account to the pool
-  - Put to main table `pk=account&sk=<ACCOUNT_ID>`
+  - Put - `pk=account_id#<ACCOUNT_ID>,data#initial`
+  - Update - `pk=account_status#all` to add `<ACCOUNT_ID>` to the `data` attribute
+  - Update - `pk=account_status#initial` to add `<ACCOUNT_ID>` to the `data` attribute
 - Listing all active leases
-  - Query main table - `pk=lease`
+  - Query - `pk=lease_status#active`
 - Retrieving information about a specific lease (e.g. the user that lease is assigned too)
-  - Query main table - `pk=lease-<lease_id>`
+  - Query - `pk=lease_id#<LEASE_ID>`
 - Retrieving information about a specific user (e.g. a lease that user currently has)
-  - Query main table - `pk=user-<user_id>`
+  - Query - `pk=user_id#<USER_ID>`
 - Creating a lease
-  - Put to main table `pk=lease&sk=<UUID>`
+  - Put - `pk=lease_id#<UUID>,data#{"state": "active", "account": "<ACCOUNT_ID">, "user": "<USER_ID>"}`
+  - Update - `pk=lease_status#active` to add `<ACCOUNT_ID>` to the `data` attribute
 - Deleting a lease
-  - Delete from main table `pk=lease&sk=<UUID>`
+  - Delete `pk=lease_id#<UUID>`
+  - Update - `pk=lease_status#active` to remove `<ACCOUNT_ID>` from the `data` attribute
+- Adding a user
+  - Put - `pk=user_id#<USER_ID>`
 
 ## Attribute meanings
 ### Status

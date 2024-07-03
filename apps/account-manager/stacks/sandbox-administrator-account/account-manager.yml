@@ -102,84 +102,106 @@ Resources:
             # TEMP - force one account to always be in the initial state for testing purposes
             MarkAccountAsInitial:
               Type: Task
-              Resource: arn:aws:states:::dynamodb:putItem
+              Resource: arn:aws:states:::dynamodb:transactWriteItems
               Next: FetchAccounts
               Parameters:
-                TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                Item:
-                  pk:
-                    S: account
-                  sk:
-                    S: "905418121097"
-                  status:
-                    S: initial
+                TransactItems:
+                  - Put:
+                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+                      Item:
+                        pk:
+                          S: account_id#905418121097
+                        data:
+                          S: initial
+                  - Update:
+                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+                      Key:
+                        pk:
+                          S: account_status#all
+                      UpdateExpression: "SET #data = list_append(#data, :values)"
+                      ExpressionAttributeNames:
+                        "#data": "data"
+                      ExpressionAttributeValues:
+                        ":values":
+                          - L:
+                              S: "905418121097"
+                  - Update:
+                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+                      Key:
+                        pk:
+                          S: account_status#initial
+                      UpdateExpression: "SET #data = list_append(#data, :values)"
+                      ExpressionAttributeNames:
+                        "#data": "data"
+                      ExpressionAttributeValues:
+                        ":values":
+                          - L:
+                              S: "905418121097"
             FetchAccounts:
               Type: Task
               Resource: arn:aws:states:::aws-sdk:dynamodb:query
-              Next: ProcessAccounts
+              # Next: ProcessAccounts
+              End: true
               Parameters:
                 TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
                 IndexName: status
-                KeyConditionExpression: "#pk = :pk AND #sk = :st"
+                KeyConditionExpression: "#pk = :pk"
                 ExpressionAttributeNames:
                   "#pk": pk
-                  "#sk": status
                 ExpressionAttributeValues:
                   :pk:
-                    S: account
-                  :st:
-                    S: initial
+                    S: account_status#initial
               OutputPath: $.Items
-            ProcessAccounts:
-              Type: Map
-              End: true
-              ItemSelector:
-                account_id.$: $$.Map.Item.Value.sk.S
-              ItemProcessor:
-                ProcessorConfig:
-                  Mode: INLINE
-                StartAt: AWSNuke
-                States:
-                  AWSNuke:
-                    Type: Task
-                    Resource: arn:aws:states:::codebuild:startBuild.sync
-                    TimeoutSeconds: 900
-                    Next: MarkAccountAsReady
-                    ResultPath: null
-                    Parameters:
-                      ProjectName: !Ref CodeBuildProject
-                      EnvironmentVariablesOverride:
-                        - Type: PLAINTEXT
-                          Name: ACCOUNT_ID
-                          Value.$: $.account_id
-                    Catch:
-                      - ErrorEquals:
-                          - States.ALL
-                        Next: MarkAccountAsFailed
-                        ResultPath: null
-                  MarkAccountAsFailed:
-                    Type: Task
-                    Resource: arn:aws:states:::dynamodb:putItem
-                    End: true
-                    Parameters:
-                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                      Item:
-                        pk:
-                          S: account
-                        sk:
-                          S.$: $.account_id
-                        status:
-                          S: failed
-                  MarkAccountAsReady:
-                    Type: Task
-                    Resource: arn:aws:states:::dynamodb:putItem
-                    End: true
-                    Parameters:
-                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                      Item:
-                        pk:
-                          S: account
-                        sk:
-                          S.$: $.account_id
-                        status:
-                          S: ready
+            # ProcessAccounts:
+            #   Type: Map
+            #   End: true
+            #   ItemSelector:
+            #     account_id.$: $$.Map.Item.Value.sk.S
+            #   ItemProcessor:
+            #     ProcessorConfig:
+            #       Mode: INLINE
+            #     StartAt: AWSNuke
+            #     States:
+            #       AWSNuke:
+            #         Type: Task
+            #         Resource: arn:aws:states:::codebuild:startBuild.sync
+            #         TimeoutSeconds: 900
+            #         Next: MarkAccountAsReady
+            #         ResultPath: null
+            #         Parameters:
+            #           ProjectName: !Ref CodeBuildProject
+            #           EnvironmentVariablesOverride:
+            #             - Type: PLAINTEXT
+            #               Name: ACCOUNT_ID
+            #               Value.$: $.account_id
+            #         Catch:
+            #           - ErrorEquals:
+            #               - States.ALL
+            #             Next: MarkAccountAsFailed
+            #             ResultPath: null
+            #       MarkAccountAsFailed:
+            #         Type: Task
+            #         Resource: arn:aws:states:::dynamodb:putItem
+            #         End: true
+            #         Parameters:
+            #           TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+            #           Item:
+            #             pk:
+            #               S: account
+            #             sk:
+            #               S.$: $.account_id
+            #             status:
+            #               S: failed
+            #       MarkAccountAsReady:
+            #         Type: Task
+            #         Resource: arn:aws:states:::dynamodb:putItem
+            #         End: true
+            #         Parameters:
+            #           TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+            #           Item:
+            #             pk:
+            #               S: account
+            #             sk:
+            #               S.$: $.account_id
+            #             status:
+            #               S: ready
