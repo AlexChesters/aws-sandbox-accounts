@@ -178,7 +178,7 @@ Resources:
                         ResultPath: null
                   MarkAccountAsFailed:
                     Type: Task
-                    Resource: arn:aws:states:::dynamodb:putItem
+                    Resource: arn:aws:states:::aws-sdk:dynamodb:transactWriteItems
                     End: true
                     Parameters:
                       TransactItems:
@@ -204,7 +204,7 @@ Resources:
                               "#data": data
                   MarkAccountAsAvailable:
                     Type: Task
-                    Resource: arn:aws:states:::dynamodb:putItem
+                    Resource: arn:aws:states:::aws-sdk:dynamodb:transactWriteItems
                     End: true
                     Parameters:
                       TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
