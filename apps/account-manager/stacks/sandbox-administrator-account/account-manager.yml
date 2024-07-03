@@ -123,8 +123,8 @@ Resources:
                         "#data": "data"
                       ExpressionAttributeValues:
                         ":values":
-                          - L:
-                              S: "905418121097"
+                          L:
+                            S: "905418121097"
                   - Update:
                       TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
                       Key:
