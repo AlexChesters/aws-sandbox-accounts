@@ -145,7 +145,6 @@ Resources:
               End: true
               Parameters:
                 TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                IndexName: status
                 KeyConditionExpression: "#pk = :pk"
                 ExpressionAttributeNames:
                   "#pk": pk
