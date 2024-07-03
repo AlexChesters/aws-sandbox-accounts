@@ -85,7 +85,12 @@ Resources:
                   - events:PutRule
                   - events:DescribeRule
                   Resource:
-                  - !Sub "arn:aws:events:${AWS::Region}:${AWS::AccountId}:rule/StepFunctionsGetEventForCodeBuildStartBuildRule"
+                  - !Sub "arn:${AWS::Partition}:events:${AWS::Region}:${AWS::AccountId}:rule/StepFunctionsGetEventForCodeBuildStartBuildRule"
+                - Effect: Allow
+                  Action:
+                  - lambda:InvokeFunction
+                  Resource:
+                  - !Sub "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${Environment}-aws-sandbox-accounts-account-manager-db-client"
   StateMachine:
     Type: AWS::StepFunctions::StateMachine
     Properties:
@@ -101,41 +106,52 @@ Resources:
             # TEMP - force one account to always be in the initial state for testing purposes
             MarkAccountAsInitial:
               Type: Task
-              Resource: arn:aws:states:::aws-sdk:dynamodb:transactWriteItems
-              Next: FetchAccounts
+              Resource: arn:aws:states:::lambda:invoke
+              End: true
               Parameters:
-                TransactItems:
-                  - Put:
-                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                      Item:
-                        pk:
-                          S: account_id#905418121097
-                        data:
-                          S: initial
-                  - Update:
-                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                      Key:
-                        pk:
-                          S: account_status#all
-                      UpdateExpression: "SET #data = list_append(#data, :values)"
-                      ExpressionAttributeNames:
-                        "#data": data
-                      ExpressionAttributeValues:
-                        ":values":
-                          L:
-                            - S: "905418121097"
-                  - Update:
-                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                      Key:
-                        pk:
-                          S: account_status#initial
-                      UpdateExpression: "SET #data = list_append(#data, :values)"
-                      ExpressionAttributeNames:
-                        "#data": "data"
-                      ExpressionAttributeValues:
-                        ":values":
-                          L:
-                            - S: "905418121097"
+                FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
+                Payload:
+                  action: mark_as_initial
+                  params:
+                    account_id: "905418121097"
+
+            # MarkAccountAsInitial:
+            #   Type: Task
+            #   Resource: arn:aws:states:::aws-sdk:dynamodb:transactWriteItems
+            #   Next: FetchAccounts
+            #   Parameters:
+            #     TransactItems:
+            #       - Put:
+            #           TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+            #           Item:
+            #             pk:
+            #               S: account_id#905418121097
+            #             data:
+            #               S: initial
+            #       - Update:
+            #           TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+            #           Key:
+            #             pk:
+            #               S: account_status#all
+            #           UpdateExpression: "SET #data = list_append(#data, :values)"
+            #           ExpressionAttributeNames:
+            #             "#data": data
+            #           ExpressionAttributeValues:
+            #             ":values":
+            #               L:
+            #                 - S: "905418121097"
+            #       - Update:
+            #           TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+            #           Key:
+            #             pk:
+            #               S: account_status#initial
+            #           UpdateExpression: "SET #data = list_append(#data, :values)"
+            #           ExpressionAttributeNames:
+            #             "#data": "data"
+            #           ExpressionAttributeValues:
+            #             ":values":
+            #               L:
+            #                 - S: "905418121097"
             # FetchAccounts:
             #   Type: Task
             #   Resource: arn:aws:states:::aws-sdk:dynamodb:query
