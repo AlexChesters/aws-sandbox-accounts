@@ -125,18 +125,18 @@ Resources:
                         ":values":
                           L:
                             S: "905418121097"
-                  - Update:
-                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                      Key:
-                        pk:
-                          S: account_status#initial
-                      UpdateExpression: "SET #data = list_append(#data, :values)"
-                      ExpressionAttributeNames:
-                        "#data": "data"
-                      ExpressionAttributeValues:
-                        ":values":
-                          L:
-                            S: "905418121097"
+                  # - Update:
+                  #     TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+                  #     Key:
+                  #       pk:
+                  #         S: account_status#initial
+                  #     UpdateExpression: "SET #data = list_append(#data, :values)"
+                  #     ExpressionAttributeNames:
+                  #       "#data": "data"
+                  #     ExpressionAttributeValues:
+                  #       ":values":
+                  #         L:
+                  #           S: "905418121097"
             FetchAccounts:
               Type: Task
               Resource: arn:aws:states:::aws-sdk:dynamodb:query
