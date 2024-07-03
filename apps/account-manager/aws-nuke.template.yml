@@ -100,9 +100,10 @@ presets:
       SNSTopic:
         - notification-topic
   aws_things_that_cannot_be_deleted:
-    OSPackage:
-      - type: glob
-        value: "G*"
+    filters:
+      OSPackage:
+        - type: glob
+          value: "G*"
 
 accounts:
   REPLACE_ME:
