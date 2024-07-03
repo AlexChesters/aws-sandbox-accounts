@@ -31,6 +31,10 @@ This document covers the single-table design for this system.
   - Put - `pk=account_id#<ACCOUNT_ID>,data#initial`
   - Update - `pk=account_status#all` to add `<ACCOUNT_ID>` to the `data` attribute
   - Update - `pk=account_status#initial` to add `<ACCOUNT_ID>` to the `data` attribute
+- Marking an account as available
+  - Update - `pk=account_id#<ACCOUNT_ID>` to set `available` as the `data` attribute
+  - Update - `pk=account_status#available` to add `<ACCOUNT_ID>` to the `data` attribute
+  - Update all other `account_status#*` items to remove the account ID from everywhere else
 - Listing all active leases
   - Query - `pk=lease_status#active`
 - Retrieving information about a specific lease (e.g. the user that lease is assigned too)
