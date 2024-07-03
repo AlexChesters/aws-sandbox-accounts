@@ -68,10 +68,6 @@ Resources:
                 - Effect: Allow
                   Action:
                     - dynamodb:query
-                  Resource:
-                    - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Environment}-aws-sandbox-accounts-account-pool/index/status"
-                - Effect: Allow
-                  Action:
                     - dynamodb:PutItem
                     - dynamodb:UpdateItem
                   Resource:
