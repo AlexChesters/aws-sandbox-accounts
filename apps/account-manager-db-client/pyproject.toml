@@ -1,10 +1,9 @@
 [tool.poetry]
-name = "pool-manager"
+name = "account-manager-db-client"
 version = "0.1.0"
-description = "manages aws accounts in the sandbox accounts pool"
+description = "DB client for account-manager"
 authors = ["Alex Chesters <alex@cheste.rs>"]
 license = "MIT"
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"

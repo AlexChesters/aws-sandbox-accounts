@@ -115,6 +115,22 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/account-manager.yml
                 TemplateConfiguration: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/parameters/account-manager/test.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuiltSource
+              RunOrder: 1
+              Name: Account-Manager-DB-Client
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-account-manager-db-client
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuiltSource::apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
+                TemplateConfiguration: BuiltSource::apps/account-manager-db-client/stacks/sandbox-administrator-account/parameters/account-manager-db-client/test.json
         - Name: Deploy-Common-Resources-To-Live
           Actions:
             - ActionTypeId:
@@ -151,4 +167,19 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/account-manager.yml
                 TemplateConfiguration: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/parameters/account-manager/live.json
-
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuiltSource
+              RunOrder: 1
+              Name: Account-Manager-DB-Client
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-account-manager-db-client
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuiltSource::apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
+                TemplateConfiguration: BuiltSource::apps/account-manager-db-client/stacks/sandbox-administrator-account/parameters/account-manager-db-client/live.json

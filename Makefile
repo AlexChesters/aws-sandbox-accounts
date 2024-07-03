@@ -1,13 +1,13 @@
 .PHONY: clean test package install_poetry
 
 clean:
-	cd apps/pool-manager && $(MAKE) clean
+	cd apps/account-manager-db-client && $(MAKE) clean
 
 test:
-	cd apps/pool-manager && $(MAKE) test
+	cd apps/account-manager-db-client && $(MAKE) test
 
 package:
-	cd apps/pool-manager && $(MAKE) package
+	cd apps/account-manager-db-client && $(MAKE) package
 
 install_poetry:
 	( \

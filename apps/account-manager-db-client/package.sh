@@ -6,4 +6,4 @@ export VENV_PATH=$(poetry env info -p)
 poetry install --only main
 mkdir build
 cp -R ${VENV_PATH}/lib/python3.*/site-packages/* build/
-cp -R pool_manager/ build/
+cp -R account_manager_db_client/ build/

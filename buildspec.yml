@@ -7,6 +7,6 @@ phases:
   build:
     commands:
       - make build
-      - aws cloudformation package --template-file apps/pool-manager/stacks/sandbox-administrator-account/pool-manager.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/pool-manager --output-template-file apps/pool-manager/stacks/sandbox-administrator-account/pool-manager.yml
+      - aws cloudformation package --template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/account-manager-db-client --output-template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
 artifacts:
   files: "**/*"
