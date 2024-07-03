@@ -82,6 +82,9 @@ presets:
         # AWS Organizations resources
         - property: RoleName
           value: "OrganizationAccountAccessRole"
+        # aws-sandbox-accounts
+        - type: glob
+          value: "aws-sandbox-accounts-*"
         # StackSets
         - property: RoleName
           type: glob
