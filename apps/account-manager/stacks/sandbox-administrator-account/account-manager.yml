@@ -136,96 +136,96 @@ Resources:
                         ":values":
                           L:
                             - S: "905418121097"
-            FetchAccounts:
-              Type: Task
-              Resource: arn:aws:states:::aws-sdk:dynamodb:query
-              Next: ProcessAccounts
-              Parameters:
-                TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                KeyConditionExpression: "#pk = :pk"
-                ExpressionAttributeNames:
-                  "#pk": pk
-                ExpressionAttributeValues:
-                  :pk:
-                    S: account_status#initial
-              OutputPath: $.Items
-            ProcessAccounts:
-              Type: Map
-              End: true
-              ItemSelector:
-                account_id.$: $$.Map.Item.Value.sk.S
-              ItemProcessor:
-                ProcessorConfig:
-                  Mode: INLINE
-                StartAt: AWSNuke
-                States:
-                  AWSNuke:
-                    Type: Task
-                    Resource: arn:aws:states:::codebuild:startBuild.sync
-                    TimeoutSeconds: 900
-                    Next: MarkAccountAsAvailable
-                    ResultPath: null
-                    Parameters:
-                      ProjectName: !Ref CodeBuildProject
-                      EnvironmentVariablesOverride:
-                        - Type: PLAINTEXT
-                          Name: ACCOUNT_ID
-                          Value.$: $.account_id
-                    Catch:
-                      - ErrorEquals:
-                          - States.ALL
-                        Next: MarkAccountAsFailed
-                        ResultPath: null
-                  MarkAccountAsFailed:
-                    Type: Task
-                    Resource: arn:aws:states:::aws-sdk:dynamodb:transactWriteItems
-                    End: true
-                    Parameters:
-                      TransactItems:
-                        - Update:
-                            TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                            Key:
-                              pk:
-                                S: account_status#failed
-                            UpdateExpression: "SET #data = list_append(#data, :values)"
-                            ExpressionAttributeNames:
-                              "#data": data
-                            ExpressionAttributeValues:
-                              ":values":
-                                L:
-                                  - S.$: $.account_id
-                        - Update:
-                            TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                            Key:
-                              pk:
-                                S.$: States.Format("account_id#{}", $.account_id)
-                            UpdateExpression: "SET #data = failed"
-                            ExpressionAttributeNames:
-                              "#data": data
-                  MarkAccountAsAvailable:
-                    Type: Task
-                    Resource: arn:aws:states:::aws-sdk:dynamodb:transactWriteItems
-                    End: true
-                    Parameters:
-                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                      TransactItems:
-                        - Update:
-                            TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                            Key:
-                              pk:
-                                S: account_status#available
-                            UpdateExpression: "SET #data = list_append(#data, :values)"
-                            ExpressionAttributeNames:
-                              "#data": data
-                            ExpressionAttributeValues:
-                              ":values":
-                                L:
-                                  - S.$: $.account_id
-                        - Update:
-                            TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                            Key:
-                              pk:
-                                S.$: States.Format("account_id#{}", $.account_id)
-                            UpdateExpression: "SET #data = available"
-                            ExpressionAttributeNames:
-                              "#data": data
+            # FetchAccounts:
+            #   Type: Task
+            #   Resource: arn:aws:states:::aws-sdk:dynamodb:query
+            #   Next: ProcessAccounts
+            #   Parameters:
+            #     TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+            #     KeyConditionExpression: "#pk = :pk"
+            #     ExpressionAttributeNames:
+            #       "#pk": pk
+            #     ExpressionAttributeValues:
+            #       :pk:
+            #         S: account_status#initial
+            #   OutputPath: $.Items
+            # ProcessAccounts:
+            #   Type: Map
+            #   End: true
+            #   ItemSelector:
+            #     account_id.$: $$.Map.Item.Value.sk.S
+            #   ItemProcessor:
+            #     ProcessorConfig:
+            #       Mode: INLINE
+            #     StartAt: AWSNuke
+            #     States:
+            #       AWSNuke:
+            #         Type: Task
+            #         Resource: arn:aws:states:::codebuild:startBuild.sync
+            #         TimeoutSeconds: 900
+            #         Next: MarkAccountAsAvailable
+            #         ResultPath: null
+            #         Parameters:
+            #           ProjectName: !Ref CodeBuildProject
+            #           EnvironmentVariablesOverride:
+            #             - Type: PLAINTEXT
+            #               Name: ACCOUNT_ID
+            #               Value.$: $.account_id
+            #         Catch:
+            #           - ErrorEquals:
+            #               - States.ALL
+            #             Next: MarkAccountAsFailed
+            #             ResultPath: null
+            #       MarkAccountAsFailed:
+            #         Type: Task
+            #         Resource: arn:aws:states:::aws-sdk:dynamodb:transactWriteItems
+            #         End: true
+            #         Parameters:
+            #           TransactItems:
+            #             - Update:
+            #                 TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+            #                 Key:
+            #                   pk:
+            #                     S: account_status#failed
+            #                 UpdateExpression: "SET #data = list_append(#data, :values)"
+            #                 ExpressionAttributeNames:
+            #                   "#data": data
+            #                 ExpressionAttributeValues:
+            #                   ":values":
+            #                     L:
+            #                       - S.$: $.account_id
+            #             - Update:
+            #                 TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+            #                 Key:
+            #                   pk:
+            #                     S.$: States.Format("account_id#{}", $.account_id)
+            #                 UpdateExpression: "SET #data = failed"
+            #                 ExpressionAttributeNames:
+            #                   "#data": data
+            #       MarkAccountAsAvailable:
+            #         Type: Task
+            #         Resource: arn:aws:states:::aws-sdk:dynamodb:transactWriteItems
+            #         End: true
+            #         Parameters:
+            #           TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+            #           TransactItems:
+            #             - Update:
+            #                 TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+            #                 Key:
+            #                   pk:
+            #                     S: account_status#available
+            #                 UpdateExpression: "SET #data = list_append(#data, :values)"
+            #                 ExpressionAttributeNames:
+            #                   "#data": data
+            #                 ExpressionAttributeValues:
+            #                   ":values":
+            #                     L:
+            #                       - S.$: $.account_id
+            #             - Update:
+            #                 TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+            #                 Key:
+            #                   pk:
+            #                     S.$: States.Format("account_id#{}", $.account_id)
+            #                 UpdateExpression: "SET #data = available"
+            #                 ExpressionAttributeNames:
+            #                   "#data": data
