@@ -113,18 +113,19 @@ Resources:
                           S: account_id#905418121097
                         data:
                           S: initial
-                  # - Update:
-                  #     TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-                  #     Key:
-                  #       pk:
-                  #         S: account_status#all
-                  #     UpdateExpression: "SET #data = list_append(#data, :values)"
-                  #     ExpressionAttributeNames:
-                  #       "#data": "data"
-                  #     ExpressionAttributeValues:
-                  #       ":values":
-                  #         L:
-                  #           S: "905418121097"
+                  - Update:
+                      TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+                      Key:
+                        pk:
+                          S: account_status#all
+                      UpdateExpression: "SET #data = list_append(#data, :values)"
+                      ExpressionAttributeNames:
+                        "#data": data
+                      ExpressionAttributeValues:
+                        ":values":
+                          L:
+                            - S: '905418121097'
+
                   # - Update:
                   #     TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
                   #     Key:
