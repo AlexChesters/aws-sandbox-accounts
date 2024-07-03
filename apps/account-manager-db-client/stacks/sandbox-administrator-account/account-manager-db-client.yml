@@ -25,7 +25,7 @@ Resources:
   Function:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: pool_manager.main.handler
+      Handler: account_manager_db_client.main.handler
       Runtime: python3.12
       CodeUri: ../../build
       Role: !GetAtt FunctionExecutionRole.Arn
