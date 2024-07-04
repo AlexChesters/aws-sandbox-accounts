@@ -20,7 +20,7 @@ def mark_as_initial(event, dynamo_client, table_name):
             {
                 "Update": {
                     "TableName": table_name,
-                    "Item": serialise({
+                    "Key": serialise({
                         "pk": "account_status#all"
                     }),
                     "UpdateExpression": "SET #data = list_append(#data, :values)",
@@ -35,7 +35,7 @@ def mark_as_initial(event, dynamo_client, table_name):
             {
                 "Update": {
                     "TableName": table_name,
-                    "Item": serialise({
+                    "Key": serialise({
                         "pk": "account_status#initial",
                     }),
                     "UpdateExpression": "SET #data = list_append(#data, :values)",
