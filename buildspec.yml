@@ -13,10 +13,9 @@ phases:
   build:
     commands:
       # install poetry
-      - curl -sSL https://install.python-poetry.org | POETRY_HOME=${HOME}/.poetry python3 -
-      - ls -alh /tmp
-      - ls -alh /tmp/.poetry
-      - ls -alh /tmp/.poetry/bin
+      - python3 -m pip install --user pipx
+      - python3 -m pipx ensurepath
+      - pipx install poetry==1.8.2
       # account-manager-db-client
       - cd apps/account-manager-db-client
       - export PATH="${HOME}/.poetry/bin:${PATH}" poetry install
