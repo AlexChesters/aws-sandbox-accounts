@@ -10,12 +10,3 @@ RUN apt update -y && apt install curl wget -y
 RUN apt update -y && apt install software-properties-common -y
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt update -y && apt install python3.12 python3-venv python3-pip -y
-
-# install pipx
-RUN python3 -m pip install pipx
-RUN python3 -m pipx ensurepath
-
-# install poetry
-RUN pipx install poetry==1.8.2
-RUN mkdir -p /tmp/poetry/bin
-RUN cp /root/.local/bin/poetry /tmp/poetry/bin/
