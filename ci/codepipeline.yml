@@ -1,6 +1,11 @@
 Transform:
   - AWS::LanguageExtensions
 Description: pipeline to deploy aws-sandbox-accounts
+Parameters:
+  Branch:
+    Type: String
+    Default: main
+    Description: The branch to build from
 Resources:
   CodeBuildRole:
     Type: AWS::IAM::Role
