@@ -8,7 +8,7 @@ def mark_as_initial(event, dynamo_client, table_name):
 
     # TODO: don't just blindly append to lists, because the same account ID will be in there multiple times
     # instead we may need to
-    # 1. fetch all lists
+    # 1. fetch all lists that we need too
     # 2. set them all to be the correct values
     # 3. write all lists back to the db
 
