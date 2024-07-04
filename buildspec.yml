@@ -13,7 +13,7 @@ phases:
   build:
     commands:
       # install poetry
-      - python3 -m pip install --user pipx
+      - python3 -m pip install pipx
       - python3 -m pipx ensurepath
       - pipx install poetry==1.8.2
       # account-manager-db-client
