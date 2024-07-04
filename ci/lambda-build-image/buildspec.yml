@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - cd ci/lambda-build-image
+      # build image
+      - docker build -t aws-sandbox-accounts/lambda-build-image:latest .
+      # log in to the registry
+      - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 654654632738.dkr.ecr.eu-west-1.amazonaws.com
+      # tag and push image
+      - docker tag aws-sandbox-accounts/lambda-build-image:latest 654654632738.dkr.ecr.eu-west-1.amazonaws.com/lambda-build-image:latest
+      - docker push 654654632738.dkr.ecr.eu-west-1.amazonaws.com/lambda-build-image:latest
+artifacts:
+  files: "**/*"
+

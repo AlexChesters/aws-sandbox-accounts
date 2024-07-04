@@ -1,5 +1,75 @@
+Transform:
+  - AWS::LanguageExtensions
 Description: pipeline to deploy aws-sandbox-accounts
 Resources:
+  BuildImageRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: lambda-build-image
+      LifecyclePolicy:
+        LifecyclePolicyText:
+          Fn::ToJsonString:
+            rules:
+              - rulePriority: 1
+                description: Only keep 5 images
+                selection:
+                  tagStatus: any
+                  countType: imageCountMoreThan
+                  countNumber: 5
+                action:
+                  type: expire
+  BuildImageCodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+      ManagedPolicyArns:
+        - !ImportValue ci-infrastructure-codebuild-base-iam-policy
+      Policies:
+          - PolicyName: ecr-policy
+            PolicyDocument:
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - ecr:GetAuthorizationToken
+                  Resource:
+                    - "*"
+                - Effect: Allow
+                  Action:
+                    - ecr:BatchCheckLayerAvailability
+                    - ecr:GetDownloadUrlForLayer
+                    - ecr:BatchGetImage
+                    - ecr:PutImage
+                    - ecr:InitiateLayerUpload
+                    - ecr:UploadLayerPart
+                    - ecr:CompleteLayerUpload
+                  Resource:
+                    - !GetAtt BuildImageRepository.Arn
+  BuildImageCodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+        Location: !ImportValue ci-infrastructure-artifacts-bucket-name
+        Path: /artifacts/aws-sandbox-accounts/build-image
+        Packaging: NONE
+        Name: build
+        NamespaceType: BUILD_ID
+      Description: Builds aws-sandbox-accounts build image
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:7.0
+        PrivilegedMode: true
+        Type: LINUX_CONTAINER
+      Name: aws-sandbox-accounts-lambda-build-image
+      ServiceRole: !GetAtt BuildImageCodeBuildRole.Arn
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: ci/lambda-build-image/buildspec.yml
   CodeBuildRole:
     Type: AWS::IAM::Role
     Properties:
@@ -72,10 +142,21 @@ Resources:
                 Provider: CodeBuild
               InputArtifacts:
                 - Name: GitHubSource
+              RunOrder: 1
+              Name: Build-Lambda-Build-Image
+              Configuration:
+                ProjectName: !Ref BuildImageCodeBuildProject
+            - ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: "1"
+                Provider: CodeBuild
+              InputArtifacts:
+                - Name: GitHubSource
               OutputArtifacts:
                 - Name: BuiltSource
-              RunOrder: 1
-              Name: CodeBuild
+              RunOrder: 2
+              Name: Build-Lambdas
               Configuration:
                 ProjectName: !Ref CodeBuildProject
         - Name: Deploy-Common-Resources-To-Test
