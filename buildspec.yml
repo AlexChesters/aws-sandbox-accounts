@@ -6,6 +6,7 @@ env:
     AWS_SECRET_ACCESS_KEY: testing
     AWS_SESSION_TOKEN: testing
     AWS_SECURITY_TOKEN: testing
+    POETRY_BIN: /tmp/.poetry/bin
 phases:
   install:
     runtime-versions:
@@ -16,11 +17,10 @@ phases:
       - curl -sSL https://install.python-poetry.org | POETRY_HOME=${HOME}/.poetry python3 -
       # account-manager-db-client
       - cd apps/account-manager-db-client
-      - export PATH="${HOME}/.poetry/bin:${PATH}"
-      - poetry install
-      - poetry run pylint account_manager_db_client
+      - $POETRY_BIN install
+      - $POETRY_BIN run pylint account_manager_db_client
       - export VENV_PATH=$(poetry env info -p)
-      - poetry install --only main
+      - $POETRY_BIN install --only main
       - mkdir build
       - cp -R ${VENV_PATH}/lib/python3.*/site-packages/* build/
       - cp -R account_manager_db_client/ build/
