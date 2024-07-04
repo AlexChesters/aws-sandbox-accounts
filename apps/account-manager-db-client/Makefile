@@ -19,6 +19,9 @@ test: install
 			poetry run pylint account_manager_db_client \
 	)
 
+prod_requirements:
+	poetry export -f requirements.txt --output requirements.txt --only main
+
 package: clean install test
 	( \
 			export PATH="${HOME}/.poetry/bin:${PATH}" && \
