@@ -6,6 +6,7 @@ phases:
       python: 3.12
   build:
     commands:
+      - echo $SHELL
       - make build
       - aws cloudformation package --template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/account-manager-db-client --output-template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
 artifacts:
