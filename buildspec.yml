@@ -6,7 +6,7 @@ env:
     AWS_SECRET_ACCESS_KEY: testing
     AWS_SESSION_TOKEN: testing
     AWS_SECURITY_TOKEN: testing
-    POETRY_BIN: /tmp/.poetry/bin
+    POETRY_BIN: /tmp/.poetry/bin/poetry
 phases:
   install:
     runtime-versions:
