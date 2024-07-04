@@ -33,6 +33,9 @@ Resources:
       MemorySize: 256
       Timeout: 120
       Tracing: Active
+      Environment:
+        Variables:
+          TABLE_NAME: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
   ErrorAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
