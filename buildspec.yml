@@ -19,7 +19,7 @@ phases:
       - ls -alh /tmp/.poetry/bin
       # account-manager-db-client
       - cd apps/account-manager-db-client
-      - /tmp/.poetry/bin/poetry install
+      - export PATH="${HOME}/.poetry/bin:${PATH}" poetry install
       - /tmp/.poetry/bin/poetry run pylint account_manager_db_client
       - export VENV_PATH=$(poetry env info -p)
       - /tmp/.poetry/bin/poetry install --only main
