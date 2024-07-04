@@ -27,9 +27,9 @@ def mark_as_initial(event, dynamo_client, table_name):
                     "ExpressionAttributeNames": {
                         "#data": "data"
                     },
-                    "ExpressionAttributeValues": {
-                        ":values": serialise(["905418121097"])
-                    }
+                    "ExpressionAttributeValues": serialise({
+                        ":values": ["905418121097"]
+                    })
                 }
             },
             {
@@ -42,9 +42,9 @@ def mark_as_initial(event, dynamo_client, table_name):
                     "ExpressionAttributeNames": {
                         "#data": "data"
                     },
-                    "ExpressionAttributeValues": {
-                        ":values": serialise(["905418121097"])
-                    }
+                    "ExpressionAttributeValues": serialise({
+                        ":values": ["905418121097"]
+                    })
                 }
             }
         ]
