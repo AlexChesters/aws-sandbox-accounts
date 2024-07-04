@@ -1,5 +1,11 @@
 version: 0.2
 
+env:
+  variables:
+    AWS_ACCESS_KEY_ID: testing
+    AWS_SECRET_ACCESS_KEY: testing
+    AWS_SESSION_TOKEN: testing
+    AWS_SECURITY_TOKEN: testing
 phases:
   install:
     runtime-versions:
@@ -10,6 +16,15 @@ phases:
       - curl -sSL https://install.python-poetry.org | POETRY_HOME=${HOME}/.poetry python3 -
       # account-manager-db-client
       - cd apps/account-manager-db-client
-      # - aws cloudformation package --template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/account-manager-db-client --output-template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
+      - export PATH="${HOME}/.poetry/bin:${PATH}"
+      - poetry install
+      - poetry run pylint account_manager_db_client
+      - export VENV_PATH=$(poetry env info -p)
+      - poetry install --only main
+      - mkdir build
+      - cp -R ${VENV_PATH}/lib/python3.*/site-packages/* build/
+      - cp -R account_manager_db_client/ build/
+      - aws cloudformation package --template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/account-manager-db-client --output-template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
+      - cd ..
 artifacts:
   files: "**/*"
