@@ -6,7 +6,10 @@ phases:
       python: 3.12
   build:
     commands:
-      - make build
-      - aws cloudformation package --template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/account-manager-db-client --output-template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
+      # install poetry
+      - curl -sSL https://install.python-poetry.org | POETRY_HOME=${HOME}/.poetry python3 -
+      # account-manager-db-client
+      - cd apps/account-manager-db-client
+      # - aws cloudformation package --template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/account-manager-db-client --output-template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
 artifacts:
   files: "**/*"
