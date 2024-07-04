@@ -2,23 +2,7 @@ Transform:
   - AWS::LanguageExtensions
 Description: pipeline to deploy aws-sandbox-accounts
 Resources:
-  BuildImageRepository:
-    Type: AWS::ECR::Repository
-    Properties:
-      RepositoryName: lambda-build-image
-      LifecyclePolicy:
-        LifecyclePolicyText:
-          Fn::ToJsonString:
-            rules:
-              - rulePriority: 1
-                description: Only keep 5 images
-                selection:
-                  tagStatus: any
-                  countType: imageCountMoreThan
-                  countNumber: 5
-                action:
-                  type: expire
-  BuildImageCodeBuildRole:
+  CodeBuildRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -43,44 +27,8 @@ Resources:
                     - ecr:BatchCheckLayerAvailability
                     - ecr:GetDownloadUrlForLayer
                     - ecr:BatchGetImage
-                    - ecr:PutImage
-                    - ecr:InitiateLayerUpload
-                    - ecr:UploadLayerPart
-                    - ecr:CompleteLayerUpload
                   Resource:
-                    - !GetAtt BuildImageRepository.Arn
-  BuildImageCodeBuildProject:
-    Type: AWS::CodeBuild::Project
-    Properties:
-      Artifacts:
-        Type: CODEPIPELINE
-        Location: !ImportValue ci-infrastructure-artifacts-bucket-name
-        Path: /artifacts/aws-sandbox-accounts/build-image
-        Packaging: NONE
-        Name: build
-        NamespaceType: BUILD_ID
-      Description: Builds aws-sandbox-accounts build image
-      Environment:
-        ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:7.0
-        PrivilegedMode: true
-        Type: LINUX_CONTAINER
-      Name: aws-sandbox-accounts-lambda-build-image
-      ServiceRole: !GetAtt BuildImageCodeBuildRole.Arn
-      Source:
-        Type: CODEPIPELINE
-        BuildSpec: ci/lambda-build-image/buildspec.yml
-  CodeBuildRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-          - Action: sts:AssumeRole
-            Effect: Allow
-            Principal:
-              Service: codebuild.amazonaws.com
-      ManagedPolicyArns:
-        - !ImportValue ci-infrastructure-codebuild-base-iam-policy
+                    - !Sub "arn:${AWS::Partition}:ecr:${AWS::Region}:${AWS::AccountId}:repository/lambda-build-image"
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -94,7 +42,8 @@ Resources:
       Description: Builds aws-sandbox-accounts
       Environment:
         ComputeType: BUILD_LAMBDA_1GB
-        Image: aws/codebuild/amazonlinux-aarch64-lambda-standard:python3.12
+        Image: !Sub "${AWS::AccountId}.dkr.ecr.eu-west-1.amazonaws.com/lambda-build-image"
+        ImagePullCredentialsType: SERVICE_ROLE
         Type: ARM_LAMBDA_CONTAINER
         EnvironmentVariables:
           - Value: !ImportValue ci-infrastructure-artifacts-bucket-name
@@ -115,6 +64,17 @@ Resources:
       RestartExecutionOnUpdate: true
       RoleArn: !ImportValue ci-infrastructure-codepipeline-base-execution-iam-role
       PipelineType: V2
+      Triggers:
+        - ProviderType: CodeStarSourceConnection
+          GitConfiguration:
+            SourceActionName: Clone-From-GitHub
+            Push:
+              - Branches:
+                  Includes:
+                    - !Ref Branch
+                FilePaths:
+                  Excludes:
+                    - ci/lambda-build-image/**
       Stages:
         - Name: Source
           Actions:
@@ -142,20 +102,9 @@ Resources:
                 Provider: CodeBuild
               InputArtifacts:
                 - Name: GitHubSource
-              RunOrder: 1
-              Name: Build-Lambda-Build-Image
-              Configuration:
-                ProjectName: !Ref BuildImageCodeBuildProject
-            - ActionTypeId:
-                Category: Build
-                Owner: AWS
-                Version: "1"
-                Provider: CodeBuild
-              InputArtifacts:
-                - Name: GitHubSource
               OutputArtifacts:
                 - Name: BuiltSource
-              RunOrder: 2
+              RunOrder: 1
               Name: Build-Lambdas
               Configuration:
                 ProjectName: !Ref CodeBuildProject
