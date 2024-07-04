@@ -6,6 +6,12 @@ def mark_as_initial(event, dynamo_client, table_name):
     if not account_id:
         raise ValueError("'params.account_id' not provided in event")
 
+    # TODO: don't just blindly append to lists, because the same account ID will be in there multiple times
+    # instead we may need to
+    # 1. fetch all lists
+    # 2. set them all to be the correct values
+    # 3. write all lists back to the db
+
     dynamo_client.transact_write_items(
         TransactItems=[
             {
