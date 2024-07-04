@@ -17,3 +17,5 @@ RUN python3 -m pipx ensurepath
 
 # install poetry
 RUN pipx install poetry==1.8.2
+RUN mkdir -p /tmp/poetry/bin
+RUN cp /root/.local/bin/poetry /tmp/poetry/bin/
