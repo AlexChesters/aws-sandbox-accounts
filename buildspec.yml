@@ -14,10 +14,10 @@ phases:
     commands:
       # account-manager-db-client
       - cd apps/account-manager-db-client
-      - poetry install
-      - poetry run pylint account_manager_db_client
-      - export VENV_PATH=$(poetry env info -p)
-      - poetry install --only main
+      - /root/.local/bin/poetry install
+      - /root/.local/bin/poetry run pylint account_manager_db_client
+      - export VENV_PATH=$(/root/.local/bin/poetry env info -p)
+      - /root/.local/bin/poetry install --only main
       - mkdir build
       - cp -R ${VENV_PATH}/lib/python3.*/site-packages/* build/
       - cp -R account_manager_db_client/ build/
