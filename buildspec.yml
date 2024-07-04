@@ -12,16 +12,12 @@ phases:
       python: 3.12
   build:
     commands:
-      # install poetry
-      - python3 -m pip install pipx
-      - python3 -m pipx ensurepath
-      - pipx install poetry
       # account-manager-db-client
       - cd apps/account-manager-db-client
-      - export PATH="${HOME}/.poetry/bin:${PATH}" poetry install
-      - /tmp/.poetry/bin/poetry run pylint account_manager_db_client
+      - poetry install
+      - poetry run pylint account_manager_db_client
       - export VENV_PATH=$(poetry env info -p)
-      - /tmp/.poetry/bin/poetry install --only main
+      - poetry install --only main
       - mkdir build
       - cp -R ${VENV_PATH}/lib/python3.*/site-packages/* build/
       - cp -R account_manager_db_client/ build/
