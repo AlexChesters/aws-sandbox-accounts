@@ -1,7 +1,5 @@
 version: 0.2
 
-env:
-  shell: /bin/sh
 phases:
   install:
     runtime-versions:
