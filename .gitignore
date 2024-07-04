@@ -167,3 +167,6 @@ cython_debug/
 
 # "compiled" aws-nuke config
 apps/account-manager/aws-nuke.yml
+
+# python deps
+apps/*/deps
