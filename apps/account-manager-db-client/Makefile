@@ -20,7 +20,7 @@ test: install
 	)
 
 prod_requirements:
-	poetry export -f requirements.txt --output requirements.txt --only main
+	poetry export -f requirements.txt --output requirements.prod.txt --only main
 
 package: clean install test
 	( \

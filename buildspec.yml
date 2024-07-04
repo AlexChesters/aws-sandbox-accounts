@@ -14,14 +14,12 @@ phases:
     commands:
       # account-manager-db-client
       - cd apps/account-manager-db-client
-      - /tmp/poetry/bin/poetry install
-      - /tmp/poetry/bin/poetry run pylint account_manager_db_client
-      - export VENV_PATH=$(/tmp/poetry/bin/poetry env info -p)
-      - /tmp/poetry/bin/poetry install --only main
-      - mkdir build
-      - cp -R ${VENV_PATH}/lib/python3.*/site-packages/* build/
-      - cp -R account_manager_db_client/ build/
-      - aws cloudformation package --template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/account-manager-db-client --output-template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
+      - pip install -r requirements.prod.txt -t deps
+      - ls -alh deps
+      # - mkdir build
+      # - cp -R ${VENV_PATH}/lib/python3.*/site-packages/* build/
+      # - cp -R account_manager_db_client/ build/
+      # - aws cloudformation package --template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/account-manager-db-client --output-template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
       - cd ..
 artifacts:
   files: "**/*"
