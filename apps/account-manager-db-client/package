@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 set -e
 
 export PATH="${HOME}/.poetry/bin:${PATH}"

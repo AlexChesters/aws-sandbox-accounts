@@ -20,4 +20,4 @@ test: install
 	)
 
 package: clean install test
-	sh package.sh
+	./package
