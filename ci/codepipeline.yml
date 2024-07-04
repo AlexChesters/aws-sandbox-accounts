@@ -21,12 +21,11 @@ Resources:
         Packaging: NONE
         Name: build
         NamespaceType: BUILD_ID
-      TimeoutInMinutes: 5
       Description: Builds aws-sandbox-accounts
       Environment:
-        ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:7.0
-        Type: LINUX_CONTAINER
+        ComputeType: BUILD_LAMBDA_1GB
+        Image: aws/codebuild/amazonlinux-aarch64-lambda-standard:python3.12
+        Type: ARM_LAMBDA_CONTAINER
         EnvironmentVariables:
           - Value: !ImportValue ci-infrastructure-artifacts-bucket-name
             Name: ARTIFACTS_BUCKET
