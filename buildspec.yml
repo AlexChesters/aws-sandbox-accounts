@@ -14,6 +14,9 @@ phases:
     commands:
       # install poetry
       - curl -sSL https://install.python-poetry.org | POETRY_HOME=${HOME}/.poetry python3 -
+      - ls -alh /tmp
+      - ls -alh /tmp/.poetry
+      - ls -alh /tmp/.poetry/bin
       # account-manager-db-client
       - cd apps/account-manager-db-client
       - /tmp/.poetry/bin/poetry install
