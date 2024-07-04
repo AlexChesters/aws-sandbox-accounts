@@ -10,14 +10,12 @@ phases:
   build:
     commands:
       # account-manager-db-client
-      - python3 --version
-      - python3.11 --version
       - cd apps/account-manager-db-client
       - pip install -r requirements.prod.txt -t deps
       - mkdir build
       - cp -R deps/* build/
       - cp -R account_manager_db_client/ build/
-      - aws cloudformation package --template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/account-manager-db-client --output-template-file apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
+      - aws cloudformation package --template-file stacks/sandbox-administrator-account/account-manager-db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/account-manager-db-client --output-template-file stacks/sandbox-administrator-account/account-manager-db-client.yml
       - cd ..
 artifacts:
   files: "**/*"

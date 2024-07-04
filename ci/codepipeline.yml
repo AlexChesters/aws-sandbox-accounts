@@ -47,8 +47,8 @@ Resources:
       Description: Builds aws-sandbox-accounts
       Environment:
         ComputeType: BUILD_LAMBDA_1GB
-        Image: !Sub "${AWS::AccountId}.dkr.ecr.eu-west-1.amazonaws.com/lambda-build-image"
-        ImagePullCredentialsType: SERVICE_ROLE
+        Image: aws/codebuild/amazonlinux-aarch64-lambda-standard:python3.11
+        ImagePullCredentialsType: CODEBUILD
         Type: ARM_LAMBDA_CONTAINER
         EnvironmentVariables:
           - Value: !ImportValue ci-infrastructure-artifacts-bucket-name
