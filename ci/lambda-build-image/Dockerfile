@@ -1,6 +1,10 @@
 FROM public.ecr.aws/ubuntu/ubuntu:22.04_stable
 
+# set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
+
+# install curl/wget
+RUN apt update -y && apt install curl wget -y
 
 # install python
 RUN apt update -y && apt install software-properties-common -y
