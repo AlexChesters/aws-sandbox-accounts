@@ -22,6 +22,18 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
       RoleName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
+      Policies:
+        - PolicyName: state-machine-policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action:
+                    - dynamodb:query
+                    - dynamodb:PutItem
+                    - dynamodb:UpdateItem
+                  Resource:
+                    - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Environment}-aws-sandbox-accounts-account-pool"
   Function:
     Type: AWS::Serverless::Function
     Properties:
