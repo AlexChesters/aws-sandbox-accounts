@@ -67,13 +67,6 @@ Resources:
             Statement:
                 - Effect: Allow
                   Action:
-                    - dynamodb:query
-                    - dynamodb:PutItem
-                    - dynamodb:UpdateItem
-                  Resource:
-                    - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Environment}-aws-sandbox-accounts-account-pool"
-                - Effect: Allow
-                  Action:
                     - codebuild:StartBuild
                     - codebuild:StopBuild
                     - codebuild:BatchGetBuilds
