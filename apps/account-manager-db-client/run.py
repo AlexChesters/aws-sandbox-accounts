@@ -10,7 +10,7 @@ class LambdaContext:
     aws_request_id: str = "52fdfc07-2182-154f-163f-5f0f9a621d72"
 
 event = {
-    "action": "mark_as_initial",
+    "action": "mark_as_dirty",
     "params": {
         "account_id": "905418121097"
     }

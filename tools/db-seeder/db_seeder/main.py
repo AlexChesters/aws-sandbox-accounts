@@ -63,7 +63,7 @@ dynamodb.transact_write_items(
                 "Update": {
                     "TableName": table_name,
                     "Key": serialise({
-                        "pk": "account_status#initial"
+                        "pk": "account_status#dirty"
                     }),
                     "UpdateExpression": "SET #data = :empty_list",
                     "ExpressionAttributeNames": {

@@ -3,7 +3,7 @@ import os
 from aws_lambda_powertools import Logger, Tracer
 import boto3
 
-from account_manager_db_client.actions.mark_as_initial import mark_as_initial
+from account_manager_db_client.actions.mark_as_dirty import mark_as_dirty
 
 table_name = os.environ["TABLE_NAME"]
 
@@ -21,7 +21,7 @@ def handler(event, _context):
     dynamodb = boto3.client("dynamodb")
 
     match action:
-        case "mark_as_initial":
-            return mark_as_initial(event, dynamodb, table_name)
+        case "mark_as_dirty":
+            return mark_as_dirty(event, dynamodb, table_name)
         case _:
             raise ValueError(f"'action' key value ({action}) provided was not recognised")

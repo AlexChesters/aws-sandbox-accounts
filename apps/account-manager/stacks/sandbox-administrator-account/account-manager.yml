@@ -101,19 +101,28 @@ Resources:
         Fn::ToJsonString:
           # TODO: need to handle removing the account ID from states that no longer apply
           # e.g. if account has been cleaned and is set to "ready", need to remove it from "account_status#leased"
-          StartAt: MarkAccountAsInitial
+          StartAt: MarkAccountAsDirty
           States:
-            # TEMP - force one account to always be in the initial state for testing purposes
-            MarkAccountAsInitial:
+            # TEMP - force one account to always be in the dirty state for testing purposes
+            MarkAccountAsDirty:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
               End: true
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
                 Payload:
-                  action: mark_as_initial
+                  action: mark_as_dirty
                   params:
                     account_id: "905418121097"
+              ResultPath: null
+            FetchDirtyAccounts:
+              Type: Task
+              Resource: arn:aws:states:::lambda:invoke
+              End: true
+              Parameters:
+                FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
+                Payload:
+                  action: fetch_dirty
               ResultPath: null
             # FetchAccounts:
             #   Type: Task

@@ -8,13 +8,13 @@ This document covers the single-table design for this system.
 | --------------------------- | ---------------------------------------------------------------------------- |
 | account_id#111111111111     | available                                                                    |
 | account_id#222222222222     | leased                                                                       |
-| account_id#333333333333     | initial                                                                      |
+| account_id#333333333333     | dirty                                                                      |
 | lease_id#abc123-def456      | {"state": "active", "account": "111111111111", "user": "bill.bob@gmail.com"} |
 | user_id#bill.bob@gmail.com  | {"lease": "abc123-def456", "account": "111111111111" }                       |
 | account_status#all          | [111111111111,222222222222,333333333333]                                     |
 | account_status#available    |                                                                              |
 | account_status#leased       |                                                                              |
-| account_status#initial      | [222222222222]                                                               |
+| account_status#dirty      | [222222222222]                                                               |
 | lease_status#active         | [abc123-def456]                                                              |
 
 ## Access patterns
@@ -22,15 +22,15 @@ This document covers the single-table design for this system.
   - Query - `pk=account_status#all`
 - Listing all accounts in the pool without an active lease
   - Query - `pkaccount_status#available`
-- Listing all accounts in the pool in the initial state
-  - Query - `pk=account_status#initial`
+- Listing all accounts in the pool in the dirty state
+  - Query - `pk=account_status#dirty`
 - Removing an account from the pool
   - Delete - `pk=account_id#<ACCOUNT_ID>`
   - Update - `pk=account_status#all` to remove `<ACCOUNT_ID>` from the `data` attribute
 - Adding an account to the pool
-  - Put - `pk=account_id#<ACCOUNT_ID>,data#initial`
+  - Put - `pk=account_id#<ACCOUNT_ID>,data#dirty`
   - Update - `pk=account_status#all` to add `<ACCOUNT_ID>` to the `data` attribute
-  - Update - `pk=account_status#initial` to add `<ACCOUNT_ID>` to the `data` attribute
+  - Update - `pk=account_status#dirty` to add `<ACCOUNT_ID>` to the `data` attribute
 - Marking an account as available
   - Update - `pk=account_id#<ACCOUNT_ID>` to set `available` as the `data` attribute
   - Update - `pk=account_status#available` to add `<ACCOUNT_ID>` to the `data` attribute

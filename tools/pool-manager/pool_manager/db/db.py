@@ -58,7 +58,7 @@ class DBClient:
                     "S": account_id
                 },
                 "status": {
-                    "S": "initial"
+                    "S": "dirty"
                 }
             }
         )

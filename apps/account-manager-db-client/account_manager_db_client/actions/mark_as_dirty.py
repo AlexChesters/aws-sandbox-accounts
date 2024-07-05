@@ -5,7 +5,7 @@ from account_manager_db_client.models.account_status import AccountStatus
 
 logger = Logger()
 
-def mark_as_initial(event, dynamo_client, table_name):
+def mark_as_dirty(event, dynamo_client, table_name):
     account_id = event.get("params", {}).get("account_id")
 
     if not account_id:
@@ -18,7 +18,7 @@ def mark_as_initial(event, dynamo_client, table_name):
                     python_to_dynamo({ "pk": "account_status#all" }),
                     python_to_dynamo({ "pk": "account_status#available" }),
                     python_to_dynamo({ "pk": "account_status#leased" }),
-                    python_to_dynamo({ "pk": "account_status#initial" })
+                    python_to_dynamo({ "pk": "account_status#dirty" })
                 ]
             }
         }
@@ -35,12 +35,12 @@ def mark_as_initial(event, dynamo_client, table_name):
     leased_accounts = AccountStatus(
         next(item for item in existing_data if item["pk"]["S"] == "account_status#leased")
     )
-    initial_accounts = AccountStatus(
-        next(item for item in existing_data if item["pk"]["S"] == "account_status#initial")
+    dirty_accounts = AccountStatus(
+        next(item for item in existing_data if item["pk"]["S"] == "account_status#dirty")
     )
 
     all_accounts.accounts.add(account_id)
-    initial_accounts.accounts.add(account_id)
+    dirty_accounts.accounts.add(account_id)
     available_accounts.accounts.discard(account_id)
     leased_accounts.accounts.discard(account_id)
 
@@ -55,7 +55,7 @@ def mark_as_initial(event, dynamo_client, table_name):
             {
                 "Put": {
                     "TableName": table_name,
-                    "Item": initial_accounts.to_dynamo()
+                    "Item": dirty_accounts.to_dynamo()
                 }
             },
             {
