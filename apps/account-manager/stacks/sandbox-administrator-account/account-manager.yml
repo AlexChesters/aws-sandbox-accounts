@@ -119,7 +119,7 @@ Resources:
               Type: Map
               End: true
               ItemSelector:
-                account_id.$: $$.Map.Item.Value.sk.S
+                account_id.$: $$.Map.Item.Value
               ItemProcessor:
                 ProcessorConfig:
                   Mode: INLINE
