@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+import inquirer
+
 from account_manager_db_client import main
 
 @dataclass
@@ -9,11 +11,24 @@ class LambdaContext:
     invoked_function_arn: str = "arn:aws:lambda:eu-west-1:111111111111:function:aws-sandbox-accounts-account-manager-db-client"
     aws_request_id: str = "52fdfc07-2182-154f-163f-5f0f9a621d72"
 
-event = {
-    "action": "mark_as_dirty",
-    "params": {
-        "account_id": "905418121097"
+events = {
+    "mark_as_dirty": {
+        "action": "mark_as_dirty",
+        "params": {
+            "account_id": "905418121097"
+        }
+    },
+    "fetch_dirty": {
+        "action": "fetch_dirty"
     }
 }
 
-main.handler(event, LambdaContext())
+answers = inquirer.prompt([
+    inquirer.List(
+        name="event",
+        message="Choose an event",
+        choices=list(events.keys())
+    )
+])
+
+print(main.handler(events[answers["event"]], LambdaContext()))

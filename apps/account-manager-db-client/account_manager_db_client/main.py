@@ -4,6 +4,7 @@ from aws_lambda_powertools import Logger, Tracer
 import boto3
 
 from account_manager_db_client.actions.mark_as_dirty import mark_as_dirty
+from account_manager_db_client.actions.fetch_dirty import fetch_dirty
 
 table_name = os.environ["TABLE_NAME"]
 
@@ -23,5 +24,7 @@ def handler(event, _context):
     match action:
         case "mark_as_dirty":
             return mark_as_dirty(event, dynamodb, table_name)
+        case "fetch_dirty":
+            return fetch_dirty(event, dynamodb, table_name)
         case _:
             raise ValueError(f"'action' key value ({action}) provided was not recognised")
