@@ -29,7 +29,7 @@ Resources:
             Statement:
                 - Effect: Allow
                   Action:
-                    - dynamodb:query
+                    - dynamodb:BatchGetItem
                     - dynamodb:PutItem
                     - dynamodb:UpdateItem
                   Resource:
