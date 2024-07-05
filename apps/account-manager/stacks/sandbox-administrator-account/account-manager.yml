@@ -116,7 +116,7 @@ Resources:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
                 Payload:
                   action: fetch_dirty
-              ResultPath: null
+              OutputPath: $.Payload
             # FetchAccounts:
             #   Type: Task
             #   Resource: arn:aws:states:::aws-sdk:dynamodb:query
