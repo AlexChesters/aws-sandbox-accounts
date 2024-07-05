@@ -4,17 +4,14 @@ from boto3.dynamodb.types import TypeDeserializer
 serialiser = TypeSerializer()
 deserialiser = TypeDeserializer()
 
-def serialise(i):
-    if isinstance(i, dict):
-        return {k: serialiser.serialize(v) for k,v in i.items()}
-    elif isinstance(i, list):
-        return [serialiser.serialize(v) for v in i]
+def dynamo_to_python(dynamo_object: dict) -> dict:
+    return {
+        k: deserialiser.deserialize(v)
+        for k, v in dynamo_object.items()
+    }
 
-def deserialise(i):
-    if isinstance(i, dict):
-        return {k: deserialiser.deserialize(v) for k,v in i.items()}
-    elif isinstance(i, list):
-        return [
-            {k: deserialiser.deserialize(v) for k,v in v.items()} if isinstance(v, dict) else deserialiser.deserialize(v)
-            for v in i
-        ]
+def python_to_dynamo(python_object: dict) -> dict:
+    return {
+        k: serialiser.serialize(v)
+        for k, v in python_object.items()
+    }
