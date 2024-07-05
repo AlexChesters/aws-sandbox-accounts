@@ -117,19 +117,6 @@ Resources:
                 Payload:
                   action: fetch_dirty
               OutputPath: $.Payload
-            # FetchAccounts:
-            #   Type: Task
-            #   Resource: arn:aws:states:::aws-sdk:dynamodb:query
-            #   Next: ProcessAccounts
-            #   Parameters:
-            #     TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-            #     KeyConditionExpression: "#pk = :pk"
-            #     ExpressionAttributeNames:
-            #       "#pk": pk
-            #     ExpressionAttributeValues:
-            #       :pk:
-            #         S: account_status#initial
-            #   OutputPath: $.Items
             # ProcessAccounts:
             #   Type: Map
             #   End: true
