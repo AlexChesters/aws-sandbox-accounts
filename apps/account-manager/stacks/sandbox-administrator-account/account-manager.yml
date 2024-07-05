@@ -107,7 +107,7 @@ Resources:
             MarkAccountAsDirty:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
-              End: true
+              Next: FetchDirtyAccounts
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
                 Payload:
