@@ -73,6 +73,21 @@ dynamodb.transact_write_items(
                         ":empty_list": []
                     })
                 }
+            },
+            {
+                "Update": {
+                    "TableName": table_name,
+                    "Key": serialise({
+                        "pk": "account_status#failed"
+                    }),
+                    "UpdateExpression": "SET #data = :empty_list",
+                    "ExpressionAttributeNames": {
+                        "#data": "data"
+                    },
+                    "ExpressionAttributeValues": serialise({
+                        ":empty_list": []
+                    })
+                }
             }
         ]
     )

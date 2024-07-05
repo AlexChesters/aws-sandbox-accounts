@@ -8,13 +8,14 @@ This document covers the single-table design for this system.
 | --------------------------- | ---------------------------------------------------------------------------- |
 | account_id#111111111111     | available                                                                    |
 | account_id#222222222222     | leased                                                                       |
-| account_id#333333333333     | dirty                                                                      |
+| account_id#333333333333     | dirty                                                                        |
 | lease_id#abc123-def456      | {"state": "active", "account": "111111111111", "user": "bill.bob@gmail.com"} |
 | user_id#bill.bob@gmail.com  | {"lease": "abc123-def456", "account": "111111111111" }                       |
 | account_status#all          | [111111111111,222222222222,333333333333]                                     |
 | account_status#available    |                                                                              |
 | account_status#leased       |                                                                              |
-| account_status#dirty      | [222222222222]                                                               |
+| account_status#dirty        | [222222222222]                                                               |
+| account_status#failed       |                                                                              |
 | lease_status#active         | [abc123-def456]                                                              |
 
 ## Access patterns

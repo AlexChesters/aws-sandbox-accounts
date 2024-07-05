@@ -1,7 +1,7 @@
 from account_manager_db_client.utils.db import python_to_dynamo
 from account_manager_db_client.models.account_status import AccountStatus
 
-def mark_as_dirty(event, dynamo_client, table_name):
+def mark_as_available(event, dynamo_client, table_name):
     account_id = event.get("params", {}).get("account_id")
 
     if not account_id:
@@ -40,8 +40,8 @@ def mark_as_dirty(event, dynamo_client, table_name):
     )
 
     all_accounts.accounts.add(account_id)
-    dirty_accounts.accounts.add(account_id)
-    available_accounts.accounts.discard(account_id)
+    available_accounts.accounts.add(account_id)
+    dirty_accounts.accounts.discard(account_id)
     leased_accounts.accounts.discard(account_id)
     failed_accounts.accounts.discard(account_id)
 
