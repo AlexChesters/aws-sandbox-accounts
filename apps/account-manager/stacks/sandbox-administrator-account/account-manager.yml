@@ -92,8 +92,6 @@ Resources:
       # Use DefinitionString rather than Definition so that we can use null values
       DefinitionString:
         Fn::ToJsonString:
-          # TODO: need to handle removing the account ID from states that no longer apply
-          # e.g. if account has been cleaned and is set to "ready", need to remove it from "account_status#leased"
           StartAt: MarkAccountAsDirty
           States:
             # TEMP - force one account to always be in the dirty state for testing purposes
@@ -111,89 +109,58 @@ Resources:
             FetchDirtyAccounts:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
-              End: true
+              Next: ProcessAccounts
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
                 Payload:
                   action: fetch_dirty
               OutputPath: $.Payload
-            # ProcessAccounts:
-            #   Type: Map
-            #   End: true
-            #   ItemSelector:
-            #     account_id.$: $$.Map.Item.Value.sk.S
-            #   ItemProcessor:
-            #     ProcessorConfig:
-            #       Mode: INLINE
-            #     StartAt: AWSNuke
-            #     States:
-            #       AWSNuke:
-            #         Type: Task
-            #         Resource: arn:aws:states:::codebuild:startBuild.sync
-            #         TimeoutSeconds: 900
-            #         Next: MarkAccountAsAvailable
-            #         ResultPath: null
-            #         Parameters:
-            #           ProjectName: !Ref CodeBuildProject
-            #           EnvironmentVariablesOverride:
-            #             - Type: PLAINTEXT
-            #               Name: ACCOUNT_ID
-            #               Value.$: $.account_id
-            #         Catch:
-            #           - ErrorEquals:
-            #               - States.ALL
-            #             Next: MarkAccountAsFailed
-            #             ResultPath: null
-            #       MarkAccountAsFailed:
-            #         Type: Task
-            #         Resource: arn:aws:states:::aws-sdk:dynamodb:transactWriteItems
-            #         End: true
-            #         Parameters:
-            #           TransactItems:
-            #             - Update:
-            #                 TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-            #                 Key:
-            #                   pk:
-            #                     S: account_status#failed
-            #                 UpdateExpression: "SET #data = list_append(#data, :values)"
-            #                 ExpressionAttributeNames:
-            #                   "#data": data
-            #                 ExpressionAttributeValues:
-            #                   ":values":
-            #                     L:
-            #                       - S.$: $.account_id
-            #             - Update:
-            #                 TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-            #                 Key:
-            #                   pk:
-            #                     S.$: States.Format("account_id#{}", $.account_id)
-            #                 UpdateExpression: "SET #data = failed"
-            #                 ExpressionAttributeNames:
-            #                   "#data": data
-            #       MarkAccountAsAvailable:
-            #         Type: Task
-            #         Resource: arn:aws:states:::aws-sdk:dynamodb:transactWriteItems
-            #         End: true
-            #         Parameters:
-            #           TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-            #           TransactItems:
-            #             - Update:
-            #                 TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-            #                 Key:
-            #                   pk:
-            #                     S: account_status#available
-            #                 UpdateExpression: "SET #data = list_append(#data, :values)"
-            #                 ExpressionAttributeNames:
-            #                   "#data": data
-            #                 ExpressionAttributeValues:
-            #                   ":values":
-            #                     L:
-            #                       - S.$: $.account_id
-            #             - Update:
-            #                 TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
-            #                 Key:
-            #                   pk:
-            #                     S.$: States.Format("account_id#{}", $.account_id)
-            #                 UpdateExpression: "SET #data = available"
-            #                 ExpressionAttributeNames:
-            #                   "#data": data
+            ProcessAccounts:
+              Type: Map
+              End: true
+              ItemSelector:
+                account_id.$: $$.Map.Item.Value.sk.S
+              ItemProcessor:
+                ProcessorConfig:
+                  Mode: INLINE
+                StartAt: AWSNuke
+                States:
+                  AWSNuke:
+                    Type: Task
+                    Resource: arn:aws:states:::codebuild:startBuild.sync
+                    TimeoutSeconds: 900
+                    Next: MarkAccountAsAvailable
+                    ResultPath: null
+                    Parameters:
+                      ProjectName: !Ref CodeBuildProject
+                      EnvironmentVariablesOverride:
+                        - Type: PLAINTEXT
+                          Name: ACCOUNT_ID
+                          Value.$: $.account_id
+                    Catch:
+                      - ErrorEquals:
+                          - States.ALL
+                        Next: MarkAccountAsFailed
+                        ResultPath: null
+                  MarkAccountAsAvailable:
+                    Type: Task
+                    Resource: arn:aws:states:::lambda:invoke
+                    End: true
+                    Parameters:
+                      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
+                      Payload:
+                        action: mark_as_available
+                        params:
+                          account_id.$: $.account_id
+                    ResultPath: null
+                  MarkAccountAsFailed:
+                    Type: Task
+                    Resource: arn:aws:states:::lambda:invoke
+                    End: true
+                    Parameters:
+                      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
+                      Payload:
+                        action: mark_as_failed
+                        params:
+                          account_id.$: $.account_id
+                    ResultPath: null
