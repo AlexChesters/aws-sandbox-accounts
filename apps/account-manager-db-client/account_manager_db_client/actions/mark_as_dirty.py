@@ -1,9 +1,5 @@
-from aws_lambda_powertools import Logger
-
 from account_manager_db_client.utils.db import python_to_dynamo
 from account_manager_db_client.models.account_status import AccountStatus
-
-logger = Logger()
 
 def mark_as_dirty(event, dynamo_client, table_name):
     account_id = event.get("params", {}).get("account_id")
