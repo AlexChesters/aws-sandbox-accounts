@@ -22,12 +22,9 @@ test: install
 prod_requirements:
 	poetry export -f requirements.txt --output requirements.prod.txt --only main
 
-package: clean install test
+run:
 	( \
-			export PATH="${HOME}/.poetry/bin:${PATH}" && \
-			export VENV_PATH=$(poetry env info -p) && \
-			poetry install --only main && \
-			mkdir build && \
-			cp -R ${VENV_PATH}/lib/python3.*/site-packages/* build/ && \
-			cp -R account_manager_db_client/ build/ \
+		export TABLE_NAME=test-aws-sandbox-accounts-account-pool && \
+		export AWS_PROFILE=sandbox-administrator && \
+		poetry run python run.py \
 	)
