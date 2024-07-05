@@ -114,7 +114,7 @@ Resources:
                   action: mark_as_initial
                   params:
                     account_id: "905418121097"
-              OutputPath: $.Payload
+              ResultPath: null
             # FetchAccounts:
             #   Type: Task
             #   Resource: arn:aws:states:::aws-sdk:dynamodb:query
