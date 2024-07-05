@@ -72,3 +72,7 @@ def mark_as_initial(event, dynamo_client, table_name):
             }
         ]
     )
+
+    return {
+        "account_id": account_id
+    }
