@@ -34,7 +34,6 @@ Resources:
     Properties:
       Artifacts:
         Type: NO_ARTIFACTS
-      TimeoutInMinutes: 10
       Description: runs aws-nuke against sandbox accounts
       Environment:
         ComputeType: BUILD_LAMBDA_1GB
