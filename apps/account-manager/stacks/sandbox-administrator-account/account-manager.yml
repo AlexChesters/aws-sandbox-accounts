@@ -37,9 +37,10 @@ Resources:
       TimeoutInMinutes: 10
       Description: runs aws-nuke against sandbox accounts
       Environment:
-        ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:7.0
-        Type: LINUX_CONTAINER
+        ComputeType: BUILD_LAMBDA_1GB
+        Image: aws/codebuild/amazonlinux-aarch64-lambda-standard:python3.11
+        ImagePullCredentialsType: CODEBUILD
+        Type: ARM_LAMBDA_CONTAINER
       Name: !Sub "${Environment}-aws-sandbox-accounts-aws-nuke"
       ServiceRole: !GetAtt CodeBuildRole.Arn
       LogsConfig:
