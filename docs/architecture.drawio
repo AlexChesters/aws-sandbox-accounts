@@ -1,75 +1,102 @@
-<mxfile host="65bd71144e" pages="3">
-    <diagram id="B1KuuGIifPB8SjU8mdga" name="administration roles">
-        <mxGraphModel dx="577" dy="646" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" math="0" shadow="0">
-            <root>
-                <mxCell id="0"/>
-                <mxCell id="1" parent="0"/>
-                <mxCell id="bLqyYuDE-V_wmOfBJ_jN-1" value="Management account" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_account;strokeColor=#CD2264;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#CD2264;dashed=0;" parent="1" vertex="1">
-                    <mxGeometry x="40" y="40" width="280" height="280" as="geometry"/>
-                </mxCell>
-                <mxCell id="_jdkFZHDqVJoTobeyL_Q-2" value="StackSet" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.stack_aws_cloudformation;fillColor=#759C3E;gradientColor=none;" parent="bLqyYuDE-V_wmOfBJ_jN-1" vertex="1">
-                    <mxGeometry x="103.25" y="110.75" width="73.5" height="58.5" as="geometry"/>
-                </mxCell>
-                <mxCell id="_jdkFZHDqVJoTobeyL_Q-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="_jdkFZHDqVJoTobeyL_Q-2" target="_jdkFZHDqVJoTobeyL_Q-5" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="217" y="180" as="sourcePoint"/>
-                        <mxPoint x="683" y="180" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="_jdkFZHDqVJoTobeyL_Q-5" value="Sandbox Accounts OU" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.organizations_organizational_unit2;" parent="1" vertex="1">
-                    <mxGeometry x="410" y="141" width="78" height="78" as="geometry"/>
-                </mxCell>
-            </root>
-        </mxGraphModel>
-    </diagram>
-    <diagram name="pool management" id="JLtX0EM6AOvfy-EA8JGJ">
-        <mxGraphModel dx="577" dy="646" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
-            <root>
-                <mxCell id="0"/>
-                <mxCell id="1" parent="0"/>
-                <mxCell id="UYsE7TLEuGmJ79ljIpVD-2" value="Sandbox Administrator" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_account;strokeColor=#CD2264;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#CD2264;dashed=0;" parent="1" vertex="1">
-                    <mxGeometry x="360" y="160" width="320" height="320" as="geometry"/>
-                </mxCell>
-                <mxCell id="UYsE7TLEuGmJ79ljIpVD-4" value="Table" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.dynamo_db;fillColor=#2E73B8;gradientColor=none;" parent="UYsE7TLEuGmJ79ljIpVD-2" vertex="1">
-                    <mxGeometry x="124" y="119.5" width="72" height="81" as="geometry"/>
-                </mxCell>
-                <mxCell id="UYsE7TLEuGmJ79ljIpVD-5" value="CLI" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
-                    <mxGeometry x="110" y="290" width="30" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="UYsE7TLEuGmJ79ljIpVD-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="UYsE7TLEuGmJ79ljIpVD-5" target="UYsE7TLEuGmJ79ljIpVD-4" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="450" y="320" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="UYsE7TLEuGmJ79ljIpVD-8" value="add account to pool&lt;br&gt;remove account to pool&lt;br&gt;etc" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="UYsE7TLEuGmJ79ljIpVD-7" vertex="1" connectable="0">
-                    <mxGeometry x="-0.1453" relative="1" as="geometry">
-                        <mxPoint x="-18" as="offset"/>
-                    </mxGeometry>
-                </mxCell>
-            </root>
-        </mxGraphModel>
-    </diagram>
-    <diagram id="qgh3V0aR0ctFgnyB9VMd" name="account management">
-        <mxGraphModel dx="577" dy="646" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" math="0" shadow="0">
-            <root>
-                <mxCell id="0"/>
-                <mxCell id="1" parent="0"/>
-                <mxCell id="xiPUDNDoy7sK3CmNEcs3-12" value="Sandbox Administrator" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_account;strokeColor=#CD2264;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#CD2264;dashed=0;" parent="1" vertex="1">
-                    <mxGeometry x="80" y="60" width="420" height="540" as="geometry"/>
-                </mxCell>
-                <mxCell id="xiPUDNDoy7sK3CmNEcs3-13" value="Step Function" style="sketch=0;outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_aws_step_functions_workflow;strokeColor=#545B64;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#545B64;dashed=0;" parent="xiPUDNDoy7sK3CmNEcs3-12" vertex="1">
-                    <mxGeometry x="10" y="140" width="380" height="374" as="geometry"/>
-                </mxCell>
-                <mxCell id="xiPUDNDoy7sK3CmNEcs3-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.44;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" parent="xiPUDNDoy7sK3CmNEcs3-12" source="xiPUDNDoy7sK3CmNEcs3-20" target="xiPUDNDoy7sK3CmNEcs3-13" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="xiPUDNDoy7sK3CmNEcs3-20" value="Event Bridge Scheduler" style="outlineConnect=0;dashed=0;verticalLabelPosition=middle;verticalAlign=middle;align=left;html=1;shape=mxgraph.aws3.event_time_based;fillColor=#759C3E;gradientColor=none;labelPosition=right;" parent="xiPUDNDoy7sK3CmNEcs3-12" vertex="1">
-                    <mxGeometry x="171.5" y="20" width="63" height="82.5" as="geometry"/>
-                </mxCell>
-                <mxCell id="BydllppoLm-Prv5IfJ5X-34" value="1. Query DB to fetch accounts (e.g. those that are dirty, those pending reset etc)&lt;br&gt;2. Run aws-nuke against accounts&lt;br&gt;3. Update status of accounts in DB" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="xiPUDNDoy7sK3CmNEcs3-12" vertex="1">
-                    <mxGeometry x="20" y="180" width="360" height="320" as="geometry"/>
-                </mxCell>
-            </root>
-        </mxGraphModel>
-    </diagram>
+<mxfile host="Electron" modified="2024-07-06T18:24:40.473Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" version="22.0.3" etag="uy1JbRwuWJne_QlcEh3p" type="device" pages="4">
+  <diagram id="B1KuuGIifPB8SjU8mdga" name="administration roles">
+    <mxGraphModel dx="1242" dy="878" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="bLqyYuDE-V_wmOfBJ_jN-1" value="Management account" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_account;strokeColor=#CD2264;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#CD2264;dashed=0;" parent="1" vertex="1">
+          <mxGeometry x="40" y="40" width="280" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="_jdkFZHDqVJoTobeyL_Q-2" value="StackSet" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.stack_aws_cloudformation;fillColor=#759C3E;gradientColor=none;" parent="bLqyYuDE-V_wmOfBJ_jN-1" vertex="1">
+          <mxGeometry x="103.25" y="110.75" width="73.5" height="58.5" as="geometry" />
+        </mxCell>
+        <mxCell id="_jdkFZHDqVJoTobeyL_Q-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="_jdkFZHDqVJoTobeyL_Q-2" target="_jdkFZHDqVJoTobeyL_Q-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="217" y="180" as="sourcePoint" />
+            <mxPoint x="683" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_jdkFZHDqVJoTobeyL_Q-5" value="Sandbox Accounts OU" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.organizations_organizational_unit2;" parent="1" vertex="1">
+          <mxGeometry x="410" y="141" width="78" height="78" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="pool management" id="JLtX0EM6AOvfy-EA8JGJ">
+    <mxGraphModel dx="1242" dy="878" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="UYsE7TLEuGmJ79ljIpVD-2" value="Sandbox Administrator" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_account;strokeColor=#CD2264;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#CD2264;dashed=0;" parent="1" vertex="1">
+          <mxGeometry x="360" y="160" width="320" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="UYsE7TLEuGmJ79ljIpVD-4" value="Table" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.dynamo_db;fillColor=#2E73B8;gradientColor=none;" parent="UYsE7TLEuGmJ79ljIpVD-2" vertex="1">
+          <mxGeometry x="124" y="119.5" width="72" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="UYsE7TLEuGmJ79ljIpVD-5" value="CLI" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+          <mxGeometry x="110" y="290" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UYsE7TLEuGmJ79ljIpVD-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="UYsE7TLEuGmJ79ljIpVD-5" target="UYsE7TLEuGmJ79ljIpVD-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="450" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UYsE7TLEuGmJ79ljIpVD-8" value="add account to pool&lt;br&gt;remove account to pool&lt;br&gt;etc" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="UYsE7TLEuGmJ79ljIpVD-7" vertex="1" connectable="0">
+          <mxGeometry x="-0.1453" relative="1" as="geometry">
+            <mxPoint x="-18" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="lease management" id="7cU7lLvh37A2gzxajjCm">
+    <mxGraphModel dx="1242" dy="878" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="rvAV48fMO8euJeaUymwR-0" />
+        <mxCell id="rvAV48fMO8euJeaUymwR-1" parent="rvAV48fMO8euJeaUymwR-0" />
+        <mxCell id="rvAV48fMO8euJeaUymwR-2" value="Sandbox Administrator" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_account;strokeColor=#CD2264;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#CD2264;dashed=0;" vertex="1" parent="rvAV48fMO8euJeaUymwR-1">
+          <mxGeometry x="360" y="160" width="320" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="rvAV48fMO8euJeaUymwR-3" value="Table" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.dynamo_db;fillColor=#2E73B8;gradientColor=none;" vertex="1" parent="rvAV48fMO8euJeaUymwR-2">
+          <mxGeometry x="124" y="119.5" width="72" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="rvAV48fMO8euJeaUymwR-4" value="CLI" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="rvAV48fMO8euJeaUymwR-1">
+          <mxGeometry x="110" y="290" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rvAV48fMO8euJeaUymwR-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="rvAV48fMO8euJeaUymwR-1" source="rvAV48fMO8euJeaUymwR-4" target="rvAV48fMO8euJeaUymwR-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="450" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rvAV48fMO8euJeaUymwR-6" value="create lease&lt;br&gt;revoke lease&lt;br&gt;etc" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="rvAV48fMO8euJeaUymwR-5">
+          <mxGeometry x="-0.1453" relative="1" as="geometry">
+            <mxPoint x="-18" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="qgh3V0aR0ctFgnyB9VMd" name="account management">
+    <mxGraphModel dx="1242" dy="878" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="xiPUDNDoy7sK3CmNEcs3-12" value="Sandbox Administrator" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_account;strokeColor=#CD2264;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#CD2264;dashed=0;" parent="1" vertex="1">
+          <mxGeometry x="80" y="60" width="420" height="540" as="geometry" />
+        </mxCell>
+        <mxCell id="xiPUDNDoy7sK3CmNEcs3-13" value="Step Function" style="sketch=0;outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_aws_step_functions_workflow;strokeColor=#545B64;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#545B64;dashed=0;" parent="xiPUDNDoy7sK3CmNEcs3-12" vertex="1">
+          <mxGeometry x="10" y="140" width="380" height="374" as="geometry" />
+        </mxCell>
+        <mxCell id="xiPUDNDoy7sK3CmNEcs3-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.44;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" parent="xiPUDNDoy7sK3CmNEcs3-12" source="xiPUDNDoy7sK3CmNEcs3-20" target="xiPUDNDoy7sK3CmNEcs3-13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xiPUDNDoy7sK3CmNEcs3-20" value="Event Bridge Scheduler" style="outlineConnect=0;dashed=0;verticalLabelPosition=middle;verticalAlign=middle;align=left;html=1;shape=mxgraph.aws3.event_time_based;fillColor=#759C3E;gradientColor=none;labelPosition=right;" parent="xiPUDNDoy7sK3CmNEcs3-12" vertex="1">
+          <mxGeometry x="171.5" y="20" width="63" height="82.5" as="geometry" />
+        </mxCell>
+        <mxCell id="BydllppoLm-Prv5IfJ5X-34" value="1. Query DB to fetch accounts (e.g. those that are dirty, those pending reset etc)&lt;br&gt;2. Run aws-nuke against accounts&lt;br&gt;3. Update status of accounts in DB" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="xiPUDNDoy7sK3CmNEcs3-12" vertex="1">
+          <mxGeometry x="20" y="180" width="360" height="320" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
 </mxfile>
