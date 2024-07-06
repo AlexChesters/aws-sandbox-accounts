@@ -10,46 +10,6 @@ Parameters:
       - test
       - live
 Resources:
-  CodeBuildRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-          - Action: sts:AssumeRole
-            Effect: Allow
-            Principal:
-              Service: codebuild.amazonaws.com
-      ManagedPolicyArns:
-        - !ImportValue ci-infrastructure-codebuild-base-iam-policy
-      RoleName: !Sub "${Environment}-aws-sandbox-accounts-aws-nuke"
-  CodeBuildProjectLogGroup:
-    Type: AWS::Logs::LogGroup
-    UpdateReplacePolicy: Delete
-    DeletionPolicy: Delete
-    Properties:
-      LogGroupName: !Sub "${Environment}-aws-sandbox-accounts-aws-nuke"
-      RetentionInDays: 30
-  CodeBuildProject:
-    Type: AWS::CodeBuild::Project
-    Properties:
-      Artifacts:
-        Type: NO_ARTIFACTS
-      Description: runs aws-nuke against sandbox accounts
-      Environment:
-        ComputeType: BUILD_LAMBDA_1GB
-        Image: aws/codebuild/amazonlinux-aarch64-lambda-standard:python3.11
-        ImagePullCredentialsType: CODEBUILD
-        Type: ARM_LAMBDA_CONTAINER
-      Name: !Sub "${Environment}-aws-sandbox-accounts-aws-nuke"
-      ServiceRole: !GetAtt CodeBuildRole.Arn
-      LogsConfig:
-        CloudWatchLogs:
-          GroupName: !Ref CodeBuildProjectLogGroup
-          Status: ENABLED
-      Source:
-        Type: GITHUB
-        Location: https://github.com/AlexChesters/aws-sandbox-accounts.git
-        BuildSpec: apps/account-manager/buildspec.yml
   StateMachineRole:
     Type: AWS::IAM::Role
     Properties:
@@ -65,20 +25,6 @@ Resources:
           PolicyDocument:
             Version: 2012-10-17
             Statement:
-                - Effect: Allow
-                  Action:
-                    - codebuild:StartBuild
-                    - codebuild:StopBuild
-                    - codebuild:BatchGetBuilds
-                  Resource:
-                    - !GetAtt CodeBuildProject.Arn
-                - Effect: Allow
-                  Action:
-                  - events:PutTargets
-                  - events:PutRule
-                  - events:DescribeRule
-                  Resource:
-                  - !Sub "arn:${AWS::Partition}:events:${AWS::Region}:${AWS::AccountId}:rule/StepFunctionsGetEventForCodeBuildStartBuildRule"
                 - Effect: Allow
                   Action:
                   - lambda:InvokeFunction
@@ -109,58 +55,9 @@ Resources:
             FetchDirtyAccounts:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
-              Next: ProcessAccounts
+              End: true
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
                 Payload:
                   action: fetch_dirty
               OutputPath: $.Payload
-            ProcessAccounts:
-              Type: Map
-              End: true
-              ItemSelector:
-                account_id.$: $$.Map.Item.Value
-              ItemProcessor:
-                ProcessorConfig:
-                  Mode: INLINE
-                StartAt: AWSNuke
-                States:
-                  AWSNuke:
-                    Type: Task
-                    Resource: arn:aws:states:::codebuild:startBuild.sync
-                    TimeoutSeconds: 900
-                    Next: MarkAccountAsAvailable
-                    ResultPath: null
-                    Parameters:
-                      ProjectName: !Ref CodeBuildProject
-                      EnvironmentVariablesOverride:
-                        - Type: PLAINTEXT
-                          Name: ACCOUNT_ID
-                          Value.$: $.account_id
-                    Catch:
-                      - ErrorEquals:
-                          - States.ALL
-                        Next: MarkAccountAsFailed
-                        ResultPath: null
-                  MarkAccountAsAvailable:
-                    Type: Task
-                    Resource: arn:aws:states:::lambda:invoke
-                    End: true
-                    Parameters:
-                      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
-                      Payload:
-                        action: mark_as_available
-                        params:
-                          account_id.$: $.account_id
-                    ResultPath: null
-                  MarkAccountAsFailed:
-                    Type: Task
-                    Resource: arn:aws:states:::lambda:invoke
-                    End: true
-                    Parameters:
-                      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
-                      Payload:
-                        action: mark_as_failed
-                        params:
-                          account_id.$: $.account_id
-                    ResultPath: null

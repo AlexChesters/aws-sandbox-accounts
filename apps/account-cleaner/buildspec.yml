@@ -1,0 +1,12 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - cd apps/account-manager
+      - curl --location "https://github.com/rebuy-de/aws-nuke/releases/download/v2.25.0/aws-nuke-v2.25.0-linux-arm64.tar.gz" -o aws-nuke.tar.gz
+      - tar -xvf aws-nuke.tar.gz
+      - echo "running aws-nuke against $ACCOUNT_ID"
+      - # TODO: validate against list of known sandbox accounts, either here or in the step function itself
+      - sed "s/REPLACE_ME/$ACCOUNT_ID/g" aws-nuke.template.yml > aws-nuke.yml
+      - ./aws-nuke-v2.25.0-linux-arm64 --no-dry-run --config aws-nuke.yml --assume-role-arn "arn:aws:iam::$ACCOUNT_ID:role/aws-sandbox-accounts-aws-nuke" --force --force-sleep 3
