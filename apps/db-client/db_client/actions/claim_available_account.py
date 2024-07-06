@@ -26,6 +26,9 @@ def claim_available_account(_event, dynamo_client, table_name):
 
     available_account.accounts = set(accounts)
 
-    # TODO: write record back to db
+    dynamo_client.put_item(
+        TableName=table_name,
+        Item=available_account.to_dynamo()
+    )
 
     return claimed_account
