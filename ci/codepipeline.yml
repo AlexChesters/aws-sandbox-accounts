@@ -173,14 +173,14 @@ Resources:
               InputArtifacts:
                 - Name: BuiltSource
               RunOrder: 1
-              Name: Account-Manager-DB-Client
+              Name: DB-Client
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: test-aws-sandbox-accounts-account-manager-db-client
+                StackName: test-aws-sandbox-accounts-db-client
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
-                TemplateConfiguration: BuiltSource::apps/account-manager-db-client/stacks/sandbox-administrator-account/parameters/account-manager-db-client/test.json
+                TemplatePath: BuiltSource::apps/db-client/stacks/sandbox-administrator-account/db-client.yml
+                TemplateConfiguration: BuiltSource::apps/db-client/stacks/sandbox-administrator-account/parameters/db-client/test.json
         - Name: Deploy-Common-Resources-To-Live
           Actions:
             - ActionTypeId:
@@ -241,11 +241,11 @@ Resources:
               InputArtifacts:
                 - Name: BuiltSource
               RunOrder: 1
-              Name: Account-Manager-DB-Client
+              Name: DB-Client
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: live-aws-sandbox-accounts-account-manager-db-client
+                StackName: live-aws-sandbox-accounts-db-client
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/account-manager-db-client/stacks/sandbox-administrator-account/account-manager-db-client.yml
-                TemplateConfiguration: BuiltSource::apps/account-manager-db-client/stacks/sandbox-administrator-account/parameters/account-manager-db-client/live.json
+                TemplatePath: BuiltSource::apps/db-client/stacks/sandbox-administrator-account/db-client.yml
+                TemplateConfiguration: BuiltSource::apps/db-client/stacks/sandbox-administrator-account/parameters/db-client/live.json

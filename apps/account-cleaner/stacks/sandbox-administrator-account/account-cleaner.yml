@@ -83,7 +83,7 @@ Resources:
                   Action:
                   - lambda:InvokeFunction
                   Resource:
-                  - !Sub "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${Environment}-aws-sandbox-accounts-account-manager-db-client"
+                  - !Sub "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${Environment}-aws-sandbox-accounts-db-client"
   StateMachine:
     Type: AWS::StepFunctions::StateMachine
     Properties:
@@ -126,7 +126,7 @@ Resources:
                     Resource: arn:aws:states:::lambda:invoke
                     End: true
                     Parameters:
-                      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
+                      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
                       Payload:
                         action: mark_as_available
                         params:
@@ -137,7 +137,7 @@ Resources:
                     Resource: arn:aws:states:::lambda:invoke
                     Next: Fail
                     Parameters:
-                      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
+                      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
                       Payload:
                         action: mark_as_failed
                         params:

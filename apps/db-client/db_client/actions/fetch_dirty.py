@@ -1,7 +1,7 @@
 from aws_lambda_powertools import Logger
 
-from account_manager_db_client.utils.db import python_to_dynamo
-from account_manager_db_client.models.account_status import AccountStatus
+from db_client.utils.db import python_to_dynamo
+from db_client.models.account_status import AccountStatus
 
 logger = Logger()
 

@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "account-manager-db-client"
+name = "db-client"
 version = "0.1.0"
-description = "DB client for account-manager"
+description = "DB client for aws-sandbox-accounts"
 authors = ["Alex Chesters <alex@cheste.rs>"]
 license = "MIT"
 

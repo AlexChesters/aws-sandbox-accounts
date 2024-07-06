@@ -1,5 +1,5 @@
 Transform: AWS::Serverless-2016-10-31
-Description: Infrastructure for aws-sandbox-accounts account-manager-db-client
+Description: Infrastructure for aws-sandbox-accounts db-client
 Parameters:
   Environment:
     Description: The infrastructure environment
@@ -21,7 +21,7 @@ Resources:
               - sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-      RoleName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
+      RoleName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
       Policies:
         - PolicyName: state-machine-policy
           PolicyDocument:
@@ -38,11 +38,11 @@ Resources:
   Function:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: account_manager_db_client.main.handler
+      Handler: db_client.main.handler
       Runtime: python3.11
       CodeUri: ../../build
       Role: !GetAtt FunctionExecutionRole.Arn
-      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
+      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
       MemorySize: 256
       Timeout: 120
       Tracing: Active

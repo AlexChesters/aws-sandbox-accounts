@@ -3,10 +3,10 @@ import os
 from aws_lambda_powertools import Logger, Tracer
 import boto3
 
-from account_manager_db_client.actions.mark_as_dirty import mark_as_dirty
-from account_manager_db_client.actions.fetch_dirty import fetch_dirty
-from account_manager_db_client.actions.mark_as_available import mark_as_available
-from account_manager_db_client.actions.mark_as_failed import mark_as_failed
+from db_client.actions.mark_as_dirty import mark_as_dirty
+from db_client.actions.fetch_dirty import fetch_dirty
+from db_client.actions.mark_as_available import mark_as_available
+from db_client.actions.mark_as_failed import mark_as_failed
 
 table_name = os.environ["TABLE_NAME"]
 

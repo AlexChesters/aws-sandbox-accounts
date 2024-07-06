@@ -1,4 +1,4 @@
-from account_manager_db_client.utils.db import dynamo_to_python, python_to_dynamo
+from db_client.utils.db import dynamo_to_python, python_to_dynamo
 
 class AccountStatus:
     def __init__(self, dynamo_data) -> None:
