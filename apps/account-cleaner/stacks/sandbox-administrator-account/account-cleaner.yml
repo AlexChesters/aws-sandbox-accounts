@@ -135,7 +135,7 @@ Resources:
                   MarkAccountAsFailed:
                     Type: Task
                     Resource: arn:aws:states:::lambda:invoke
-                    End: true
+                    Next: Fail
                     Parameters:
                       FunctionName: !Sub "${Environment}-aws-sandbox-accounts-account-manager-db-client"
                       Payload:
@@ -143,3 +143,5 @@ Resources:
                         params:
                           account_id.$: $.account_id
                     ResultPath: null
+            Fail:
+              Type: Fail
