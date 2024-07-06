@@ -173,6 +173,22 @@ Resources:
               InputArtifacts:
                 - Name: BuiltSource
               RunOrder: 1
+              Name: Lease-Manager
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-lease-manager
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuiltSource::apps/lease-manager/stacks/sandbox-administrator-account/lease-manager.yml
+                TemplateConfiguration: BuiltSource::apps/lease-manager/stacks/sandbox-administrator-account/parameters/lease-manager/test.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuiltSource
+              RunOrder: 1
               Name: DB-Client
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
@@ -233,6 +249,22 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/account-manager.yml
                 TemplateConfiguration: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/parameters/account-manager/live.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuiltSource
+              RunOrder: 1
+              Name: Lease-Manager
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-lease-manager
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuiltSource::apps/lease-manager/stacks/sandbox-administrator-account/lease-manager.yml
+                TemplateConfiguration: BuiltSource::apps/lease-manager/stacks/sandbox-administrator-account/parameters/lease-manager/live.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
