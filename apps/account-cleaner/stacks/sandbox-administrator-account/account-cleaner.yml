@@ -143,6 +143,5 @@ Resources:
                         params:
                           account_id.$: $.account_id
                     ResultPath: null
-            Fail:
-              Type: Fail
-              End: true
+                  Fail:
+                    Type: Fail
