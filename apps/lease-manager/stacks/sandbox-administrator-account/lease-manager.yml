@@ -69,9 +69,16 @@ Resources:
             ClaimAvailableAccount:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
-              End: true
+              Next: CleanAccount
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
                 Payload:
                   action: claim_available_account
               OutputPath: $.Payload
+            CleanAccount:
+              Type: Task
+              Resource: arn:aws:states:::states:startExecution.sync:2
+              End: true
+              Parameters:
+                StateMachineArn: !Sub "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${Environment}-aws-sandbox-accounts-account-cleaner"
+                Input.$: States.Array($)
