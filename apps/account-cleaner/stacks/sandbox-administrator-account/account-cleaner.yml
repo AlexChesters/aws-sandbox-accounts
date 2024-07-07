@@ -97,6 +97,7 @@ Resources:
             ProcessAccounts:
               Type: Map
               End: true
+              InputPath: $.accounts
               ItemSelector:
                 account_id.$: $$.Map.Item.Value
               ItemProcessor:
