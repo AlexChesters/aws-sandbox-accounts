@@ -83,3 +83,4 @@ Resources:
                 StateMachineArn: !Sub "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${Environment}-aws-sandbox-accounts-account-cleaner"
                 Input:
                   accounts.$: States.Array($)
+                  mark_as_available: false
