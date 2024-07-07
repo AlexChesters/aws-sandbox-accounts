@@ -121,6 +121,15 @@ Resources:
                           - States.ALL
                         Next: MarkAccountAsFailed
                         ResultPath: null
+                  MarkAccountAsAvailableChoice:
+                    Type: Choice
+                    Choices:
+                      - Variable: $$.Execution.Input.mark_as_available
+                        BooleanEquals: false
+                        Next: Success
+                    Default: MarkAccountAsAvailable
+                  Success:
+                    Type: Succeed
                   MarkAccountAsAvailable:
                     Type: Task
                     Resource: arn:aws:states:::lambda:invoke
