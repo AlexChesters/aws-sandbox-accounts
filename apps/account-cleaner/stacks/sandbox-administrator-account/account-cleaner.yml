@@ -109,7 +109,7 @@ Resources:
                     Type: Task
                     Resource: arn:aws:states:::codebuild:startBuild.sync
                     TimeoutSeconds: 900
-                    Next: MarkAccountAsAvailable
+                    Next: MarkAccountAsAvailableChoice
                     ResultPath: null
                     Parameters:
                       ProjectName: !Ref CodeBuildProject
