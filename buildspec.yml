@@ -11,7 +11,7 @@ phases:
       - cp -R deps/* build/
       - cp -R db_client/ build/
       - aws cloudformation package --template-file stacks/sandbox-administrator-account/db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/db-client --output-template-file stacks/sandbox-administrator-account/db-client.yml
-      - cd ..
+      - cd ../..
       # auth-client
       - cd apps/auth-client
       # TODO: run tests (will need to handle installing dev dependencies)
@@ -20,6 +20,6 @@ phases:
       - cp -R deps/* build/
       - cp -R auth_client/ build/
       - aws cloudformation package --template-file stacks/sandbox-administrator-account/auth-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/auth-client --output-template-file stacks/sandbox-administrator-account/auth-client.yml
-      - cd ..
+      - cd ../..
 artifacts:
   files: "**/*"
