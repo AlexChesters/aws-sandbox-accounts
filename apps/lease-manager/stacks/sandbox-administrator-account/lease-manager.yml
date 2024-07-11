@@ -104,6 +104,14 @@ Resources:
               End: true
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-auth-client"
+                # TODO: figure out a better way to do this, currently resulting payload is
+                # {
+                #   "action": "create_lease",
+                #   "user_id": "028534f4-60a1-70cc-05fe-5cc39d8c3520",
+                #   "account_id": {
+                #     "account_id": "905418121097"
+                #   }
+                # }
                 Payload:
                   action: create_lease
                   account_id.$: States.ArrayGetItem($, 0)
