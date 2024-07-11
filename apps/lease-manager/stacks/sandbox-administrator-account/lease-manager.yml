@@ -65,8 +65,20 @@ Resources:
       # Use DefinitionString rather than Definition so that we can use null values
       DefinitionString:
         Fn::ToJsonString:
-          StartAt: ClaimAvailableAccount
+          StartAt: MarkAccountAsAvailable
           States:
+            # TEMP - force at least one account to always be in the available state for testing purposes
+            MarkAccountAsAvailable:
+              Type: Task
+              Resource: arn:aws:states:::lambda:invoke
+              Next: ClaimAvailableAccount
+              Parameters:
+                FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
+                Payload:
+                  action: mark_as_available
+                  params:
+                    account_id: "905418121097"
+              ResultPath: null
             ClaimAvailableAccount:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
