@@ -103,7 +103,6 @@ Resources:
               Next: CreateLease
               Result:
                 account_id.$: States.ArrayGetItem($, 0)
-              OutputPath: $.account_id
             CreateLease:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
