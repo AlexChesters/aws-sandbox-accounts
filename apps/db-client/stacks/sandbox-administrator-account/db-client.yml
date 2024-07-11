@@ -23,7 +23,7 @@ Resources:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
       RoleName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
       Policies:
-        - PolicyName: state-machine-policy
+        - PolicyName: lambda-policy
           PolicyDocument:
             Version: 2012-10-17
             Statement:
