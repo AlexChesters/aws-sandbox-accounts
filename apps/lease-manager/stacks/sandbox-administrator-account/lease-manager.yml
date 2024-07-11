@@ -30,6 +30,7 @@ Resources:
                   - lambda:InvokeFunction
                   Resource:
                   - !Sub "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${Environment}-aws-sandbox-accounts-db-client"
+                  - !Sub "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${Environment}-aws-sandbox-accounts-auth-client"
                 - Effect: Allow
                   Action:
                   - events:PutTargets
@@ -78,9 +79,28 @@ Resources:
             CleanAccount:
               Type: Task
               Resource: arn:aws:states:::states:startExecution.sync:2
-              End: true
+              Next: FlattenOutput
               Parameters:
                 StateMachineArn: !Sub "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${Environment}-aws-sandbox-accounts-account-cleaner"
                 Input:
                   accounts.$: States.Array($)
                   mark_as_available: false
+              OutputPath: $.Output
+            FlattenOutput:
+              Type: Pass
+              Next: CreateLease
+              Result:
+                account_id.$: States.ArrayGetItem($, 0)
+              OutputPath: $.account_id
+            CreateLease:
+              Type: Task
+              Resource: arn:aws:states:::lambda:invoke
+              End: true
+              Parameters:
+                FunctionName: !Sub "${Environment}-aws-sandbox-accounts-auth-client"
+                Payload:
+                  action: create_lease
+                  # account_id.$: $
+                  # TEMP: hardcode some values for testing purposes
+                  user_id: 028534f4-60a1-70cc-05fe-5cc39d8c3520
+              OutputPath: $.Payload
