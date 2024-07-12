@@ -3,9 +3,10 @@ from aws_lambda_powertools import Logger
 logger = Logger()
 
 def remove_lease(event, sso_client):
-    account_id = event["account_id"]
-    user_id = event["user_id"]
-    lease_id = event["lease_id"]
+    params = event["params"]
+    account_id = params["account_id"]
+    user_id = params["user_id"]
+    lease_id = params["lease_id"]
 
     response = sso_client.delete_account_assignment(
         InstanceArn="arn:aws:sso:::instance/ssoins-680483867be3e0a4",

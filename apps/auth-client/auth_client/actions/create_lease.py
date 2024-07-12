@@ -5,8 +5,9 @@ from aws_lambda_powertools import Logger
 logger = Logger()
 
 def create_lease(event, sso_client):
-    account_id = event["account"]["account_id"]
-    user_id = event["user_id"]
+    params = event["params"]
+    account_id = params["account"]["account_id"]
+    user_id = params["user_id"]
 
     response = sso_client.create_account_assignment(
         InstanceArn="arn:aws:sso:::instance/ssoins-680483867be3e0a4",

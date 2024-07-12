@@ -106,9 +106,10 @@ Resources:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-auth-client"
                 Payload:
                   action: create_lease
-                  account.$: States.ArrayGetItem($, 0)
-                  # TEMP: hardcode some values for testing purposes
-                  user_id: 028534f4-60a1-70cc-05fe-5cc39d8c3520
+                  params:
+                    account.$: States.ArrayGetItem($, 0)
+                    # TEMP: hardcode some values for testing purposes
+                    user_id: 028534f4-60a1-70cc-05fe-5cc39d8c3520
               ResultSelector:
                 result:
                   lease_id.$: States.UUID()
