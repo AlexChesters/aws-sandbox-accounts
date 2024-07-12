@@ -16,8 +16,8 @@ class Lease:
     def __str__(self) -> str:
         return json.dumps(self.to_dynamo())
 
-    def to_dynamo(self):
-        return python_to_dynamo({
+    def to_dict(self) -> dict:
+        return {
             "pk": self.lease_id,
             "data": {
                 "expires": self.expires.isoformat(),
@@ -25,4 +25,7 @@ class Lease:
                 "user": self.user,
                 "account": self.account
             }
-        })
+        }
+
+    def to_dynamo(self) -> dict:
+        return python_to_dynamo(self.to_dict())
