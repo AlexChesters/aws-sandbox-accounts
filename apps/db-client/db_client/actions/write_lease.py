@@ -6,18 +6,19 @@ from db_client.models.lease_status import LeaseStatus
 logger = Logger()
 
 def write_lease(event, dynamo_client, table_name):
-    account_id = event.get("params", {}).get("account_id")
-    lease_id = event.get("params", {}).get("lease_id")
-    user_id = event.get("params", {}).get("user_id")
+    params: dict = event.get("params")
 
-    if not account_id:
-        raise ValueError("'params.account_id' not provided in event")
+    if not params:
+        raise ValueError("'params' not provided in event")
 
-    if not lease_id:
-        raise ValueError("'params.lease_id' not provided in event")
+    if set(params.keys()) != set(["account_id", "lease_id", "user_id", "expiry"]):
+        logger.error(f"{params} is missing required properties")
+        raise ValueError("'params' missing required properties")
 
-    if not user_id:
-        raise ValueError("'params.user_id' not provided in event")
+    account_id = params["account_id"]
+    lease_id = params["lease_id"]
+    user_id = params["user_id"]
+    expiry = params["expiry"]
 
     get_items_response = dynamo_client.batch_get_item(
         RequestItems={
@@ -53,7 +54,8 @@ def write_lease(event, dynamo_client, table_name):
                         "data": {
                             "state": "active",
                             "account": account_id,
-                            "user": user_id
+                            "user": user_id,
+                            "expiry": expiry
                         }
                     })
                 }
