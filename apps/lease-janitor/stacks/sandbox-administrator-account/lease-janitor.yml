@@ -83,7 +83,7 @@ Resources:
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-auth-client"
                 Payload:
-                  action: remove_lease
+                  action: remove_leases
                   params:
                     items.$: $
               ResultPath: null
@@ -94,6 +94,6 @@ Resources:
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
                 Payload:
-                  action: remove_lease
+                  action: remove_leases
                   params:
                     items.$: $
