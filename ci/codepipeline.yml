@@ -229,119 +229,120 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/auth-client.yml
                 TemplateConfiguration: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/parameters/auth-client/test.json
-        - Name: Deploy-Common-Resources-To-Live
-          Actions:
-            - ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Version: "1"
-                Provider: CloudFormation
-              InputArtifacts:
-                - Name: BuiltSource
-              RunOrder: 1
-              Name: Pool-Store
-              Configuration:
-                ActionMode: REPLACE_ON_FAILURE
-                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: live-aws-sandbox-accounts-pool-store
-                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/pool-store/pool-store.yml
-                TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/pool-store/parameters/live.json
-        - Name: Deploy-Apps-To-Live
-          Actions:
-            - ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Version: "1"
-                Provider: CloudFormation
-              InputArtifacts:
-                - Name: BuiltSource
-              RunOrder: 1
-              Name: Account-Cleaner
-              Configuration:
-                ActionMode: REPLACE_ON_FAILURE
-                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: live-aws-sandbox-accounts-account-cleaner
-                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/account-cleaner/stacks/sandbox-administrator-account/account-cleaner.yml
-                TemplateConfiguration: BuiltSource::apps/account-cleaner/stacks/sandbox-administrator-account/parameters/account-cleaner/live.json
-            - ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Version: "1"
-                Provider: CloudFormation
-              InputArtifacts:
-                - Name: BuiltSource
-              RunOrder: 1
-              Name: Account-Manager
-              Configuration:
-                ActionMode: REPLACE_ON_FAILURE
-                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: live-aws-sandbox-accounts-account-manager
-                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/account-manager.yml
-                TemplateConfiguration: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/parameters/account-manager/live.json
-            - ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Version: "1"
-                Provider: CloudFormation
-              InputArtifacts:
-                - Name: BuiltSource
-              RunOrder: 1
-              Name: Lease-Creator
-              Configuration:
-                ActionMode: REPLACE_ON_FAILURE
-                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: live-aws-sandbox-accounts-lease-creator
-                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/lease-creator.yml
-                TemplateConfiguration: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/parameters/lease-creator/live.json
-            - ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Version: "1"
-                Provider: CloudFormation
-              InputArtifacts:
-                - Name: BuiltSource
-              RunOrder: 1
-              Name: Lease-Janitor
-              Configuration:
-                ActionMode: REPLACE_ON_FAILURE
-                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: live-aws-sandbox-accounts-lease-janitor
-                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/lease-janitor/stacks/sandbox-administrator-account/lease-janitor.yml
-                TemplateConfiguration: BuiltSource::apps/lease-janitor/stacks/sandbox-administrator-account/parameters/lease-janitor/live.json
-            - ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Version: "1"
-                Provider: CloudFormation
-              InputArtifacts:
-                - Name: BuiltSource
-              RunOrder: 1
-              Name: DB-Client
-              Configuration:
-                ActionMode: REPLACE_ON_FAILURE
-                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: live-aws-sandbox-accounts-db-client
-                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/db-client/stacks/sandbox-administrator-account/db-client.yml
-                TemplateConfiguration: BuiltSource::apps/db-client/stacks/sandbox-administrator-account/parameters/db-client/live.json
-            - ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Version: "1"
-                Provider: CloudFormation
-              InputArtifacts:
-                - Name: BuiltSource
-              RunOrder: 1
-              Name: Auth-Client
-              Configuration:
-                ActionMode: REPLACE_ON_FAILURE
-                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: live-aws-sandbox-accounts-auth-client
-                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/auth-client.yml
-                TemplateConfiguration: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/parameters/auth-client/live.json
+        # TODO: disable live deployments whilst development is ocurring
+        # - Name: Deploy-Common-Resources-To-Live
+        #   Actions:
+        #     - ActionTypeId:
+        #         Category: Deploy
+        #         Owner: AWS
+        #         Version: "1"
+        #         Provider: CloudFormation
+        #       InputArtifacts:
+        #         - Name: BuiltSource
+        #       RunOrder: 1
+        #       Name: Pool-Store
+        #       Configuration:
+        #         ActionMode: REPLACE_ON_FAILURE
+        #         Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+        #         StackName: live-aws-sandbox-accounts-pool-store
+        #         RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+        #         TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/pool-store/pool-store.yml
+        #         TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/pool-store/parameters/live.json
+        # - Name: Deploy-Apps-To-Live
+        #   Actions:
+        #     - ActionTypeId:
+        #         Category: Deploy
+        #         Owner: AWS
+        #         Version: "1"
+        #         Provider: CloudFormation
+        #       InputArtifacts:
+        #         - Name: BuiltSource
+        #       RunOrder: 1
+        #       Name: Account-Cleaner
+        #       Configuration:
+        #         ActionMode: REPLACE_ON_FAILURE
+        #         Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+        #         StackName: live-aws-sandbox-accounts-account-cleaner
+        #         RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+        #         TemplatePath: BuiltSource::apps/account-cleaner/stacks/sandbox-administrator-account/account-cleaner.yml
+        #         TemplateConfiguration: BuiltSource::apps/account-cleaner/stacks/sandbox-administrator-account/parameters/account-cleaner/live.json
+        #     - ActionTypeId:
+        #         Category: Deploy
+        #         Owner: AWS
+        #         Version: "1"
+        #         Provider: CloudFormation
+        #       InputArtifacts:
+        #         - Name: BuiltSource
+        #       RunOrder: 1
+        #       Name: Account-Manager
+        #       Configuration:
+        #         ActionMode: REPLACE_ON_FAILURE
+        #         Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+        #         StackName: live-aws-sandbox-accounts-account-manager
+        #         RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+        #         TemplatePath: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/account-manager.yml
+        #         TemplateConfiguration: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/parameters/account-manager/live.json
+        #     - ActionTypeId:
+        #         Category: Deploy
+        #         Owner: AWS
+        #         Version: "1"
+        #         Provider: CloudFormation
+        #       InputArtifacts:
+        #         - Name: BuiltSource
+        #       RunOrder: 1
+        #       Name: Lease-Creator
+        #       Configuration:
+        #         ActionMode: REPLACE_ON_FAILURE
+        #         Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+        #         StackName: live-aws-sandbox-accounts-lease-creator
+        #         RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+        #         TemplatePath: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/lease-creator.yml
+        #         TemplateConfiguration: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/parameters/lease-creator/live.json
+        #     - ActionTypeId:
+        #         Category: Deploy
+        #         Owner: AWS
+        #         Version: "1"
+        #         Provider: CloudFormation
+        #       InputArtifacts:
+        #         - Name: BuiltSource
+        #       RunOrder: 1
+        #       Name: Lease-Janitor
+        #       Configuration:
+        #         ActionMode: REPLACE_ON_FAILURE
+        #         Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+        #         StackName: live-aws-sandbox-accounts-lease-janitor
+        #         RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+        #         TemplatePath: BuiltSource::apps/lease-janitor/stacks/sandbox-administrator-account/lease-janitor.yml
+        #         TemplateConfiguration: BuiltSource::apps/lease-janitor/stacks/sandbox-administrator-account/parameters/lease-janitor/live.json
+        #     - ActionTypeId:
+        #         Category: Deploy
+        #         Owner: AWS
+        #         Version: "1"
+        #         Provider: CloudFormation
+        #       InputArtifacts:
+        #         - Name: BuiltSource
+        #       RunOrder: 1
+        #       Name: DB-Client
+        #       Configuration:
+        #         ActionMode: REPLACE_ON_FAILURE
+        #         Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+        #         StackName: live-aws-sandbox-accounts-db-client
+        #         RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+        #         TemplatePath: BuiltSource::apps/db-client/stacks/sandbox-administrator-account/db-client.yml
+        #         TemplateConfiguration: BuiltSource::apps/db-client/stacks/sandbox-administrator-account/parameters/db-client/live.json
+        #     - ActionTypeId:
+        #         Category: Deploy
+        #         Owner: AWS
+        #         Version: "1"
+        #         Provider: CloudFormation
+        #       InputArtifacts:
+        #         - Name: BuiltSource
+        #       RunOrder: 1
+        #       Name: Auth-Client
+        #       Configuration:
+        #         ActionMode: REPLACE_ON_FAILURE
+        #         Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+        #         StackName: live-aws-sandbox-accounts-auth-client
+        #         RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+        #         TemplatePath: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/auth-client.yml
+        #         TemplateConfiguration: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/parameters/auth-client/live.json
