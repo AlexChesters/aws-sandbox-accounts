@@ -6,7 +6,7 @@ from db_client.models.account_status import AccountStatus
 
 logger = Logger()
 
-def remove_lease(event, dynamo_client, table_name):
+def remove_leases(event, dynamo_client, table_name):
     params: dict = event.get("params")
 
     if not params:

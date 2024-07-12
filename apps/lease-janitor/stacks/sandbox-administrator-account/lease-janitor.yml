@@ -70,47 +70,30 @@ Resources:
             FetchExpiredLeases:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
-              Next: RemoveLeases
+              Next: RemoveLeaseAuth
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
                 Payload:
                   action: fetch_expired_leases
               OutputPath: $.Payload
-            RemoveLeases:
-              Type: Map
+            RemoveLeaseAuth:
+              Type: Task
+              Resource: arn:aws:states:::lambda:invoke
+              Next: UpdateLeaseDB
+              Parameters:
+                FunctionName: !Sub "${Environment}-aws-sandbox-accounts-auth-client"
+                Payload:
+                  action: remove_lease
+                  params:
+                    items.$: $
+              ResultPath: null
+            UpdateLeaseDB:
+              Type: Task
+              Resource: arn:aws:states:::lambda:invoke
               End: true
-              InputPath: $
-              ItemSelector:
-                lease_id.$: $$.Map.Item.Value.lease_id
-                user_id.$: $$.Map.Item.Value.user_id
-                account_id.$: $$.Map.Item.Value.account_id
-              ItemProcessor:
-                ProcessorConfig:
-                  Mode: INLINE
-                StartAt: RemoveLeaseAuth
-                States:
-                  RemoveLeaseAuth:
-                    Type: Task
-                    Resource: arn:aws:states:::lambda:invoke
-                    Next: UpdateLeaseDB
-                    Parameters:
-                      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-auth-client"
-                      Payload:
-                        action: remove_lease
-                        params:
-                          lease_id.$: $.lease_id
-                          user_id.$: $.user_id
-                          account_id.$: $.account_id
-                    ResultPath: null
-                  UpdateLeaseDB:
-                    Type: Task
-                    Resource: arn:aws:states:::lambda:invoke
-                    End: true
-                    Parameters:
-                      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
-                      Payload:
-                        action: remove_lease
-                        params:
-                          lease_id.$: $.lease_id
-                          user_id.$: $.user_id
-                          account_id.$: $.account_id
+              Parameters:
+                FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
+                Payload:
+                  action: remove_lease
+                  params:
+                    items.$: $
