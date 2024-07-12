@@ -12,80 +12,73 @@ def remove_leases(event, dynamo_client, table_name):
     if not params:
         raise ValueError("'params' not provided in event")
 
-    passed_properties = set(params.keys())
-    expected_properties = set(["account_id", "lease_id", "user_id"])
+    for item in params["items"]:
+        lease_id = item["lease_id"]
+        account_id = item["account_id"]
 
-    if passed_properties != expected_properties:
-        logger.error(f"{passed_properties} is missing required properties")
-        logger.error(f"expected properties: {expected_properties}")
-        raise ValueError("'params' missing required properties")
-
-    lease_id = params["lease_id"]
-    account_id = params["account_id"]
-
-    get_items_response = dynamo_client.batch_get_item(
-        RequestItems={
-            table_name: {
-                "Keys": [
-                    python_to_dynamo({ "pk": "lease_status#active" }),
-                    python_to_dynamo({ "pk": "account_status#leased" }),
-                    python_to_dynamo({ "pk": "account_status#dirty" })
-                ]
+        get_items_response = dynamo_client.batch_get_item(
+            RequestItems={
+                table_name: {
+                    "Keys": [
+                        python_to_dynamo({ "pk": "lease_status#active" }),
+                        python_to_dynamo({ "pk": "account_status#leased" }),
+                        python_to_dynamo({ "pk": "account_status#dirty" })
+                    ]
+                }
             }
-        }
-    )
+        )
 
-    existing_data = get_items_response["Responses"][table_name]
+        existing_data = get_items_response["Responses"][table_name]
 
-    active_leases = LeaseStatus(
-        next(item for item in existing_data if item["pk"]["S"] == "lease_status#active")
-    )
-    leased_accounts = AccountStatus(
-        next(item for item in existing_data if item["pk"]["S"] == "account_status#leased")
-    )
-    dirty_accounts = AccountStatus(
-        next(item for item in existing_data if item["pk"]["S"] == "account_status#dirty")
-    )
+        active_leases = LeaseStatus(
+            next(item for item in existing_data if item["pk"]["S"] == "lease_status#active")
+        )
+        leased_accounts = AccountStatus(
+            next(item for item in existing_data if item["pk"]["S"] == "account_status#leased")
+        )
+        dirty_accounts = AccountStatus(
+            next(item for item in existing_data if item["pk"]["S"] == "account_status#dirty")
+        )
 
-    active_leases.leases.discard(lease_id)
-    leased_accounts.accounts.discard(account_id)
-    dirty_accounts.accounts.add(account_id)
+        active_leases.leases.discard(lease_id)
+        leased_accounts.accounts.discard(account_id)
+        dirty_accounts.accounts.add(account_id)
 
-    dynamo_client.transact_write_items(
-        TransactItems=[
-            {
-                "Put": {
-                    "TableName": table_name,
-                    "Item": active_leases.to_dynamo()
-                }
-            },
-            {
-                "Put": {
-                    "TableName": table_name,
-                    "Item": leased_accounts.to_dynamo()
-                }
-            },
-            {
-                "Put": {
-                    "TableName": table_name,
-                    "Item": dirty_accounts.to_dynamo()
-                }
-            },
-            {
-                "Update": {
-                    "TableName": table_name,
-                    "Key": python_to_dynamo({
-                        "pk": f"lease_id#{lease_id}"
-                    }),
-                    "UpdateExpression": "SET #data.#state = :expired",
-                    "ExpressionAttributeNames": {
-                        "#data": "data",
-                        "#state": "state"
-                    },
-                    "ExpressionAttributeValues": {
-                        ":expired": "expired"
+        dynamo_client.transact_write_items(
+            TransactItems=[
+                {
+                    "Put": {
+                        "TableName": table_name,
+                        "Item": active_leases.to_dynamo()
+                    }
+                },
+                {
+                    "Put": {
+                        "TableName": table_name,
+                        "Item": leased_accounts.to_dynamo()
+                    }
+                },
+                {
+                    "Put": {
+                        "TableName": table_name,
+                        "Item": dirty_accounts.to_dynamo()
+                    }
+                },
+                {
+                    "Update": {
+                        "TableName": table_name,
+                        "Key": python_to_dynamo({
+                            "pk": f"lease_id#{lease_id}"
+                        }),
+                        "UpdateExpression": "SET #data.#state = :expired",
+                        "ExpressionAttributeNames": {
+                            "#data": "data",
+                            "#state": "state"
+                        },
+                        "ExpressionAttributeValues": {
+                            ":expired": "expired"
+                        }
                     }
                 }
-            }
-        ]
-    )
+            ]
+        )

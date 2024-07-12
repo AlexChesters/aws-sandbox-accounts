@@ -1,7 +1,7 @@
 from aws_lambda_powertools import Logger, Tracer
 
 from auth_client.actions.create_lease import create_lease
-from auth_client.actions.remove_lease import remove_lease
+from auth_client.actions.remove_leases import remove_leases
 from auth_client.utils.assume_role import assume_role
 
 logger = Logger()
@@ -21,7 +21,7 @@ def handler(event, _context):
     match action:
         case "create_lease":
             return create_lease(event, sso_client)
-        case "remove_lease":
-            return remove_lease(event, sso_client)
+        case "remove_leases":
+            return remove_leases(event, sso_client)
         case _:
             raise ValueError(f"'action' key value ({action}) provided was not recognised")
