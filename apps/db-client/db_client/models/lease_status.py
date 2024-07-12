@@ -1,3 +1,5 @@
+import json
+
 from db_client.utils.db import dynamo_to_python, python_to_dynamo
 
 class LeaseStatus:
@@ -6,6 +8,9 @@ class LeaseStatus:
 
         self._pk = deserialised_data["pk"]
         self.accounts = set(deserialised_data["data"])
+
+    def __str__(self) -> str:
+        return json.dumps(self.to_dynamo())
 
     def to_dynamo(self):
         return python_to_dynamo({
