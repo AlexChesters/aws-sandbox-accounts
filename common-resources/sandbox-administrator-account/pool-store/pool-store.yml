@@ -22,3 +22,6 @@ Resources:
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
       TableName: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true
