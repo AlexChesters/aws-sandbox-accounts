@@ -87,12 +87,12 @@ Resources:
               ItemProcessor:
                 ProcessorConfig:
                   Mode: INLINE
-                StartAt: RemoveLease
+                StartAt: RemoveLeaseAuth
                 States:
-                  RemoveLease:
+                  RemoveLeaseAuth:
                     Type: Task
                     Resource: arn:aws:states:::lambda:invoke
-                    End: true
+                    Next: UpdateLeaseDB
                     Parameters:
                       FunctionName: !Sub "${Environment}-aws-sandbox-accounts-auth-client"
                       Payload:
@@ -101,3 +101,18 @@ Resources:
                           lease_id.$: $.lease_id
                           user_id.$: $.user_id
                           account_id.$: $.account_id
+                  UpdateLeaseDB:
+                    Type: Task
+                    Resource: arn:aws:states:::lambda:invoke
+                    End: true
+                    Parameters:
+                      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
+                      Payload:
+                        action: remove_lease
+                        params:
+                          lease_id.$: $.lease_id
+                          user_id.$: $.user_id
+                          account_id.$: $.account_id
+              # Next steps
+              # update lease state in db to mark as inactive and add TTL of e.g. now + 14 days
+              # mark account as dirty
