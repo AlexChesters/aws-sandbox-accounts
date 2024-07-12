@@ -11,8 +11,12 @@ def write_lease(event, dynamo_client, table_name):
     if not params:
         raise ValueError("'params' not provided in event")
 
-    if set(params.keys()) != set(["account_id", "lease_id", "user_id", "expiry"]):
-        logger.error(f"{params} is missing required properties")
+    passed_properties = set(params.keys())
+    expected_properties = set(["account_id", "lease_id", "user_id", "expiry"])
+
+    if passed_properties != expected_properties:
+        logger.error(f"{passed_properties} is missing required properties")
+        logger.error(f"expected properties: {expected_properties}")
         raise ValueError("'params' missing required properties")
 
     account_id = params["account_id"]
