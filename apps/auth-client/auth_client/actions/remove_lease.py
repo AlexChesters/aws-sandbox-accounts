@@ -3,7 +3,7 @@ from aws_lambda_powertools import Logger
 logger = Logger()
 
 def remove_lease(event, sso_client):
-    account_id = event["account"]["account_id"]
+    account_id = event["account_id"]
     user_id = event["user_id"]
     lease_id = event["lease_id"]
 
