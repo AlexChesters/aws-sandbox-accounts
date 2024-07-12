@@ -30,11 +30,10 @@ def fetch_expired_leases(_event, dynamo_client, table_name):
     )
 
     leases = [Lease(item) for item in get_items_response["Responses"][table_name]]
+    expired_leases = [
+        lease
+        for lease in leases
+        if lease.expires < datetime.now()
+    ]
 
-    for lease in leases:
-        if lease.expires < datetime.now():
-            logger.info(f"lease {lease} has expired")
-        else:
-            logger.info(f"lease {lease} has not expired")
-
-    return {}
+    return expired_leases
