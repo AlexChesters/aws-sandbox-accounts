@@ -45,8 +45,8 @@ This document covers the single-table design for this system.
 - Creating a lease
   - Put - `pk=lease_id#<UUID>,data={"state": "active", "account": "<ACCOUNT_ID">, "user": "<USER_ID>", "expires": "<TIMESTAMP>"}`
   - Update - `pk=lease_status#active` to add `<ACCOUNT_ID>` to the `data` attribute
-- Deleting a lease
-  - Delete `pk=lease_id#<UUID>`
+- Deleting an expired lease
+  - Update - `pk=lease_id#<UUID>,data={"state": "inactive", "account": "<ACCOUNT_ID">, "user": "<USER_ID>", "ttl": "<TIMESTAMP>"}`
   - Update - `pk=lease_status#active` to remove `<ACCOUNT_ID>` from the `data` attribute
 - Adding a user
   - Put - `pk=user_id#<USER_ID>`
