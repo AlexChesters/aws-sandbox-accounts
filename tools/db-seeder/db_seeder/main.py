@@ -12,6 +12,21 @@ session = boto3.Session(profile_name="sandbox-administrator")
 dynamodb = session.client("dynamodb")
 table_name = args.table_name
 
+response = dynamodb.scan(
+    TableName=table_name,
+    FilterExpression="begins_with(pk, :prefix)",
+    ExpressionAttributeValues={
+        ":prefix": {"S": "lease_id#"}
+    },
+    ProjectionExpression="pk"
+)
+
+for item in response["Items"]:
+    dynamodb.delete_item(
+        TableName=table_name,
+        Key={"pk": item["pk"]}
+    )
+
 dynamodb.transact_write_items(
         TransactItems=[
             {
