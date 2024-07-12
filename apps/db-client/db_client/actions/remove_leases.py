@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from aws_lambda_powertools import Logger
 
 from db_client.utils.db import python_to_dynamo
@@ -44,6 +46,9 @@ def remove_leases(event, dynamo_client, table_name):
         leased_accounts.accounts.discard(account_id)
         dirty_accounts.accounts.add(account_id)
 
+        # TODO: increase this to e.g. 2 weeks when not actively developing
+        two_hours_from_now = datetime.now() + timedelta(hours=2)
+
         dynamo_client.transact_write_items(
             TransactItems=[
                 {
@@ -70,13 +75,15 @@ def remove_leases(event, dynamo_client, table_name):
                         "Key": python_to_dynamo({
                             "pk": f"lease_id#{lease_id}"
                         }),
-                        "UpdateExpression": "SET #data.#state = :expired",
+                        "UpdateExpression": "SET #data.#state = :expired, #data.#ttl = :ttl",
                         "ExpressionAttributeNames": {
                             "#data": "data",
-                            "#state": "state"
+                            "#state": "state",
+                            "#ttl": "ttl"
                         },
                         "ExpressionAttributeValues": python_to_dynamo({
-                            ":expired": "expired"
+                            ":expired": "expired",
+                            ":ttl": two_hours_from_now.timestamp()
                         })
                     }
                 }
