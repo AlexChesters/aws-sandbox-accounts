@@ -83,7 +83,7 @@ def remove_leases(event, dynamo_client, table_name):
                         },
                         "ExpressionAttributeValues": python_to_dynamo({
                             ":expired": "expired",
-                            ":ttl": two_hours_from_now.timestamp()
+                            ":ttl": int(two_hours_from_now.timestamp())
                         })
                     }
                 }
