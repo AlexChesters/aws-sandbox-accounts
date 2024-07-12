@@ -101,7 +101,7 @@ Resources:
             CreateLease:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
-              End: true
+              Next: WriteLease
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-auth-client"
                 Payload:
@@ -115,3 +115,15 @@ Resources:
                   account_id.$: $.Payload.account_id
                   user_id.$: $.Payload.user_id
               OutputPath: $.result
+            WriteLease:
+              Type: Task
+              Resource: arn:aws:states:::lambda:invoke
+              End: true
+              Parameters:
+                FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
+                Payload:
+                  action: write_lease
+                  params:
+                    lease_id.$: $.lease_id
+                    account_id.$: $.account_id
+                    user_id.$: $.user_id
