@@ -75,9 +75,9 @@ def remove_leases(event, dynamo_client, table_name):
                             "#data": "data",
                             "#state": "state"
                         },
-                        "ExpressionAttributeValues": {
+                        "ExpressionAttributeValues": python_to_dynamo({
                             ":expired": "expired"
-                        }
+                        })
                     }
                 }
             ]
