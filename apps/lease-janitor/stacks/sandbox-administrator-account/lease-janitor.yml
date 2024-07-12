@@ -70,7 +70,7 @@ Resources:
             FetchExpiredLeases:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
-              End: true
+              Next: RemoveLeases
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
                 Payload:
