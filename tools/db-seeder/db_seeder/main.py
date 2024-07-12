@@ -15,77 +15,56 @@ table_name = args.table_name
 dynamodb.transact_write_items(
         TransactItems=[
             {
-                "Update": {
+                "Put": {
                     "TableName": table_name,
-                    "Key": serialise({
-                        "pk": "account_status#all"
-                    }),
-                    "UpdateExpression": "SET #data = :empty_list",
-                    "ExpressionAttributeNames": {
-                        "#data": "data"
-                    },
-                    "ExpressionAttributeValues": serialise({
-                        ":empty_list": []
+                    "Item": serialise({
+                        "pk": "account_status#all",
+                        "data": ["905418121097"]
                     })
                 }
             },
             {
-                "Update": {
+                "Put": {
                     "TableName": table_name,
-                    "Key": serialise({
-                        "pk": "account_status#available"
-                    }),
-                    "UpdateExpression": "SET #data = :empty_list",
-                    "ExpressionAttributeNames": {
-                        "#data": "data"
-                    },
-                    "ExpressionAttributeValues": serialise({
-                        ":empty_list": []
+                    "Item": serialise({
+                        "pk": "account_status#available",
+                        "data": []
                     })
                 }
             },
             {
-                "Update": {
+                "Put": {
                     "TableName": table_name,
-                    "Key": serialise({
-                        "pk": "account_status#leased"
-                    }),
-                    "UpdateExpression": "SET #data = :empty_list",
-                    "ExpressionAttributeNames": {
-                        "#data": "data"
-                    },
-                    "ExpressionAttributeValues": serialise({
-                        ":empty_list": []
+                    "Item": serialise({
+                        "pk": "account_status#leased",
+                        "data": []
                     })
                 }
             },
             {
-                "Update": {
+                "Put": {
                     "TableName": table_name,
-                    "Key": serialise({
-                        "pk": "account_status#dirty"
-                    }),
-                    "UpdateExpression": "SET #data = :empty_list",
-                    "ExpressionAttributeNames": {
-                        "#data": "data"
-                    },
-                    "ExpressionAttributeValues": serialise({
-                        ":empty_list": []
+                    "Item": serialise({
+                        "pk": "account_status#dirty",
+                        "data": ["905418121097"]
                     })
                 }
             },
             {
-                "Update": {
+                "Put": {
                     "TableName": table_name,
-                    "Key": serialise({
-                        "pk": "account_status#failed"
-                    }),
-                    "UpdateExpression": "SET #data = :empty_list",
-                    "ExpressionAttributeNames": {
-                        "#data": "data"
-                    },
-                    "ExpressionAttributeValues": serialise({
-                        ":empty_list": []
+                    "Item": serialise({
+                        "pk": "account_status#failed",
+                        "data": []
+                    })
+                }
+            },
+            {
+                "Put": {
+                    "TableName": table_name,
+                    "Item": serialise({
+                        "pk": "lease_status#active",
+                        "data": []
                     })
                 }
             }
