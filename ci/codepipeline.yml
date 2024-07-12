@@ -173,14 +173,14 @@ Resources:
               InputArtifacts:
                 - Name: BuiltSource
               RunOrder: 1
-              Name: Lease-Manager
+              Name: Lease-Creator
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: test-aws-sandbox-accounts-lease-manager
+                StackName: test-aws-sandbox-accounts-lease-creator
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/lease-manager/stacks/sandbox-administrator-account/lease-manager.yml
-                TemplateConfiguration: BuiltSource::apps/lease-manager/stacks/sandbox-administrator-account/parameters/lease-manager/test.json
+                TemplatePath: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/lease-creator.yml
+                TemplateConfiguration: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/parameters/lease-creator/test.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
@@ -273,14 +273,14 @@ Resources:
               InputArtifacts:
                 - Name: BuiltSource
               RunOrder: 1
-              Name: Lease-Manager
+              Name: Lease-Creator
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: live-aws-sandbox-accounts-lease-manager
+                StackName: live-aws-sandbox-accounts-lease-creator
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/lease-manager/stacks/sandbox-administrator-account/lease-manager.yml
-                TemplateConfiguration: BuiltSource::apps/lease-manager/stacks/sandbox-administrator-account/parameters/lease-manager/live.json
+                TemplatePath: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/lease-creator.yml
+                TemplateConfiguration: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/parameters/lease-creator/live.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS

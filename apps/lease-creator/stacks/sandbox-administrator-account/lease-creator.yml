@@ -1,7 +1,7 @@
 Transform:
   - AWS::LanguageExtensions
   - AWS::Serverless-2016-10-31
-Description: Infrastructure for aws-sandbox-accounts lease-manager
+Description: Infrastructure for aws-sandbox-accounts lease-creator
 Parameters:
   Environment:
     Description: The infrastructure environment
@@ -60,7 +60,7 @@ Resources:
   StateMachine:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      StateMachineName: !Sub "${Environment}-aws-sandbox-accounts-lease-manager"
+      StateMachineName: !Sub "${Environment}-aws-sandbox-accounts-lease-creator"
       RoleArn: !GetAtt StateMachineRole.Arn
       # Use DefinitionString rather than Definition so that we can use null values
       DefinitionString:
