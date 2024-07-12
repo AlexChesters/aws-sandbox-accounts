@@ -75,7 +75,7 @@ def remove_leases(event, dynamo_client, table_name):
                         "Key": python_to_dynamo({
                             "pk": f"lease_id#{lease_id}"
                         }),
-                        "UpdateExpression": "SET #data.#state = :expired, #data.#ttl = :ttl",
+                        "UpdateExpression": "SET #data.#state = :expired, #ttl = :ttl",
                         "ExpressionAttributeNames": {
                             "#data": "data",
                             "#state": "state",
