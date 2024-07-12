@@ -189,6 +189,22 @@ Resources:
               InputArtifacts:
                 - Name: BuiltSource
               RunOrder: 1
+              Name: Lease-Janitor
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-lease-janitor
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuiltSource::apps/lease-janitor/stacks/sandbox-administrator-account/lease-janitor.yml
+                TemplateConfiguration: BuiltSource::apps/lease-janitor/stacks/sandbox-administrator-account/parameters/lease-janitor/test.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuiltSource
+              RunOrder: 1
               Name: DB-Client
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
@@ -281,6 +297,22 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/lease-creator.yml
                 TemplateConfiguration: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/parameters/lease-creator/live.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuiltSource
+              RunOrder: 1
+              Name: Lease-Janitor
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-lease-janitor
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuiltSource::apps/lease-janitor/stacks/sandbox-administrator-account/lease-janitor.yml
+                TemplateConfiguration: BuiltSource::apps/lease-janitor/stacks/sandbox-administrator-account/parameters/lease-janitor/live.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
