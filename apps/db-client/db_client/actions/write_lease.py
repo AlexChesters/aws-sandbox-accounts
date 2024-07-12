@@ -40,7 +40,7 @@ def write_lease(event, dynamo_client, table_name):
         next(item for item in existing_data if item["pk"]["S"] == "lease_status#active")
     )
 
-    active_leases.accounts.add(account_id)
+    active_leases.leases.add(lease_id)
 
     dynamo_client.transact_write_items(
         TransactItems=[

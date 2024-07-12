@@ -7,7 +7,7 @@ class LeaseStatus:
         deserialised_data = dynamo_to_python(dynamo_data)
 
         self._pk = deserialised_data["pk"]
-        self.accounts = set(deserialised_data["data"])
+        self.leases = set(deserialised_data["data"])
 
     def __str__(self) -> str:
         return json.dumps(self.to_dynamo())
@@ -15,5 +15,5 @@ class LeaseStatus:
     def to_dynamo(self):
         return python_to_dynamo({
             "pk": self._pk,
-            "data": list(self.accounts)
+            "data": list(self.leases)
         })
