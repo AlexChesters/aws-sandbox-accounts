@@ -114,6 +114,7 @@ Resources:
                   lease_id.$: States.UUID()
                   account_id.$: $.Payload.account_id
                   user_id.$: $.Payload.user_id
+                  expires.$: $.Payload.expires
               OutputPath: $.result
             WriteLease:
               Type: Task
@@ -127,3 +128,4 @@ Resources:
                     lease_id.$: $.lease_id
                     account_id.$: $.account_id
                     user_id.$: $.user_id
+                    expires.$: $.expires
