@@ -1,7 +1,7 @@
 from aws_lambda_powertools import Logger, Tracer
-import boto3
 
 from auth_client.actions.create_lease import create_lease
+from auth_client.utils.assume_role import assume_role
 
 logger = Logger()
 tracer = Tracer()
@@ -14,7 +14,8 @@ def handler(event, _context):
     if not action:
         raise ValueError("'action' key not provided in event")
 
-    sso_client = boto3.client("sso-admin")
+    sso_role_session = assume_role("arn:aws:iam::008356366354:role/sandbox-accounts-identity-centre")
+    sso_client = sso_role_session.client("sso-admin")
 
     match action:
         case "create_lease":
