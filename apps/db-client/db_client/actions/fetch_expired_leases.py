@@ -15,6 +15,19 @@ def fetch_expired_leases(_event, dynamo_client, table_name):
 
     active_leases = LeaseStatus(get_item_response["Item"])
 
-    logger.info(active_leases)
+    get_items_response = dynamo_client.batch_get_item(
+        RequestItems={
+            table_name: {
+                "Keys": [
+                    python_to_dynamo({ "pk": f"lease_id#{lease_id}" })
+                    for lease_id in active_leases.leases
+                ]
+            }
+        }
+    )
+    items = get_items_response["Responses"][table_name]
+
+    for item in items:
+        logger.info(item)
 
     return {}
