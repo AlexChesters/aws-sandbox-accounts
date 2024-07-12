@@ -82,6 +82,8 @@ Resources:
               InputPath: $
               ItemSelector:
                 pk.$: $$.Map.Item.Value.pk
+                user_id.$: $$.Map.Item.Value.data.user
+                account_id.$: $$.Map.Item.Value.data.account
               ItemProcessor:
                 ProcessorConfig:
                   Mode: INLINE
@@ -97,3 +99,5 @@ Resources:
                         action: remove_lease
                         params:
                           pk.$: $.pk
+                          user_id.$: $.user_id
+                          account_id.$: $.account_id
