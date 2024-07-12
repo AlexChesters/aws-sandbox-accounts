@@ -2,6 +2,7 @@ from aws_lambda_powertools import Logger
 
 from db_client.utils.db import python_to_dynamo
 from db_client.models.lease_status import LeaseStatus
+from db_client.models.account_status import AccountStatus
 
 logger = Logger()
 
@@ -28,7 +29,8 @@ def write_lease(event, dynamo_client, table_name):
         RequestItems={
             table_name: {
                 "Keys": [
-                    python_to_dynamo({ "pk": "lease_status#active" })
+                    python_to_dynamo({ "pk": "lease_status#active" }),
+                    python_to_dynamo({ "pk": "account_status#leased" })
                 ]
             }
         }
@@ -39,8 +41,12 @@ def write_lease(event, dynamo_client, table_name):
     active_leases = LeaseStatus(
         next(item for item in existing_data if item["pk"]["S"] == "lease_status#active")
     )
+    leased_accounts = AccountStatus(
+        next(item for item in existing_data if item["pk"]["S"] == "account_status#leased")
+    )
 
     active_leases.leases.add(lease_id)
+    leased_accounts.accounts.add(lease_id)
 
     dynamo_client.transact_write_items(
         TransactItems=[
@@ -48,6 +54,12 @@ def write_lease(event, dynamo_client, table_name):
                 "Put": {
                     "TableName": table_name,
                     "Item": active_leases.to_dynamo()
+                }
+            },
+            {
+                "Put": {
+                    "TableName": table_name,
+                    "Item": leased_accounts.to_dynamo()
                 }
             },
             {
