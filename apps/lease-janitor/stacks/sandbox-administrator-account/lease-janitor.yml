@@ -101,6 +101,7 @@ Resources:
                           lease_id.$: $.lease_id
                           user_id.$: $.user_id
                           account_id.$: $.account_id
+                    ResultPath: null
                   UpdateLeaseDB:
                     Type: Task
                     Resource: arn:aws:states:::lambda:invoke
