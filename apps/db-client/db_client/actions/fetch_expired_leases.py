@@ -18,6 +18,10 @@ def fetch_expired_leases(_event, dynamo_client, table_name):
 
     active_leases = LeaseStatus(get_item_response["Item"])
 
+    if not active_leases.leases:
+        logger.info("no leases found")
+        return []
+
     get_items_response = dynamo_client.batch_get_item(
         RequestItems={
             table_name: {
