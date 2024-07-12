@@ -109,4 +109,9 @@ Resources:
                   account.$: States.ArrayGetItem($, 0)
                   # TEMP: hardcode some values for testing purposes
                   user_id: 028534f4-60a1-70cc-05fe-5cc39d8c3520
-              OutputPath: $.Payload
+              ResultSelector:
+                result:
+                  lease_id.$: States.UUID()
+                  account_id.$: $.Payload.account_id
+                  user_id.$: $.Payload.user_id
+              OutputPath: $.result
