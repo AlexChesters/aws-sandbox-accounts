@@ -35,6 +35,11 @@ Resources:
                     - dynamodb:UpdateItem
                   Resource:
                     - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Environment}-aws-sandbox-accounts-account-pool"
+                - Effect: Allow
+                  Action:
+                    - sts:AssumeRole
+                  Resource:
+                    - arn:aws:iam::008356366354:role/sandbox-accounts-identity-centre
   Function:
     Type: AWS::Serverless::Function
     Properties:
