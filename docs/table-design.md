@@ -43,7 +43,7 @@ This document covers the single-table design for this system.
 - Retrieving information about a specific user (e.g. a lease that user currently has)
   - Query - `pk=user_id#<USER_ID>`
 - Creating a lease
-  - Put - `pk=lease_id#<UUID>,data={"state": "active", "account": "<ACCOUNT_ID">, "user": "<USER_ID>", "expiry": "<TIMESTAMP>"}`
+  - Put - `pk=lease_id#<UUID>,data={"state": "active", "account": "<ACCOUNT_ID">, "user": "<USER_ID>", "expires": "<TIMESTAMP>"}`
   - Update - `pk=lease_status#active` to add `<ACCOUNT_ID>` to the `data` attribute
 - Deleting a lease
   - Delete `pk=lease_id#<UUID>`

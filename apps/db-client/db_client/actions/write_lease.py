@@ -12,7 +12,7 @@ def write_lease(event, dynamo_client, table_name):
         raise ValueError("'params' not provided in event")
 
     passed_properties = set(params.keys())
-    expected_properties = set(["account_id", "lease_id", "user_id", "expiry"])
+    expected_properties = set(["account_id", "lease_id", "user_id", "expires"])
 
     if passed_properties != expected_properties:
         logger.error(f"{passed_properties} is missing required properties")
@@ -22,7 +22,7 @@ def write_lease(event, dynamo_client, table_name):
     account_id = params["account_id"]
     lease_id = params["lease_id"]
     user_id = params["user_id"]
-    expiry = params["expiry"]
+    expires = params["expires"]
 
     get_items_response = dynamo_client.batch_get_item(
         RequestItems={
@@ -59,7 +59,7 @@ def write_lease(event, dynamo_client, table_name):
                             "state": "active",
                             "account": account_id,
                             "user": user_id,
-                            "expiry": expiry
+                            "expires": expires
                         }
                     })
                 }
