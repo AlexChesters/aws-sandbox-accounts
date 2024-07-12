@@ -21,10 +21,10 @@ def create_lease(event, sso_client):
     logger.info(response)
 
     # low limit for testing
-    fifteen_minutes_from_now = datetime.now() + timedelta(minutes=15)
+    one_minute_from_now = datetime.now() + timedelta(minutes=1)
 
     return {
         "account_id": account_id,
         "user_id": user_id,
-        "expires": fifteen_minutes_from_now.isoformat()
+        "expires": one_minute_from_now.isoformat()
     }
