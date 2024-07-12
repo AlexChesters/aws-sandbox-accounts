@@ -1,0 +1,78 @@
+Transform:
+  - AWS::LanguageExtensions
+  - AWS::Serverless-2016-10-31
+Description: Infrastructure for aws-sandbox-accounts lease-janitor
+Parameters:
+  Environment:
+    Description: The infrastructure environment
+    Type: String
+    AllowedValues:
+      - test
+      - live
+Resources:
+  StateMachineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: states.amazonaws.com
+      Policies:
+        - PolicyName: state-machine-policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action:
+                  - lambda:InvokeFunction
+                  Resource:
+                  - !Sub "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${Environment}-aws-sandbox-accounts-db-client"
+                  - !Sub "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${Environment}-aws-sandbox-accounts-auth-client"
+                - Effect: Allow
+                  Action:
+                  - events:PutTargets
+                  - events:PutRule
+                  - events:DescribeRule
+                  Resource:
+                  - !Sub arn:${AWS::Partition}:events:${AWS::Region}:${AWS::AccountId}:rule/StepFunctionsGetEventsForStepFunctionsExecutionRule
+                - Effect: Allow
+                  Action:
+                  - states:Describe*
+                  - states:Get*
+                  - states:List*
+                  - states:Send*
+                  Resource:
+                  - "*"
+                - Effect: Allow
+                  Action:
+                  - states:StartExecution
+                  - states:StartSyncExecution
+                  Resource:
+                  - !Sub "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${Environment}-aws-sandbox-accounts-account-cleaner"
+                - Effect: Allow
+                  Action:
+                  - states:StopExecution
+                  Resource:
+                  - !Sub "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${Environment}-aws-sandbox-accounts-account-cleaner:*"
+  StateMachine:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      StateMachineName: !Sub "${Environment}-aws-sandbox-accounts-lease-janitor"
+      RoleArn: !GetAtt StateMachineRole.Arn
+      # Use DefinitionString rather than Definition so that we can use null values
+      DefinitionString:
+        Fn::ToJsonString:
+          StartAt: FetchExpiredLeases
+          States:
+            FetchExpiredLeases:
+              Type: Task
+              Resource: arn:aws:states:::lambda:invoke
+              End: true
+              Parameters:
+                FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
+                Payload:
+                  action: fetch_expired_leases
+              OutputPath: $.Payload

@@ -9,6 +9,7 @@ from db_client.actions.mark_as_available import mark_as_available
 from db_client.actions.mark_as_failed import mark_as_failed
 from db_client.actions.claim_available_account import claim_available_account
 from db_client.actions.write_lease import write_lease
+from db_client.actions.fetch_expired_leases import fetch_expired_leases
 
 table_name = os.environ["TABLE_NAME"]
 
@@ -38,5 +39,7 @@ def handler(event, _context):
             return claim_available_account(event, dynamodb, table_name)
         case "write_lease":
             return write_lease(event, dynamodb, table_name)
+        case "fetch_expired_leases":
+            return fetch_expired_leases(event, dynamodb, table_name)
         case _:
             raise ValueError(f"'action' key value ({action}) provided was not recognised")
