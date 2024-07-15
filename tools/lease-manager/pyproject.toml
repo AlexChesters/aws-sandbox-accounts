@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "lease-manager"
+version = "0.1.0"
+description = "manages leases"
+authors = ["Alex Chesters <alex@cheste.rs>"]
+readme = "README.md"
+license = "MIT"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+boto3 = "^1.34.135"
+rich = "^13.7.1"
+pylint = "^3.2.4"
+inquirer = "^3.3.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
