@@ -69,12 +69,21 @@ Resources:
             FetchDirtyAccounts:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
-              Next: CleanAccounts
+              Next: CheckIfDirtyAccountsExist
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
                 Payload:
                   action: fetch_dirty
               OutputPath: $.Payload
+            CheckIfDirtyAccountsExist:
+              Type: Choice
+              Choices:
+                - Variable: $[0]
+                  IsPresent: true
+                  Next: CleanAccounts
+              Default: Success
+            Success:
+              Type: Succeed
             CleanAccounts:
               Type: Task
               Resource: arn:aws:states:::states:startExecution.sync:2
@@ -83,6 +92,7 @@ Resources:
                 StateMachineArn: !Sub "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${Environment}-aws-sandbox-accounts-account-cleaner"
                 Input:
                   accounts.$: $
+                  mark_as_available: true
   SchedulerRole:
     Type: AWS::IAM::Role
     Properties:
