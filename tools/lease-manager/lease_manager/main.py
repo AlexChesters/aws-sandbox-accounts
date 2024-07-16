@@ -13,11 +13,23 @@ sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator")
 identity_store = management_session.client("identitystore")
 step_functions = sandbox_admin_session.client("stepfunctions")
 
-list_users_paginator = identity_store.get_paginator("list_users")
+list_group_memberships_paginator = identity_store.get_paginator("list_group_memberships")
 
-results = list_users_paginator.paginate(IdentityStoreId="d-93677ee9b2")
-flat_results = flatten(result["Users"] for result in results)
-users = [(user["UserName"], user["UserId"]) for user in flat_results]
+results = list_group_memberships_paginator.paginate(
+    IdentityStoreId="d-93677ee9b2",
+    GroupId="a24534e4-5021-7007-5383-41bcc820f470"
+)
+flat_results = flatten(result["GroupMemberships"] for result in results)
+
+users = []
+
+for member in flat_results:
+    user_details = identity_store.describe_user(
+        IdentityStoreId="d-93677ee9b2",
+        UserId=member["MemberId"]["UserId"]
+    )
+    users.append((user_details["UserName"], user_details["UserId"]))
+
 durations = [
     ("5 minutes", "5m"),
     ("30 minutes", "30m"),
@@ -66,6 +78,7 @@ while True:
             print(f"[SUCCESS] - lease successfully created for {chosen_user_display_name}")
             sys.exit(0)
         case _:
-            raise RuntimeError(f"[ERROR] - error creating lease: {status}")
+            print(f"[ERROR] - error creating lease: {status}")
+            sys.exit(1)
 
     time.sleep(10)
