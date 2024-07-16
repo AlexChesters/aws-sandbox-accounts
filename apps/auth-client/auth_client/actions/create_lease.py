@@ -40,5 +40,5 @@ def create_lease(event, sso_client):
     return {
         "account_id": account_id,
         "user_id": user_id,
-        "expires": datetime.now() + timedelta(minutes=duration).isoformat()
+        "expires": (datetime.now() + timedelta(minutes=duration)).isoformat()
     }
