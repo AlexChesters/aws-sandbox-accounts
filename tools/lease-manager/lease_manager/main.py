@@ -1,4 +1,6 @@
 import json
+import time
+import sys
 
 import boto3
 import inquirer
@@ -42,7 +44,7 @@ answers = inquirer.prompt([
 chosen_user_display_name, chosen_user_id = next(user for user in users if user[1] == answers["user"])
 chosen_duration_display, chosen_duration_value = next(duration for duration in durations if duration[1] == answers["duration"])
 
-response = step_functions.start_execution(
+start_response = step_functions.start_execution(
     # TODO: use live when it is ready
     stateMachineArn="arn:aws:states:eu-west-1:654654632738:stateMachine:test-aws-sandbox-accounts-lease-creator",
     input=json.dumps({
@@ -51,4 +53,19 @@ response = step_functions.start_execution(
     })
 )
 
-print(response)
+execution_arn = start_response["executionArn"]
+
+while True:
+    describe_response = step_functions.describe_execution(executionArn=execution_arn)
+    status = describe_response["status"]
+
+    match status:
+        case "RUNNING":
+            print("[INFO] - lease is pending creation, waiting 10 seconds")
+        case "SUCCEEDED":
+            print(f"[SUCCESS] - lease successfully created for {chosen_user_display_name}")
+            sys.exit(0)
+        case _:
+            raise RuntimeError(f"[ERROR] - error creating lease: {status}")
+
+    time.sleep(10)
