@@ -109,6 +109,7 @@ Resources:
                   params:
                     account.$: States.ArrayGetItem($, 0)
                     user_id.$: $$.Execution.Input.user_id
+                    duration: 5m
               ResultSelector:
                 result:
                   lease_id.$: States.UUID()
