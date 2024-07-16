@@ -30,7 +30,10 @@ chosen_user_display_name, chosen_user_id = next(user for user in users if user[1
 response = step_functions.start_execution(
     # TODO: use live when it is ready
     stateMachineArn="arn:aws:states:eu-west-1:654654632738:stateMachine:test-aws-sandbox-accounts-lease-creator",
-    input=json.dumps({"user_id": chosen_user_id})
+    input=json.dumps({
+        "user_id": chosen_user_id,
+        "duration": "3h"
+    })
 )
 
 print(response)
