@@ -66,18 +66,6 @@ Resources:
         Fn::ToJsonString:
           StartAt: MarkAccountAsDirty
           States:
-            # TEMP - force one account to always be in the dirty state for testing purposes
-            MarkAccountAsDirty:
-              Type: Task
-              Resource: arn:aws:states:::lambda:invoke
-              Next: FetchDirtyAccounts
-              Parameters:
-                FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
-                Payload:
-                  action: mark_as_dirty
-                  params:
-                    account_id: "905418121097"
-              ResultPath: null
             FetchDirtyAccounts:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
@@ -95,3 +83,51 @@ Resources:
                 StateMachineArn: !Sub "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${Environment}-aws-sandbox-accounts-account-cleaner"
                 Input:
                   accounts.$: $
+  SchedulerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - scheduler.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      RoleName: !Sub "${Environment}-aws-sandbox-accounts-account-cleaner-manager-role"
+      Policies:
+        - PolicyName: scheduler-policy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - states:StartExecution
+                Resource:
+                  - !Ref StateMachine
+  Schedule:
+    Type: AWS::Scheduler::Schedule
+    Properties:
+      Name: !Sub "${Environment}-aws-sandbox-accounts-account-manager"
+      ScheduleExpression: rate(5 minutes)
+      FlexibleTimeWindow:
+        Mode: "OFF"
+      Target:
+        Arn: !Ref StateMachine
+        RoleArn: !GetAtt SchedulerRole.Arn
+  ErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      Namespace: AWS/States
+      MetricName: ExecutionsFailed
+      ComparisonOperator: GreaterThanThreshold
+      EvaluationPeriods: 1
+      Period: 60
+      TreatMissingData: notBreaching
+      Statistic: Sum
+      Threshold: 0
+      ActionsEnabled: true
+      AlarmActions:
+        - !ImportValue notification-topic-arn
+      Dimensions:
+        - Name: StateMachineArn
+          Value: !Ref StateMachine
