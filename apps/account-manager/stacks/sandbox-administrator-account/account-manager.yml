@@ -118,7 +118,7 @@ Resources:
     Type: AWS::Scheduler::Schedule
     Properties:
       Name: !Sub "${Environment}-aws-sandbox-accounts-account-manager"
-      ScheduleExpression: rate(5 minutes)
+      ScheduleExpression: rate(1 hour)
       FlexibleTimeWindow:
         Mode: "OFF"
       Target:

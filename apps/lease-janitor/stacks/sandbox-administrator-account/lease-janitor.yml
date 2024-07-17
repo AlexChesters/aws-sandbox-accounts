@@ -131,7 +131,7 @@ Resources:
     Type: AWS::Scheduler::Schedule
     Properties:
       Name: !Sub "${Environment}-aws-sandbox-accounts-lease-janitor"
-      ScheduleExpression: rate(5 minutes)
+      ScheduleExpression: rate(1 hour)
       FlexibleTimeWindow:
         Mode: "OFF"
       Target:
