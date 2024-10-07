@@ -88,11 +88,11 @@ Resources:
                     lease_id.$: States.UUID()
                     user_id.$: $$.Execution.Input.user_id
                     duration.$: $$.Execution.Input.duration
-                ResultSelector:
-                  result:
-                    lease_id.$: $.Payload.lease_id
-                    account_id.$: $.Payload.account_id
-                    user_id.$: $.Payload.user_id
+              ResultSelector:
+                result:
+                  lease_id.$: $.Payload.lease_id
+                  account_id.$: $.Payload.account_id
+                  user_id.$: $.Payload.user_id
               OutputPath: $.result
             CreateLease:
               Type: Task
