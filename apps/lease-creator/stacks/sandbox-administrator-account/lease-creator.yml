@@ -70,16 +70,34 @@ Resources:
             ClaimAvailableAccount:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
-              Next: CreateLease
+              Next: WritePendingLease
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
                 Payload:
                   action: claim_available_account
               OutputPath: $.Payload
+            WritePendingLease:
+              Type: Task
+              Resource: arn:aws:states:::lambda:invoke
+              Next: CreateLease
+              Parameters:
+                FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
+                Payload:
+                  action: write_active_lease
+                  params:
+                    lease_id.$: States.UUID()
+                    user_id.$: $$.Execution.Input.user_id
+                    duration.$: $$.Execution.Input.duration
+                ResultSelector:
+                  result:
+                    lease_id.$: $.Payload.lease_id
+                    account_id.$: $.Payload.account_id
+                    user_id.$: $.Payload.user_id
+              OutputPath: $.result
             CreateLease:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
-              Next: WriteLease
+              Next: WriteActiveLease
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-auth-client"
                 Payload:
@@ -95,7 +113,7 @@ Resources:
                   user_id.$: $.Payload.user_id
                   expires.$: $.Payload.expires
               OutputPath: $.result
-            WriteLease:
+            WriteActiveLease:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
               End: true
