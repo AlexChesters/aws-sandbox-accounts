@@ -65,9 +65,9 @@ Resources:
       # Use DefinitionString rather than Definition so that we can use null values
       DefinitionString:
         Fn::ToJsonString:
-          StartAt: MarkAccountAsAvailable
+          StartAt: ClaimAvailableAccount
           States:
-            MarkAccountAsAvailable:
+            ClaimAvailableAccount:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
               Next: CreateLease
