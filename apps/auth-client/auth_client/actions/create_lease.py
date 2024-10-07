@@ -19,8 +19,9 @@ valid_durations = {
 
 def create_lease(event, sso_client):
     params = event["params"]
-    account_id = params["account"]["account_id"]
+    account_id = params["account_id"]
     user_id = params["user_id"]
+    lease_id = params["lease_id"]
     duration_param = params["duration"]
 
     duration = valid_durations.get(duration_param, None)
@@ -42,5 +43,6 @@ def create_lease(event, sso_client):
     return {
         "account_id": account_id,
         "user_id": user_id,
+        "lease_id": lease_id,
         "expires": (datetime.now() + timedelta(minutes=duration)).isoformat()
     }
