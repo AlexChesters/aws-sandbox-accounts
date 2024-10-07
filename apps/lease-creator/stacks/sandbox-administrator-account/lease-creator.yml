@@ -103,12 +103,13 @@ Resources:
                 Payload:
                   action: create_lease
                   params:
-                    account.$: States.ArrayGetItem($, 0)
-                    user_id.$: $$.Execution.Input.user_id
+                    account_id.$: $.account_id
+                    user_id.$: $.user_id
+                    lease_id.$: $.lease_id
                     duration.$: $$.Execution.Input.duration
               ResultSelector:
                 result:
-                  lease_id.$: States.UUID()
+                  lease_id.$: $.Payload.lease_id
                   account_id.$: $.Payload.account_id
                   user_id.$: $.Payload.user_id
                   expires.$: $.Payload.expires
@@ -126,3 +127,7 @@ Resources:
                     account_id.$: $.account_id
                     user_id.$: $.user_id
                     expires.$: $.expires
+              ResultSelector:
+                result:
+                  account_id.$: $.Payload.account_id
+              OutputPath: $.result
