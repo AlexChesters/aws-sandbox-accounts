@@ -12,7 +12,9 @@ valid_durations = {
     "3h": 180,
     "6h": 360,
     "12h": 720,
-    "24h": 1440
+    "24h": 1440,
+    "3d": 4320,
+    "7d": 10080
 }
 
 def create_lease(event, sso_client):

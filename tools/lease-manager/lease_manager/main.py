@@ -37,7 +37,9 @@ durations = [
     ("3 hours", "3h"),
     ("6 hours", "6h"),
     ("12 hours", "12h"),
-    ("24 hours", "24h")
+    ("24 hours", "24h"),
+    ("3 days", "3d"),
+    ("7 days", "7d")
 ]
 
 answers = inquirer.prompt([
