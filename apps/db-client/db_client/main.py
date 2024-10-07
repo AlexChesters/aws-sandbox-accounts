@@ -8,7 +8,7 @@ from db_client.actions.fetch_dirty import fetch_dirty
 from db_client.actions.mark_as_available import mark_as_available
 from db_client.actions.mark_as_failed import mark_as_failed
 from db_client.actions.claim_available_account import claim_available_account
-from db_client.actions.write_lease import write_lease
+from db_client.actions.write_active_lease import write_active_lease
 from db_client.actions.fetch_expired_leases import fetch_expired_leases
 from db_client.actions.remove_leases import remove_leases
 
@@ -38,8 +38,8 @@ def handler(event, _context):
             return mark_as_failed(event, dynamodb, table_name)
         case "claim_available_account":
             return claim_available_account(event, dynamodb, table_name)
-        case "write_lease":
-            return write_lease(event, dynamodb, table_name)
+        case "write_active_lease":
+            return write_active_lease(event, dynamodb, table_name)
         case "fetch_expired_leases":
             return fetch_expired_leases(event, dynamodb, table_name)
         case "remove_leases":

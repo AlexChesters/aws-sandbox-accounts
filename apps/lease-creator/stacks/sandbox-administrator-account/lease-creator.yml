@@ -102,7 +102,7 @@ Resources:
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
                 Payload:
-                  action: write_lease
+                  action: write_active_lease
                   params:
                     lease_id.$: $.lease_id
                     account_id.$: $.account_id
