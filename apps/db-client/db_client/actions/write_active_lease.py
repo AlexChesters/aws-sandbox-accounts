@@ -43,7 +43,7 @@ def write_active_lease(event, dynamo_client, table_name):
         next(item for item in existing_data if item["pk"]["S"] == "lease_status#active")
     )
     pending_leases = LeaseStatus(
-        next(item for item in existing_data if item["pk"]["S"] == "lease_status#active")
+        next(item for item in existing_data if item["pk"]["S"] == "lease_status#pending")
     )
     leased_accounts = AccountStatus(
         next(item for item in existing_data if item["pk"]["S"] == "account_status#leased")
@@ -89,3 +89,7 @@ def write_active_lease(event, dynamo_client, table_name):
             }
         ]
     )
+
+    return {
+        "account_id": account_id
+    }
