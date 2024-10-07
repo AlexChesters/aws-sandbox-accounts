@@ -82,6 +82,15 @@ dynamodb.transact_write_items(
                         "data": []
                     })
                 }
+            },
+            {
+                "Put": {
+                    "TableName": table_name,
+                    "Item": serialise({
+                        "pk": "lease_status#pending",
+                        "data": []
+                    })
+                }
             }
         ]
     )
