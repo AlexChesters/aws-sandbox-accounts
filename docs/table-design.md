@@ -17,6 +17,7 @@ This document covers the single-table design for this system.
 | account_status#dirty        | [222222222222]                                                               |
 | account_status#failed       |                                                                              |
 | lease_status#active         | [abc123-def456]                                                              |
+| lease_status#pending        | []                                                                           |
 
 ## Access patterns
 - Listing all accounts in the pool, regardless of lease state
