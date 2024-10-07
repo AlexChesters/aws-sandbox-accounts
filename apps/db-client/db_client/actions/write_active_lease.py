@@ -30,6 +30,7 @@ def write_active_lease(event, dynamo_client, table_name):
             table_name: {
                 "Keys": [
                     python_to_dynamo({ "pk": "lease_status#active" }),
+                    python_to_dynamo({ "pk": "lease_status#pending" }),
                     python_to_dynamo({ "pk": "account_status#leased" })
                 ]
             }
@@ -41,11 +42,15 @@ def write_active_lease(event, dynamo_client, table_name):
     active_leases = LeaseStatus(
         next(item for item in existing_data if item["pk"]["S"] == "lease_status#active")
     )
+    pending_leases = LeaseStatus(
+        next(item for item in existing_data if item["pk"]["S"] == "lease_status#active")
+    )
     leased_accounts = AccountStatus(
         next(item for item in existing_data if item["pk"]["S"] == "account_status#leased")
     )
 
     active_leases.leases.add(lease_id)
+    pending_leases.leases.discard(lease_id)
     leased_accounts.accounts.add(account_id)
 
     dynamo_client.transact_write_items(
@@ -54,6 +59,12 @@ def write_active_lease(event, dynamo_client, table_name):
                 "Put": {
                     "TableName": table_name,
                     "Item": active_leases.to_dynamo()
+                }
+            },
+            {
+                "Put": {
+                    "TableName": table_name,
+                    "Item": pending_leases.to_dynamo()
                 }
             },
             {
