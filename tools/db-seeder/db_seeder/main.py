@@ -34,7 +34,7 @@ dynamodb.transact_write_items(
                     "TableName": table_name,
                     "Item": serialise({
                         "pk": "account_status#all",
-                        "data": ["905418121097"]
+                        "data": ["905418121097", "891377354273", "471112670300"]
                     })
                 }
             },
@@ -61,7 +61,7 @@ dynamodb.transact_write_items(
                     "TableName": table_name,
                     "Item": serialise({
                         "pk": "account_status#dirty",
-                        "data": ["905418121097"]
+                        "data": ["905418121097", "891377354273", "471112670300"]
                     })
                 }
             },
