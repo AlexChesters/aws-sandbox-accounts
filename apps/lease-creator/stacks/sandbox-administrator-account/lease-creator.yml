@@ -70,22 +70,12 @@ Resources:
             MarkAccountAsAvailable:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
-              Next: CleanAccount
+              Next: CreateLease
               Parameters:
                 FunctionName: !Sub "${Environment}-aws-sandbox-accounts-db-client"
                 Payload:
                   action: claim_available_account
               OutputPath: $.Payload
-            CleanAccount:
-              Type: Task
-              Resource: arn:aws:states:::states:startExecution.sync:2
-              Next: CreateLease
-              Parameters:
-                StateMachineArn: !Sub "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${Environment}-aws-sandbox-accounts-account-cleaner"
-                Input:
-                  accounts.$: States.Array($)
-                  mark_as_available: false
-              OutputPath: $.Output
             CreateLease:
               Type: Task
               Resource: arn:aws:states:::lambda:invoke
