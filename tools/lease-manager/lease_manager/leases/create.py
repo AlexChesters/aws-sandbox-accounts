@@ -4,6 +4,8 @@ import json
 
 import boto3
 
+from lease_manager.utils.step_function_status_poller import poll_for_step_function_status
+
 sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator")
 step_functions = sandbox_admin_session.client("stepfunctions")
 
@@ -19,18 +21,11 @@ def create_lease(user_id: str, user_display_name: str, duration: str):
 
     execution_arn = start_response["executionArn"]
 
-    while True:
-        describe_response = step_functions.describe_execution(executionArn=execution_arn)
-        status = describe_response["status"]
+    succeeded, final_status = poll_for_step_function_status(execution_arn)
 
-        match status:
-            case "RUNNING":
-                print("[INFO] - lease is pending creation, waiting 10 seconds")
-            case "SUCCEEDED":
-                print(f"[SUCCESS] - lease successfully created for {user_display_name}")
-                sys.exit(0)
-            case _:
-                print(f"[ERROR] - error creating lease: {status}")
-                sys.exit(1)
-
-        time.sleep(10)
+    if succeeded:
+        print(f"[SUCCESS] - lease successfully created for {user_display_name}")
+        sys.exit(0)
+    else:
+        print(f"[ERROR] - error creating lease: {final_status}")
+        sys.exit(1)
