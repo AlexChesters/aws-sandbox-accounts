@@ -118,6 +118,20 @@ runs = "*"
 xmod = "*"
 
 [[package]]
+name = "humanize"
+version = "4.11.0"
+description = "Python humanize utilities"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "humanize-4.11.0-py3-none-any.whl", hash = "sha256:b53caaec8532bcb2fff70c8826f904c35943f8cecaca29d272d9df38092736c0"},
+    {file = "humanize-4.11.0.tar.gz", hash = "sha256:e66f36020a2d5a974c504bd2555cf770621dbdbb6d82f94a6857c0b1ea2608be"},
+]
+
+[package.extras]
+tests = ["freezegun", "pytest", "pytest-cov"]
+
+[[package]]
 name = "inquirer"
 version = "3.3.0"
 description = "Collection of common interactive command line user interfaces, based on Inquirer.js"
@@ -410,4 +424,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "aee657ef4d034a18c7daf2da081f40ab7c7570d790eaa0ecf642c53ad04c887c"
+content-hash = "f4ec1bfd966800f8c18d3bdec672feb716ed541fa78c27c3fe5e6604f44566fd"

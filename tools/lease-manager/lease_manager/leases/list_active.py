@@ -1,6 +1,9 @@
+from datetime import datetime
+
 import boto3
 from rich.console import Console
 from rich.table import Table
+import humanize
 
 from lease_manager.utils.deserialise import deserialise
 
@@ -14,7 +17,13 @@ def _print_leases(leases):
     table.add_column("Expires")
 
     for lease in leases:
-        table.add_row(lease["user"], lease["account"], lease["expires"])
+        expiry_date = datetime.fromisoformat(lease["expires"])
+
+        table.add_row(
+            lease["user"],
+            lease["account"],
+            f"{expiry_date.isoformat()} ({humanize.naturaltime(expiry_date)})"
+        )
 
     console = Console()
     console.print(table)
