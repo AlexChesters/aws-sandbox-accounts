@@ -43,6 +43,9 @@ __global__:
   # ignore any service catalog infrastructure
   - property: tag:aws:servicecatalog:provisionedProductArn
     value: "ignore"
+  # ignore anything with the aws-nuke=ignore tag
+  - property: tag:aws-nuke
+    value: "ignore"
 
 presets:
   sso:
