@@ -25,32 +25,44 @@ for member in flat_results:
     )
     users.append((user_details["UserName"], user_details["UserId"]))
 
-durations = [
-    ("5 minutes", "5m"),
-    ("30 minutes", "30m"),
-    ("1 hour", "1h"),
-    ("3 hours", "3h"),
-    ("6 hours", "6h"),
-    ("12 hours", "12h"),
-    ("24 hours", "24h"),
-    ("3 days", "3d"),
-    ("7 days", "7d")
-]
-
-answers = inquirer.prompt([
+initial_answers = inquirer.prompt([
     inquirer.List(
-        "user",
-        message="Which user do you want to create a lease for?",
-        choices=users
-    ),
-    inquirer.List(
-        "duration",
-        message="How long should the lease last?",
-        choices=durations
+        "action",
+        message="What do you want to do?",
+        choices=[("Create a lease", "create"), ("List active leases", "list")]
     )
 ])
 
-chosen_user_display_name, chosen_user_id = next(user for user in users if user[1] == answers["user"])
-chosen_duration_display, chosen_duration_value = next(duration for duration in durations if duration[1] == answers["duration"])
+match initial_answers["action"]:
+    case "create":
+        durations = [
+            ("5 minutes", "5m"),
+            ("30 minutes", "30m"),
+            ("1 hour", "1h"),
+            ("3 hours", "3h"),
+            ("6 hours", "6h"),
+            ("12 hours", "12h"),
+            ("24 hours", "24h"),
+            ("3 days", "3d"),
+            ("7 days", "7d")
+        ]
 
-create_lease(chosen_user_id, chosen_user_display_name, chosen_duration_value)
+        create_answers = inquirer.prompt([
+            inquirer.List(
+                "user",
+                message="Which user do you want to create a lease for?",
+                choices=users
+            ),
+            inquirer.List(
+                "duration",
+                message="How long should the lease last?",
+                choices=durations
+            )
+        ])
+
+        chosen_user_display_name, chosen_user_id = next(user for user in users if user[1] == create_answers["user"])
+        chosen_duration_display, chosen_duration_value = next(duration for duration in durations if duration[1] == create_answers["duration"])
+
+        create_lease(chosen_user_id, chosen_user_display_name, chosen_duration_value)
+    case "list":
+        print("list")
