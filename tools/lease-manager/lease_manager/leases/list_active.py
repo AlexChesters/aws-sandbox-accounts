@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 import boto3
 from rich.console import Console
@@ -22,11 +22,17 @@ def _print_leases(leases):
         expiry_date = datetime.fromisoformat(lease_data["expires"])
         user = get_user_details(lease_data["user"])
 
+        expiry_iso = expiry_date.isoformat()
+        expiry_human = humanize.naturaltime(
+            expiry_date.replace(tzinfo=timezone.utc),
+            when=datetime.now(timezone.utc)
+        )
+
         table.add_row(
             lease_id,
             user["UserName"],
             lease_data["account"],
-            f"{expiry_date.isoformat()} ({humanize.naturaltime(expiry_date)})"
+            f"{expiry_iso} ({expiry_human})"
         )
 
     console = Console()
