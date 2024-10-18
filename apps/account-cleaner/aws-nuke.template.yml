@@ -39,6 +39,11 @@ resource-types:
     # service catalog products are managed centrally
     - ServiceCatalogProvisionedProduct
 
+__global__:
+  # ignore any service catalog infrastructure
+  - property: tag:aws:servicecatalog:provisionedProductArn
+    value: "ignore"
+
 presets:
   sso:
     filters:
