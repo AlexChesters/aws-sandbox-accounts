@@ -107,6 +107,10 @@ presets:
         - property: Name
           type: glob
           value: StackSet-*
+        # don't delete service catalog products
+        - property: Name
+          type: glob
+          value: SC-*
         # don't delete budgets
         - property: Name
           value: budget
