@@ -3,6 +3,7 @@ import inquirer
 
 from lease_manager.leases.create import create_lease
 from lease_manager.leases.list_active import list_active_leases
+from lease_manager.leases.invalidate import invalidate_lease
 from lease_manager.identities.user_details import get_user_details
 from lease_manager.utils.flatten import flatten
 
@@ -27,7 +28,11 @@ initial_answers = inquirer.prompt([
     inquirer.List(
         "action",
         message="What do you want to do?",
-        choices=[("Create a lease", "create"), ("List active leases", "list")]
+        choices=[
+            ("Create a lease", "create"),
+            ("Invalidate a lease", "invalidate"),
+            ("List active leases", "list")
+        ]
     )
 ])
 
@@ -62,5 +67,14 @@ match initial_answers["action"]:
         chosen_duration_display, chosen_duration_value = next(duration for duration in durations if duration[1] == create_answers["duration"])
 
         create_lease(chosen_user_id, chosen_user_display_name, chosen_duration_value)
+    case "invalidate":
+        invalidate_answers = inquirer.prompt([
+            inquirer.Text(
+                "lease_id",
+                message="Which lease do you want to invalidate?"
+            )
+        ])
+
+        invalidate_lease(invalidate_answers["lease_id"])
     case "list":
         list_active_leases()

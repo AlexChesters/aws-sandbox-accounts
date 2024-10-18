@@ -13,17 +13,19 @@ dynamo = sandbox_admin_session.client("dynamodb")
 
 def _print_leases(leases):
     table = Table(title="Active leases", show_header=True)
-    table.add_column("User ID")
+    table.add_column("Lease ID")
+    table.add_column("User")
     table.add_column("Account ID")
     table.add_column("Expires")
 
-    for lease in leases:
-        expiry_date = datetime.fromisoformat(lease["expires"])
-        user = get_user_details(lease["user"])
+    for lease_id, lease_data in leases.items():
+        expiry_date = datetime.fromisoformat(lease_data["expires"])
+        user = get_user_details(lease_data["user"])
 
         table.add_row(
+            lease_id,
             user["UserName"],
-            lease["account"],
+            lease_data["account"],
             f"{expiry_date.isoformat()} ({humanize.naturaltime(expiry_date)})"
         )
 
@@ -38,7 +40,7 @@ def list_active_leases():
     )
 
     active_leases = deserialise(active_leases_response)
-    active_leases_data = []
+    active_leases_data = {}
 
     for lease_id in active_leases["data"]:
         lease_response = dynamo.query(
@@ -47,6 +49,6 @@ def list_active_leases():
             ExpressionAttributeValues={":pk_val": {"S": f"lease_id#{lease_id}"}}
         )
 
-        active_leases_data.append(deserialise(lease_response)["data"])
+        active_leases_data[lease_id] = deserialise(lease_response)["data"]
 
     _print_leases(active_leases_data)
