@@ -39,11 +39,6 @@ resource-types:
     # service catalog products are managed centrally
     - ServiceCatalogProvisionedProduct
 
-__global__:
-  # ignore anything with the aws-nuke=ignore tag
-  - property: tag:aws-nuke
-    value: "ignore"
-
 presets:
   sso:
     filters:
@@ -130,6 +125,15 @@ presets:
       OSPackage:
         - type: glob
           value: "G*"
+  service_catalog_peroducts:
+    filters:
+      S3Bucket:
+        - Property: Name
+          type: glob
+          value: atc-terraform-backend-*
+      DynamoDBTable:
+        - Property: Name
+          value: atc-terraform-backend
 
 accounts:
   REPLACE_ME:
