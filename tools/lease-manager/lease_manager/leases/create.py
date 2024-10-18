@@ -5,7 +5,6 @@ import json
 import boto3
 
 sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator")
-
 step_functions = sandbox_admin_session.client("stepfunctions")
 
 def create_lease(user_id: str, user_display_name: str, duration: str):

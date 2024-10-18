@@ -3,6 +3,7 @@ import inquirer
 
 from lease_manager.utils.flatten import flatten
 from lease_manager.leases.create import create_lease
+from lease_manager.leases.list_active import list_active_leases
 
 management_session = boto3.Session(profile_name="management")
 
@@ -65,4 +66,4 @@ match initial_answers["action"]:
 
         create_lease(chosen_user_id, chosen_user_display_name, chosen_duration_value)
     case "list":
-        print("list")
+        list_active_leases()
