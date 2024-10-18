@@ -1,12 +1,12 @@
 import boto3
 import inquirer
 
-from lease_manager.utils.flatten import flatten
 from lease_manager.leases.create import create_lease
 from lease_manager.leases.list_active import list_active_leases
+from lease_manager.identities.user_details import get_user_details
+from lease_manager.utils.flatten import flatten
 
 management_session = boto3.Session(profile_name="management")
-
 identity_store = management_session.client("identitystore")
 
 list_group_memberships_paginator = identity_store.get_paginator("list_group_memberships")
@@ -20,10 +20,7 @@ flat_results = flatten(result["GroupMemberships"] for result in results)
 users = []
 
 for member in flat_results:
-    user_details = identity_store.describe_user(
-        IdentityStoreId="d-93677ee9b2",
-        UserId=member["MemberId"]["UserId"]
-    )
+    user_details = get_user_details(member["MemberId"]["UserId"])
     users.append((user_details["UserName"], user_details["UserId"]))
 
 initial_answers = inquirer.prompt([

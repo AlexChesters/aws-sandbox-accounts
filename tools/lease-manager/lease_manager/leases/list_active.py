@@ -6,6 +6,7 @@ from rich.table import Table
 import humanize
 
 from lease_manager.utils.deserialise import deserialise
+from lease_manager.identities.user_details import get_user_details
 
 sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator")
 dynamo = sandbox_admin_session.client("dynamodb")
@@ -18,9 +19,10 @@ def _print_leases(leases):
 
     for lease in leases:
         expiry_date = datetime.fromisoformat(lease["expires"])
+        user = get_user_details(lease["user"])
 
         table.add_row(
-            lease["user"],
+            user["UserName"],
             lease["account"],
             f"{expiry_date.isoformat()} ({humanize.naturaltime(expiry_date)})"
         )
