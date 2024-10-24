@@ -40,6 +40,11 @@ resource-types:
     - ServiceCatalogProvisionedProduct
 
 presets:
+  nuke_ignore_tag:
+    filters:
+      __global__:
+        - property: tag:aws-nuke
+          value: "ignore"
   sso:
     filters:
       IAMSAMLProvider:
@@ -138,6 +143,7 @@ presets:
 accounts:
   REPLACE_ME:
     presets:
+      - "nuke_ignore_tag"
       - "sso"
       - "organisation"
       - "aws_things_that_cannot_be_deleted"
