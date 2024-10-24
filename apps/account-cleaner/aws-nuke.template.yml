@@ -36,7 +36,7 @@ resource-types:
     - EC2Subnet
     - EC2DHCPOption
     - EC2InternetGatewayAttachment
-    # service catalog products are managed centrally
+    # service catalog products are managed centrally for sandbox accounts
     - ServiceCatalogProvisionedProduct
 
 presets:
