@@ -130,15 +130,6 @@ presets:
       OSPackage:
         - type: glob
           value: "G*"
-  service_catalog_peroducts:
-    filters:
-      S3Bucket:
-        - Property: Name
-          type: glob
-          value: atc-terraform-backend-*
-      DynamoDBTable:
-        - Property: Name
-          value: atc-terraform-backend
 
 accounts:
   REPLACE_ME:
