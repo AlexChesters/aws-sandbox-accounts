@@ -4,7 +4,7 @@ phases:
   build:
     commands:
       - cd apps/account-cleaner
-      - curl --location "https://github.com/ekristen/aws-nuke/releases/download/v3.28.0/aws-nuke-v3.28.0-linux-arm64.tar.gz" -o aws-nuke.tar.gz
+      - curl --location "https://github.com/ekristen/aws-nuke/releases/download/v3.29.1/aws-nuke-v3.29.1-linux-arm64.tar.gz" -o aws-nuke.tar.gz
       - tar -xvf aws-nuke.tar.gz
       - echo "running aws-nuke against $ACCOUNT_ID"
       - # TODO: validate against list of known sandbox accounts, either here or in the step function itself
