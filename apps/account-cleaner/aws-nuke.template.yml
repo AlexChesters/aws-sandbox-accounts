@@ -38,6 +38,8 @@ resource-types:
     - EC2InternetGatewayAttachment
     # service catalog products are managed centrally for sandbox accounts
     - ServiceCatalogProvisionedProduct
+    # not sure what OSPackage is but aws-nuke struggles to delete them
+    - OSPackage
 
 presets:
   nuke_ignore_tag:
@@ -125,11 +127,6 @@ presets:
         - audit-trail
       SNSTopic:
         - notification-topic
-  aws_things_that_cannot_be_deleted:
-    filters:
-      OSPackage:
-        - type: glob
-          value: "G*"
 
 accounts:
   REPLACE_ME:
@@ -137,4 +134,3 @@ accounts:
       - "nuke_ignore_tag"
       - "sso"
       - "organisation"
-      - "aws_things_that_cannot_be_deleted"
