@@ -74,6 +74,9 @@ presets:
         # horatio
         - type: glob
           value: "horatio-*"
+        # aws-accounts-lifecycle
+        - type: glob
+          value: aws-accounts-lifecyle-*
         # default-vpc-deleter
         - type: glob
           value: "default-vpc-deleter-*"
