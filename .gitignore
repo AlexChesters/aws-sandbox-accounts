@@ -169,3 +169,6 @@ apps/account-manager/aws-nuke.yml
 
 # python deps
 apps/*/deps
+
+# emacs backup files
+*~

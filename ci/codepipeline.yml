@@ -78,8 +78,16 @@ Resources:
                   Includes:
                     - !Ref Branch
                 FilePaths:
-                  Excludes:
-                    - ci/lambda-build-image/**
+                  Includes:
+                    - apps/account-cleaner/**
+                    - apps/account-manager/**
+                    - apps/auth-client/**
+                    - apps/db-client/**
+                    - apps/lease-creator/**
+                    - apps/lease-janitor/**
+                    - common-resources/sandbox-administrator-account/**
+                    # TODO: trigger builds on interfaces when ready
+                    # - apps/interface/**
       Stages:
         - Name: Source
           Actions:
