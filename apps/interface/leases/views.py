@@ -1,4 +1,6 @@
 from django.http import HttpResponse
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the leases index.")
+    message = "Hello, world. You're at the leases index."
+
+    return HttpResponse(message)
