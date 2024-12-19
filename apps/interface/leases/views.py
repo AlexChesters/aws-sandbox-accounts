@@ -1,8 +1,12 @@
+import logging
+
 from django.http import HttpRequest
 from django.shortcuts import render
 import boto3
 
 from leases.utils.deserialise import deserialise
+
+logger = logging.getLogger(__name__)
 
 sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator")
 dynamo = sandbox_admin_session.client("dynamodb")
@@ -14,8 +18,12 @@ def index(request: HttpRequest):
         ExpressionAttributeValues={":pk_val": {"S": "lease_status#active"}}
     )
 
-    active_leases = deserialise(active_leases_response)
+    active_leases = deserialise(active_leases_response)["data"]
 
-    print(active_leases)
+    context = {
+        "active_leases": active_leases
+    }
 
-    return render(request, "leases/index.html", {})
+    logger.info(context)
+
+    return render(request, "leases/index.html", context)
