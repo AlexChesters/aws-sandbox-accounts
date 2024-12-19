@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+from django.http import HttpRequest
+from django.shortcuts import render
 import boto3
 
 from leases.utils.deserialise import deserialise
@@ -6,7 +7,7 @@ from leases.utils.deserialise import deserialise
 sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator")
 dynamo = sandbox_admin_session.client("dynamodb")
 
-def index(request):
+def index(request: HttpRequest):
     active_leases_response = dynamo.query(
         TableName="test-aws-sandbox-accounts-account-pool",
         KeyConditionExpression="pk = :pk_val",
@@ -17,4 +18,4 @@ def index(request):
 
     print(active_leases)
 
-    return HttpResponse("Hello, world!")
+    return render(request, "leases/index.html", {})
