@@ -18,12 +18,24 @@ def index(request: HttpRequest):
         ExpressionAttributeValues={":pk_val": {"S": "lease_status#active"}}
     )
 
-    active_leases = deserialise(active_leases_response)["data"]
+    active_leases = []
+
+    for lease_id in deserialise(active_leases_response)["data"]:
+        lease_response = dynamo.query(
+            TableName="test-aws-sandbox-accounts-account-pool",
+            KeyConditionExpression="pk = :pk_val",
+            ExpressionAttributeValues={":pk_val": {"S": f"lease_id#{lease_id}"}}
+        )
+
+        lease_data = deserialise(lease_response)["data"]
+        lease_data["lease_id"] = lease_id
+
+        active_leases.append(lease_data)
 
     context = {
         "active_leases": active_leases
     }
 
-    logger.info(context)
+    logger.info({"message": "leases index context", "data": context})
 
     return render(request, "leases/index.html", context)
