@@ -17,7 +17,7 @@
       {% for lease in active_leases %}
       <tr>
         <td>{{ lease.account }}</td>
-        <td>{{ lease.user.UserName }}</td>
+        <td>{{ lease.user }}</td>
         <td>{{ lease.expires }}</td>
         <td>{{ lease.lease_id }}</td>
       </tr>
