@@ -5,6 +5,7 @@ from django.shortcuts import render
 import boto3
 
 from leases.utils.deserialise import deserialise
+from leases.utils.get_user_details import get_user_details
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,11 @@ def index(request: HttpRequest):
             ExpressionAttributeValues={":pk_val": {"S": f"lease_id#{lease_id}"}}
         )
 
-        lease_data = deserialise(lease_response)["data"]
+        lease_raw_data = deserialise(lease_response)["data"]
+
+        lease_data = lease_raw_data
+
+        lease_data["user"] = get_user_details(lease_raw_data["user"])
         lease_data["lease_id"] = lease_id
 
         active_leases.append(lease_data)
