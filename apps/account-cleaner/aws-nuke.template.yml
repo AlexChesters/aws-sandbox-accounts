@@ -28,18 +28,12 @@ resource-types:
   excludes:
     # Let the S3Bucket delete all Objects instead of individual objects (optimization)
     - S3Object
-    # some VPC resources that exist in the networking account but are shared with sandbox accounts
-    # an SCP prevents creating new ones in sandbox accounts
-    - EC2InternetGateway
-    - EC2VPC
-    - EC2RouteTable
-    - EC2Subnet
-    - EC2DHCPOption
-    - EC2InternetGatewayAttachment
     # service catalog products are managed centrally for sandbox accounts
     - ServiceCatalogProvisionedProduct
     # not sure what OSPackage is but aws-nuke struggles to delete them
     - OSPackage
+    # don't delete security group rules individually
+    - EC2DefaultSecurityGroupRule
 
 presets:
   nuke_ignore_tag:
