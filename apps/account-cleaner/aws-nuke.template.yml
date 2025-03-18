@@ -47,6 +47,11 @@ presets:
       __global__:
         - property: tag:aws-nuke
           value: "ignore"
+  service_catalog_autotag:
+    filters:
+      __global__:
+        - property: tag:aws:servicecatalog:portfolioArn
+          value: "*"
   sso:
     filters:
       IAMSAMLProvider:
@@ -137,3 +142,4 @@ accounts:
       - "nuke_ignore_tag"
       - "sso"
       - "organisation"
+      - "service_catalog_autotag"
