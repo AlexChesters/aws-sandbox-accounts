@@ -136,8 +136,6 @@ Resources:
       Statistic: Sum
       Threshold: 0
       ActionsEnabled: true
-      AlarmActions:
-        - !ImportValue notification-topic-arn
       Dimensions:
         - Name: StateMachineArn
           Value: !Ref StateMachine
