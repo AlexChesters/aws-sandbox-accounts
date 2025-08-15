@@ -1,0 +1,36 @@
+{
+	"name": "AWS Sandbox Accounts",
+	// workaround for being unable to specify a custom tag easily
+	// https://github.com/microsoft/vscode-remote-release/issues/3650
+	"initializeCommand": "docker build -f .devcontainer/Dockerfile -t devcontainer-aws-sandbox-accounts:latest .",
+	"image": "devcontainer-aws-sandbox-accounts:latest",
+	"runArgs": [
+		"--name",
+		"vscode-devcontainer_aws-sandbox-accounts",
+		// https://github.com/aws/aws-cli/issues/9148
+		"--network=host"
+	],
+	"mounts": [
+		"type=bind,source=${localEnv:HOME}/.aws/personal.config,target=/root/.aws/config",
+		"type=bind,source=${localEnv:HOME}/.aws/sso,target=/root/.aws/sso"
+	],
+	"customizations": {
+		"vscode": {
+			"settings": {
+    		"python.defaultInterpreterPath": "/usr/local/bin/python",
+				"extensions.verifySignature": false,
+				"terminal.integrated.enablePersistentSessions": false
+			},
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.black-formatter",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				"docker.docker",
+				"charliermarsh.ruff",
+				"kddejong.vscode-cfn-lint"
+			]
+		}
+	}
+}
