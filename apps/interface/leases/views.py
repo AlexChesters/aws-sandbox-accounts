@@ -11,7 +11,7 @@ from leases.utils.get_user_details import get_user_details
 
 logger = logging.getLogger(__name__)
 
-sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator")
+sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator", region_name="eu-west-1")
 dynamo = sandbox_admin_session.client("dynamodb")
 
 def index(request: HttpRequest):

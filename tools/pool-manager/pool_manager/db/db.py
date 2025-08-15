@@ -6,7 +6,7 @@ from pool_manager.models.account import Account
 
 class DBClient:
     def __init__(self):
-        session = boto3.Session(profile_name="sandbox-administrator")
+        session = boto3.Session(profile_name="sandbox-administrator", region_name="eu-west-1")
         self.dynamo = session.client("dynamodb")
         self.table_name = "test-aws-sandbox-accounts-account-pool"
         self.deserializer = TypeDeserializer()

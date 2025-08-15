@@ -2,7 +2,7 @@ import time
 
 import boto3
 
-sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator")
+sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator", region_name="eu-west-1")
 step_functions = sandbox_admin_session.client("stepfunctions")
 
 def poll_for_step_function_status(execution_arn: str) -> int:

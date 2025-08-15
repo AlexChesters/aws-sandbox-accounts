@@ -7,7 +7,7 @@ from lease_manager.leases.invalidate import invalidate_lease
 from lease_manager.identities.user_details import get_user_details
 from lease_manager.utils.flatten import flatten
 
-management_session = boto3.Session(profile_name="management")
+management_session = boto3.Session(profile_name="management", region_name="eu-west-1")
 identity_store = management_session.client("identitystore")
 
 list_group_memberships_paginator = identity_store.get_paginator("list_group_memberships")

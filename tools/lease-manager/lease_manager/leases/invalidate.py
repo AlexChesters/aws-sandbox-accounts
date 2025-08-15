@@ -7,7 +7,7 @@ from lease_manager.utils.deserialise import deserialise
 from lease_manager.utils.serialise import serialise
 from lease_manager.utils.step_function_status_poller import poll_for_step_function_status
 
-sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator")
+sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator", region_name="eu-west-1")
 dynamo = sandbox_admin_session.client("dynamodb")
 step_functions = sandbox_admin_session.client("stepfunctions")
 

@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--table-name", required=True)
 args = parser.parse_args()
 
-session = boto3.Session(profile_name="sandbox-administrator")
+session = boto3.Session(profile_name="sandbox-administrator", region_name="eu-west-1")
 dynamodb = session.client("dynamodb")
 table_name = args.table_name
 

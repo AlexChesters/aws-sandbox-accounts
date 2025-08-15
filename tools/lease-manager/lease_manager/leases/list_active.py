@@ -8,7 +8,7 @@ import humanize
 from lease_manager.utils.deserialise import deserialise
 from lease_manager.identities.user_details import get_user_details
 
-sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator")
+sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator", region_name="eu-west-1")
 dynamo = sandbox_admin_session.client("dynamodb")
 
 def _print_leases(leases):

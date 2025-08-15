@@ -6,7 +6,7 @@ import boto3
 
 from lease_manager.utils.step_function_status_poller import poll_for_step_function_status
 
-sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator")
+sandbox_admin_session = boto3.Session(profile_name="sandbox-administrator", region_name="eu-west-1")
 step_functions = sandbox_admin_session.client("stepfunctions")
 
 def create_lease(user_id: str, user_display_name: str, duration: str):
