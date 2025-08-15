@@ -126,6 +126,9 @@ presets:
         # don't delete budgets
         - property: Name
           value: budget
+        # don't delete dns
+        - property: Name
+          value: dns
       CloudTrailTrail:
         - audit-trail
       SNSTopic:
