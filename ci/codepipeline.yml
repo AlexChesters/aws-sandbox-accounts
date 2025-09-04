@@ -86,6 +86,8 @@ Resources:
                     - apps/lease-creator/**
                     - apps/lease-janitor/**
                     - common-resources/sandbox-administrator-account/**
+                    # TODO: trigger builds on interfaces when ready
+                    # - apps/interface/**
       Stages:
         - Name: Source
           Actions:
