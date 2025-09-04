@@ -32,3 +32,5 @@ Resources:
             - IsTest
             - "walter@cheste.rs"
             - "alex@cheste.rs"
+        - Key: ExportNamePrefix
+          Value: !Ref Environment
