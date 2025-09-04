@@ -40,7 +40,7 @@ def _print_leases(leases):
 
 def list_active_leases():
     active_leases_response = dynamo.query(
-        TableName="test-aws-sandbox-accounts-account-pool",
+        TableName="live-aws-sandbox-accounts-account-pool",
         KeyConditionExpression="pk = :pk_val",
         ExpressionAttributeValues={":pk_val": {"S": "lease_status#active"}}
     )
@@ -50,7 +50,7 @@ def list_active_leases():
 
     for lease_id in active_leases["data"]:
         lease_response = dynamo.query(
-            TableName="test-aws-sandbox-accounts-account-pool",
+            TableName="live-aws-sandbox-accounts-account-pool",
             KeyConditionExpression="pk = :pk_val",
             ExpressionAttributeValues={":pk_val": {"S": f"lease_id#{lease_id}"}}
         )

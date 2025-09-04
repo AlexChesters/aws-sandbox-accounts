@@ -13,7 +13,7 @@ step_functions = sandbox_admin_session.client("stepfunctions")
 
 def invalidate_lease(lease_id: str):
     lease_response = dynamo.query(
-        TableName="test-aws-sandbox-accounts-account-pool",
+        TableName="live-aws-sandbox-accounts-account-pool",
         KeyConditionExpression="pk = :pk_val",
         ExpressionAttributeValues={":pk_val": {"S": f"lease_id#{lease_id}"}}
     )
@@ -23,7 +23,7 @@ def invalidate_lease(lease_id: str):
     lease["data"]["expires"] = (datetime.now(timezone.utc) - timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]
 
     dynamo.put_item(
-        TableName="test-aws-sandbox-accounts-account-pool",
+        TableName="live-aws-sandbox-accounts-account-pool",
         Item={
             "pk": {"S": f"lease_id#{lease_id}"},
             "data": {"M": serialise(lease["data"])}
@@ -33,8 +33,7 @@ def invalidate_lease(lease_id: str):
     print(f"[INFO] - database has been updated, starting janitor step function")
 
     start_response = step_functions.start_execution(
-        # TODO: use live when it is ready
-        stateMachineArn="arn:aws:states:eu-west-1:654654632738:stateMachine:test-aws-sandbox-accounts-lease-janitor",
+        stateMachineArn="arn:aws:states:eu-west-1:654654632738:stateMachine:live-aws-sandbox-accounts-lease-janitor",
     )
 
     execution_arn = start_response["executionArn"]

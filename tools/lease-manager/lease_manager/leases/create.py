@@ -11,8 +11,7 @@ step_functions = sandbox_admin_session.client("stepfunctions")
 
 def create_lease(user_id: str, user_display_name: str, duration: str):
     start_response = step_functions.start_execution(
-        # TODO: use live when it is ready
-        stateMachineArn="arn:aws:states:eu-west-1:654654632738:stateMachine:test-aws-sandbox-accounts-lease-creator",
+        stateMachineArn="arn:aws:states:eu-west-1:654654632738:stateMachine:live-aws-sandbox-accounts-lease-creator",
         input=json.dumps({
             "user_id": user_id,
             "duration": duration
