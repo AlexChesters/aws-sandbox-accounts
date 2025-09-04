@@ -40,6 +40,10 @@ ENV PATH="$PATH:/root/.local/bin"
 RUN poetry config virtualenvs.options.always-copy true
 RUN poetry config virtualenvs.in-project true
 
+# install nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+RUN apt-get install -y nodejs
+
 # configure bash aliases
 RUN echo "alias ls='ls -alh'" >> /root/.bashrc
 RUN echo "alias gco='git checkout'" >> /root/.bashrc
