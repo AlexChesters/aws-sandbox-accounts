@@ -1,8 +1,8 @@
 set -e
 
-aws cloudformation deploy \
-  --template-file ci/codepipeline.yml \
-  --stack-name codepipeline-aws-sandbox-accounts \
-  --capabilities CAPABILITY_IAM \
+rain deploy \
+  ci/codepipeline.yml \
+  codepipeline-aws-sandbox-accounts \
+  --yes \
   --region eu-west-1 \
   --profile sandbox-administrator
