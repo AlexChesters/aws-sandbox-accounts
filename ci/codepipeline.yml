@@ -155,6 +155,22 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/user-pool/user-pool.yml
                 TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/user-pool/parameters/test.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuiltSource
+              RunOrder: 1
+              Name: DNS
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-dns
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/dns/dns.yml
+                TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/dns/parameters/test.json
         - Name: Deploy-Apps-To-Test
           Actions:
             - ActionTypeId:
@@ -287,6 +303,22 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/user-pool/user-pool.yml
                 TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/user-pool/parameters/live.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuiltSource
+              RunOrder: 1
+              Name: DNS
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-dns
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/dns/dns.yml
+                TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/dns/parameters/live.json
         - Name: Deploy-Apps-To-Live
           Actions:
             - ActionTypeId:
