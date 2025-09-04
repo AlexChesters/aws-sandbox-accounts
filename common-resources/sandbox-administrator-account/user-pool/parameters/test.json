@@ -1,0 +1,10 @@
+{
+  "Parameters": {
+    "Environment": "test",
+    "ArtifactId": "pa-sh4mlzj3j56yi"
+  },
+  "Tags": {
+    "Project": "aws-sandbox-accounts",
+    "Environment": "live"
+  }
+}

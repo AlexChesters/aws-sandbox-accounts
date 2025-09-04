@@ -1,0 +1,34 @@
+Description: user pool
+Parameters:
+  Environment:
+    Description: The infrastructure environment
+    Type: String
+    AllowedValues:
+      - test
+      - live
+  ArtifactId:
+    Description: The artifact id
+    Type: String
+Conditions:
+  IsTest: !Equals [!Ref Environment, test]
+Resources:
+  UserPool:
+    Type: AWS::ServiceCatalog::CloudFormationProvisionedProduct
+    Properties:
+      ProductId: prod-3t5ume4gyzufa
+      ProvisionedProductName: !Sub "${Environment}-user-pool"
+      ProvisioningArtifactId: !Ref ArtifactId
+      ProvisioningParameters:
+        - Key: DeletionPolicy
+          Value: Delete
+        - Key: UpdateReplacePolicy
+          Value: Delete
+        - Key: UserPoolName
+          Value: !Sub "${Environment}-user-pool"
+        - Key: AllowAdminCreateUserOnly
+          Value: "true"
+        - Key: EmailAddresses
+          Value: !If
+            - IsTest
+            - "walter@cheste.rs"
+            - "alex@cheste.rs"
