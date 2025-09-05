@@ -1,10 +1,10 @@
 import { useAuth } from 'react-oidc-context'
 
-import type { Route } from "./+types/home"
+import type { Route } from './+types/home'
 
 export function meta(_: Route.MetaArgs) {
   return [
-    { title: "AWS Sandbox Accounts" }
+    { title: 'AWS Sandbox Accounts' }
   ]
 }
 
