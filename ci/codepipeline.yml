@@ -129,7 +129,6 @@ Resources:
                 - Name: GitHubSource
               OutputArtifacts:
                 - Name: BuildArtifact
-                - Name: InterfaceArtifact
               RunOrder: 1
               Name: Build
               Configuration:
@@ -307,7 +306,7 @@ Resources:
                 Version: "1"
                 Provider: CodeBuild
               InputArtifacts:
-                - Name: InterfaceArtifact
+                - Name: BuildArtifact
               OutputArtifacts:
                 - Name: TestDeployArtifact
               RunOrder: 2
@@ -492,7 +491,7 @@ Resources:
                 Version: "1"
                 Provider: CodeBuild
               InputArtifacts:
-                - Name: InterfaceArtifact
+                - Name: BuildArtifact
               OutputArtifacts:
                 - Name: LiveDeployArtifact
               RunOrder: 2
