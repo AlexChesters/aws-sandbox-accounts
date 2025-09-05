@@ -11,6 +11,12 @@ Parameters:
     Type: String
 Conditions:
   IsTest: !Equals [!Ref Environment, test]
+Mappings:
+  EnvMap:
+    test:
+      DomainName: test.sandbox.alexchesters.com
+    live:
+      DomainName: sandbox.alexchesters.com
 Resources:
   UserPool:
     Type: AWS::ServiceCatalog::CloudFormationProvisionedProduct
@@ -34,3 +40,12 @@ Resources:
             - "alex@cheste.rs"
         - Key: ExportNamePrefix
           Value: !Ref Environment
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: !Sub
+        - "auth.${Domain}"
+        - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
+      CustomDomainConfig:
+        CertificateArn: TODO
+      UserPoolId: !GetAtt UserPool.Outputs.UserPoolId
