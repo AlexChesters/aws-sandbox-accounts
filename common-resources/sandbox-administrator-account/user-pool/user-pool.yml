@@ -15,8 +15,10 @@ Mappings:
   EnvMap:
     test:
       DomainName: test.sandbox.alexchesters.com
+      CertificateArn: arn:aws:acm:us-east-1:654654632738:certificate/70256477-fc21-4c14-8221-5418dead7355
     live:
       DomainName: sandbox.alexchesters.com
+      CertificateArn: arn:aws:acm:us-east-1:654654632738:certificate/6c88683f-84d6-40ea-a1e2-64cf3e9be287
 Resources:
   UserPool:
     Type: AWS::ServiceCatalog::CloudFormationProvisionedProduct
@@ -47,5 +49,5 @@ Resources:
         - "auth.${Domain}"
         - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
       CustomDomainConfig:
-        CertificateArn: TODO
+        CertificateArn: !FindInMap [EnvMap, !Ref Environment, CertificateArn]
       UserPoolId: !GetAtt UserPool.Outputs.UserPoolId
