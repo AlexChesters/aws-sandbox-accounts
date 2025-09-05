@@ -1,13 +1,21 @@
+import { useAuth } from 'react-oidc-context';
+
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "AWS Sandbox Accounts" }
   ];
 }
 
 export default function Home() {
-  return <Welcome />;
+  const auth = useAuth();
+
+  console.log(auth)
+
+  return (
+    <main>
+      <h1>Hello, world!</h1>
+    </main>
+  );
 }
