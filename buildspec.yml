@@ -6,6 +6,10 @@ phases:
       python: 3.11
   build:
     commands:
+      # install poetry
+      - dnf install -y python3-pip
+      - python3 -m pip install --user pipx
+      - /root/.local/bin/pipx install poetry==2.1.4
       # db-client
       - cd apps/db-client
       - make test
