@@ -29,7 +29,8 @@ RUN mv ./rain-v1.23.0_linux-arm64/rain /usr/local/bin/rain
 # install python
 RUN add-apt-repository ppa:deadsnakes/ppa -y && \
     apt-get update -y && \
-    apt-get install -y python3.13 python3.13-venv python3.13-dev python3-pip
+    apt-get install -y python3.11 python3.11-venv python3.11-dev python3-pip
+RUN python3.11 -m pip install --upgrade pip
 
 # install cfn-lint
 RUN pip install cfn-lint

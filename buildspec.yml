@@ -5,12 +5,8 @@ phases:
     commands:
       # db-client
       - cd apps/db-client
-      # TODO: run tests (will need to handle installing dev dependencies)
-      - pip install -r requirements.prod.txt -t deps
-      - mkdir build
-      - cp -R deps/* build/
-      - cp -R db_client/ build/
-      - aws cloudformation package --template-file stacks/sandbox-administrator-account/db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/db-client --output-template-file stacks/sandbox-administrator-account/db-client.yml
+      - make test
+      - make package
       - cd ../..
       # auth-client
       - cd apps/auth-client
