@@ -31,7 +31,11 @@ phases:
 artifacts:
   files: "**/*"
   secondary-artifacts:
-    interface:
+    BuildArtifact:
+      files: "**/*"
+      base-directory: .
+      discard-paths: no
+    InterfaceArtifact:
       files: "**/*"
       base-directory: apps/interface/build
       discard-paths: no

@@ -94,7 +94,7 @@ Resources:
                 FullRepositoryId: AlexChesters/aws-sandbox-accounts
                 BranchName: main
                 OutputArtifactFormat: CODE_ZIP
-        - Name: Build-Lambdas
+        - Name: Build
           Actions:
             - ActionTypeId:
                 Category: Build
@@ -104,9 +104,10 @@ Resources:
               InputArtifacts:
                 - Name: GitHubSource
               OutputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
+                - Name: InterfaceArtifact
               RunOrder: 1
-              Name: Build-Lambdas
+              Name: Build
               Configuration:
                 ProjectName: !Ref CodeBuildProject
         - Name: Deploy-Common-Resources-To-Test
@@ -117,7 +118,7 @@ Resources:
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Pool-Store
               Configuration:
@@ -125,15 +126,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-pool-store
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/pool-store/pool-store.yml
-                TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/pool-store/parameters/test.json
+                TemplatePath: BuildArtifact::common-resources/sandbox-administrator-account/pool-store/pool-store.yml
+                TemplateConfiguration: BuildArtifact::common-resources/sandbox-administrator-account/pool-store/parameters/test.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: User-Pool
               Configuration:
@@ -141,15 +142,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-user-pool
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/user-pool/user-pool.yml
-                TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/user-pool/parameters/test.json
+                TemplatePath: BuildArtifact::common-resources/sandbox-administrator-account/user-pool/user-pool.yml
+                TemplateConfiguration: BuildArtifact::common-resources/sandbox-administrator-account/user-pool/parameters/test.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: DNS
               Region: us-east-1
@@ -158,8 +159,8 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-dns
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/dns/dns.yml
-                TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/dns/parameters/test.json
+                TemplatePath: BuildArtifact::common-resources/sandbox-administrator-account/dns/dns.yml
+                TemplateConfiguration: BuildArtifact::common-resources/sandbox-administrator-account/dns/parameters/test.json
         - Name: Deploy-Apps-To-Test
           Actions:
             - ActionTypeId:
@@ -168,7 +169,7 @@ Resources:
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Account-Cleaner
               Configuration:
@@ -176,15 +177,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-account-cleaner
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/account-cleaner/stacks/sandbox-administrator-account/account-cleaner.yml
-                TemplateConfiguration: BuiltSource::apps/account-cleaner/stacks/sandbox-administrator-account/parameters/account-cleaner/test.json
+                TemplatePath: BuildArtifact::apps/account-cleaner/stacks/sandbox-administrator-account/account-cleaner.yml
+                TemplateConfiguration: BuildArtifact::apps/account-cleaner/stacks/sandbox-administrator-account/parameters/account-cleaner/test.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Account-Manager
               Configuration:
@@ -192,15 +193,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-account-manager
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/account-manager.yml
-                TemplateConfiguration: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/parameters/account-manager/test.json
+                TemplatePath: BuildArtifact::apps/account-manager/stacks/sandbox-administrator-account/account-manager.yml
+                TemplateConfiguration: BuildArtifact::apps/account-manager/stacks/sandbox-administrator-account/parameters/account-manager/test.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Lease-Creator
               Configuration:
@@ -208,15 +209,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-lease-creator
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/lease-creator.yml
-                TemplateConfiguration: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/parameters/lease-creator/test.json
+                TemplatePath: BuildArtifact::apps/lease-creator/stacks/sandbox-administrator-account/lease-creator.yml
+                TemplateConfiguration: BuildArtifact::apps/lease-creator/stacks/sandbox-administrator-account/parameters/lease-creator/test.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Lease-Janitor
               Configuration:
@@ -224,15 +225,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-lease-janitor
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/lease-janitor/stacks/sandbox-administrator-account/lease-janitor.yml
-                TemplateConfiguration: BuiltSource::apps/lease-janitor/stacks/sandbox-administrator-account/parameters/lease-janitor/test.json
+                TemplatePath: BuildArtifact::apps/lease-janitor/stacks/sandbox-administrator-account/lease-janitor.yml
+                TemplateConfiguration: BuildArtifact::apps/lease-janitor/stacks/sandbox-administrator-account/parameters/lease-janitor/test.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: DB-Client
               Configuration:
@@ -240,15 +241,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-db-client
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/db-client/stacks/sandbox-administrator-account/db-client.yml
-                TemplateConfiguration: BuiltSource::apps/db-client/stacks/sandbox-administrator-account/parameters/db-client/test.json
+                TemplatePath: BuildArtifact::apps/db-client/stacks/sandbox-administrator-account/db-client.yml
+                TemplateConfiguration: BuildArtifact::apps/db-client/stacks/sandbox-administrator-account/parameters/db-client/test.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Auth-Client
               Configuration:
@@ -256,8 +257,8 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-auth-client
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/auth-client.yml
-                TemplateConfiguration: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/parameters/auth-client/test.json
+                TemplatePath: BuildArtifact::apps/auth-client/stacks/sandbox-administrator-account/auth-client.yml
+                TemplateConfiguration: BuildArtifact::apps/auth-client/stacks/sandbox-administrator-account/parameters/auth-client/test.json
         - Name: Deploy-Interface-To-Test
           Actions:
             - ActionTypeId:
@@ -266,7 +267,7 @@ Resources:
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Interface
               Configuration:
@@ -274,8 +275,20 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-interface
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/interface/stacks/sandbox-administrator-account/interface.yml
-                TemplateConfiguration: BuiltSource::apps/interface/stacks/sandbox-administrator-account/parameters/interface/test.json
+                TemplatePath: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/interface.yml
+                TemplateConfiguration: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/parameters/interface/test.json
+            # - ActionTypeId:
+            #     Category: Deploy
+            #     Owner: AWS
+            #     Version: '1'
+            #     Provider: S3
+            #   InputArtifacts:
+            #     - Name: TestStaticFilesSource
+            #   RunOrder: 2
+            #   Name: S3
+            #   Configuration:
+            #     Extract: true
+            #     BucketName: test-bookshelf-clients-web-bucket-nseffy2zzyyv
         - Name: Deploy-Common-Resources-To-Live
           Actions:
             - ActionTypeId:
@@ -284,7 +297,7 @@ Resources:
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Pool-Store
               Configuration:
@@ -292,15 +305,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-pool-store
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/pool-store/pool-store.yml
-                TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/pool-store/parameters/live.json
+                TemplatePath: BuildArtifact::common-resources/sandbox-administrator-account/pool-store/pool-store.yml
+                TemplateConfiguration: BuildArtifact::common-resources/sandbox-administrator-account/pool-store/parameters/live.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: User-Pool
               Configuration:
@@ -308,15 +321,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-user-pool
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/user-pool/user-pool.yml
-                TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/user-pool/parameters/live.json
+                TemplatePath: BuildArtifact::common-resources/sandbox-administrator-account/user-pool/user-pool.yml
+                TemplateConfiguration: BuildArtifact::common-resources/sandbox-administrator-account/user-pool/parameters/live.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: DNS
               Region: us-east-1
@@ -325,8 +338,8 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-dns
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::common-resources/sandbox-administrator-account/dns/dns.yml
-                TemplateConfiguration: BuiltSource::common-resources/sandbox-administrator-account/dns/parameters/live.json
+                TemplatePath: BuildArtifact::common-resources/sandbox-administrator-account/dns/dns.yml
+                TemplateConfiguration: BuildArtifact::common-resources/sandbox-administrator-account/dns/parameters/live.json
         - Name: Deploy-Apps-To-Live
           Actions:
             - ActionTypeId:
@@ -335,7 +348,7 @@ Resources:
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Account-Cleaner
               Configuration:
@@ -343,15 +356,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-account-cleaner
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/account-cleaner/stacks/sandbox-administrator-account/account-cleaner.yml
-                TemplateConfiguration: BuiltSource::apps/account-cleaner/stacks/sandbox-administrator-account/parameters/account-cleaner/live.json
+                TemplatePath: BuildArtifact::apps/account-cleaner/stacks/sandbox-administrator-account/account-cleaner.yml
+                TemplateConfiguration: BuildArtifact::apps/account-cleaner/stacks/sandbox-administrator-account/parameters/account-cleaner/live.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Account-Manager
               Configuration:
@@ -359,15 +372,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-account-manager
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/account-manager.yml
-                TemplateConfiguration: BuiltSource::apps/account-manager/stacks/sandbox-administrator-account/parameters/account-manager/live.json
+                TemplatePath: BuildArtifact::apps/account-manager/stacks/sandbox-administrator-account/account-manager.yml
+                TemplateConfiguration: BuildArtifact::apps/account-manager/stacks/sandbox-administrator-account/parameters/account-manager/live.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Lease-Creator
               Configuration:
@@ -375,15 +388,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-lease-creator
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/lease-creator.yml
-                TemplateConfiguration: BuiltSource::apps/lease-creator/stacks/sandbox-administrator-account/parameters/lease-creator/live.json
+                TemplatePath: BuildArtifact::apps/lease-creator/stacks/sandbox-administrator-account/lease-creator.yml
+                TemplateConfiguration: BuildArtifact::apps/lease-creator/stacks/sandbox-administrator-account/parameters/lease-creator/live.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Lease-Janitor
               Configuration:
@@ -391,15 +404,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-lease-janitor
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/lease-janitor/stacks/sandbox-administrator-account/lease-janitor.yml
-                TemplateConfiguration: BuiltSource::apps/lease-janitor/stacks/sandbox-administrator-account/parameters/lease-janitor/live.json
+                TemplatePath: BuildArtifact::apps/lease-janitor/stacks/sandbox-administrator-account/lease-janitor.yml
+                TemplateConfiguration: BuildArtifact::apps/lease-janitor/stacks/sandbox-administrator-account/parameters/lease-janitor/live.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: DB-Client
               Configuration:
@@ -407,15 +420,15 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-db-client
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/db-client/stacks/sandbox-administrator-account/db-client.yml
-                TemplateConfiguration: BuiltSource::apps/db-client/stacks/sandbox-administrator-account/parameters/db-client/live.json
+                TemplatePath: BuildArtifact::apps/db-client/stacks/sandbox-administrator-account/db-client.yml
+                TemplateConfiguration: BuildArtifact::apps/db-client/stacks/sandbox-administrator-account/parameters/db-client/live.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Auth-Client
               Configuration:
@@ -423,8 +436,8 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-auth-client
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/auth-client.yml
-                TemplateConfiguration: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/parameters/auth-client/live.json
+                TemplatePath: BuildArtifact::apps/auth-client/stacks/sandbox-administrator-account/auth-client.yml
+                TemplateConfiguration: BuildArtifact::apps/auth-client/stacks/sandbox-administrator-account/parameters/auth-client/live.json
         - Name: Deploy-Interface-To-Live
           Actions:
             - ActionTypeId:
@@ -433,7 +446,7 @@ Resources:
                 Version: "1"
                 Provider: CloudFormation
               InputArtifacts:
-                - Name: BuiltSource
+                - Name: BuildArtifact
               RunOrder: 1
               Name: Interface
               Configuration:
@@ -441,5 +454,5 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-interface
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuiltSource::apps/interface/stacks/sandbox-administrator-account/interface.yml
-                TemplateConfiguration: BuiltSource::apps/interface/stacks/sandbox-administrator-account/parameters/interface/live.json
+                TemplatePath: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/interface.yml
+                TemplateConfiguration: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/parameters/interface/live.json
