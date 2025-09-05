@@ -37,5 +37,5 @@ artifacts:
       discard-paths: no
     InterfaceArtifact:
       files: "**/*"
-      base-directory: apps/interface/build
+      base-directory: apps/interface/build/client
       discard-paths: no
