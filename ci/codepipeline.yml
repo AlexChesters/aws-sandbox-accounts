@@ -62,9 +62,15 @@ Resources:
   CodePipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
-      ArtifactStore:
-        Type: S3
-        Location: !ImportValue ci-infrastructure-artifacts-bucket-name
+      ArtifactStores:
+        - Region: eu-west-1
+          ArtifactStore:
+            Type: S3
+            Location: atc-ci-artifacts-654654632738-eu-west-1
+        - Region: us-east-1
+          ArtifactStore:
+            Type: S3
+            Location: atc-ci-artifacts-654654632738-us-east-1
       Name: aws-sandbox-accounts
       RestartExecutionOnUpdate: true
       RoleArn: !ImportValue ci-infrastructure-codepipeline-base-execution-iam-role
@@ -164,6 +170,7 @@ Resources:
                 - Name: BuiltSource
               RunOrder: 1
               Name: DNS
+              Region: us-east-1
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
@@ -312,6 +319,7 @@ Resources:
                 - Name: BuiltSource
               RunOrder: 1
               Name: DNS
+              Region: us-east-1
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
