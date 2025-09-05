@@ -3,6 +3,7 @@ version: 0.2
 phases:
   build:
     commands:
+      - cd apps/interface/build/client
       - ls -alh
 artifacts:
   files: "**/*"
