@@ -92,8 +92,7 @@ Resources:
                     - apps/lease-creator/**
                     - apps/lease-janitor/**
                     - common-resources/sandbox-administrator-account/**
-                    # TODO: trigger builds on interfaces when ready
-                    # - apps/interface/**
+                    - apps/interface/**
       Stages:
         - Name: Source
           Actions:
@@ -276,6 +275,24 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/auth-client.yml
                 TemplateConfiguration: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/parameters/auth-client/test.json
+        - Name: Deploy-Interface-To-Test
+          Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuiltSource
+              RunOrder: 1
+              Name: Interface
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-interface
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuiltSource::apps/interface/stacks/sandbox-administrator-account/interface.yml
+                TemplateConfiguration: BuiltSource::apps/interface/stacks/sandbox-administrator-account/parameters/interface/test.json
         - Name: Deploy-Common-Resources-To-Live
           Actions:
             - ActionTypeId:
@@ -425,3 +442,21 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/auth-client.yml
                 TemplateConfiguration: BuiltSource::apps/auth-client/stacks/sandbox-administrator-account/parameters/auth-client/live.json
+        - Name: Deploy-Interface-To-Live
+          Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuiltSource
+              RunOrder: 1
+              Name: Interface
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-interface
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuiltSource::apps/interface/stacks/sandbox-administrator-account/interface.yml
+                TemplateConfiguration: BuiltSource::apps/interface/stacks/sandbox-administrator-account/parameters/interface/live.json
