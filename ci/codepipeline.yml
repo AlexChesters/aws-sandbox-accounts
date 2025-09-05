@@ -24,7 +24,7 @@ Resources:
       Artifacts:
         Type: CODEPIPELINE
         Location: !ImportValue ci-infrastructure-artifacts-bucket-name
-        Path: /artifacts/aws-sandbox-accounts/
+        Path: /artifacts/aws-sandbox-accounts/build
         Packaging: NONE
         Name: build
         NamespaceType: BUILD_ID
@@ -37,11 +37,35 @@ Resources:
           - Value: !ImportValue ci-infrastructure-artifacts-bucket-name
             Name: ARTIFACTS_BUCKET
             Type: PLAINTEXT
-      Name: aws-sandbox-accounts
+      Name: aws-sandbox-accounts-build
       ServiceRole: !GetAtt CodeBuildRole.Arn
       Source:
         Type: CODEPIPELINE
-        BuildSpec: buildspec.yml
+        BuildSpec: buildspec.build.yml
+  CodeBuildDeployProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+        Location: !ImportValue ci-infrastructure-artifacts-bucket-name
+        Path: /artifacts/aws-sandbox-accounts/deploy/
+        Packaging: NONE
+        Name: build
+        NamespaceType: BUILD_ID
+      Description: Deploys aws-sandbox-accounts
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux-aarch64-standard:3.0
+        Type: ARM_CONTAINER
+        EnvironmentVariables:
+          - Value: !ImportValue ci-infrastructure-artifacts-bucket-name
+            Name: ARTIFACTS_BUCKET
+            Type: PLAINTEXT
+      Name: aws-sandbox-accounts-deploy
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: buildspec.build.yml
   CodePipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
@@ -278,17 +302,23 @@ Resources:
                 TemplatePath: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/interface.yml
                 TemplateConfiguration: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/parameters/interface/test.json
             - ActionTypeId:
-                Category: Deploy
+                Category: Build
                 Owner: AWS
-                Version: '1'
-                Provider: S3
+                Version: "1"
+                Provider: CodeBuild
               InputArtifacts:
                 - Name: InterfaceArtifact
+              OutputArtifacts:
+                - Name: TestDeployArtifact
               RunOrder: 2
               Name: Interface-Static-Files
               Configuration:
-                Extract: true
-                BucketName: test-aws-sandbox-accounts-interface-bucket-tgksqlpowtj1
+                ProjectName: !Ref CodeBuildProject
+                EnvironmentVariables:
+                  Fn::ToJsonString:
+                    - name: BUCKET_NAME
+                      value: test-aws-sandbox-accounts-interface-bucket-tgksqlpowtj1
+                      type: PLAINTEXT
         - Name: Deploy-Common-Resources-To-Live
           Actions:
             - ActionTypeId:
@@ -457,14 +487,20 @@ Resources:
                 TemplatePath: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/interface.yml
                 TemplateConfiguration: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/parameters/interface/live.json
             - ActionTypeId:
-                Category: Deploy
+                Category: Build
                 Owner: AWS
-                Version: '1'
-                Provider: S3
+                Version: "1"
+                Provider: CodeBuild
               InputArtifacts:
                 - Name: InterfaceArtifact
+              OutputArtifacts:
+                - Name: LiveDeployArtifact
               RunOrder: 2
               Name: Interface-Static-Files
               Configuration:
-                Extract: true
-                BucketName: live-aws-sandbox-accounts-interface-bucket-czgvayyk9fif
+                ProjectName: !Ref CodeBuildProject
+                EnvironmentVariables:
+                  Fn::ToJsonString:
+                    - name: BUCKET_NAME
+                      value: live-aws-sandbox-accounts-interface-bucket-czgvayyk9fif
+                      type: PLAINTEXT
