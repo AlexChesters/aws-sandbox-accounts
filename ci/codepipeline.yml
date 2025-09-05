@@ -277,18 +277,18 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/interface.yml
                 TemplateConfiguration: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/parameters/interface/test.json
-            # - ActionTypeId:
-            #     Category: Deploy
-            #     Owner: AWS
-            #     Version: '1'
-            #     Provider: S3
-            #   InputArtifacts:
-            #     - Name: TestStaticFilesSource
-            #   RunOrder: 2
-            #   Name: S3
-            #   Configuration:
-            #     Extract: true
-            #     BucketName: test-bookshelf-clients-web-bucket-nseffy2zzyyv
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: '1'
+                Provider: S3
+              InputArtifacts:
+                - Name: InterfaceArtifact
+              RunOrder: 2
+              Name: Interface-Static-Files
+              Configuration:
+                Extract: true
+                BucketName: test-aws-sandbox-accounts-interface-bucket-tgksqlpowtj1
         - Name: Deploy-Common-Resources-To-Live
           Actions:
             - ActionTypeId:
@@ -456,3 +456,15 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/interface.yml
                 TemplateConfiguration: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/parameters/interface/live.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: '1'
+                Provider: S3
+              InputArtifacts:
+                - Name: InterfaceArtifact
+              RunOrder: 2
+              Name: Interface-Static-Files
+              Configuration:
+                Extract: true
+                BucketName: live-aws-sandbox-accounts-interface-bucket-czgvayyk9fif
