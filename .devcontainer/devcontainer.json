@@ -29,7 +29,8 @@
 				"GitHub.copilot-chat",
 				"docker.docker",
 				"charliermarsh.ruff",
-				"kddejong.vscode-cfn-lint"
+				"kddejong.vscode-cfn-lint",
+				"tamasfe.even-better-toml"
 			]
 		}
 	}
