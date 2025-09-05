@@ -1,12 +1,16 @@
 version: 0.2
 
 phases:
+  install:
+    runtime-versions:
+      python: 3.11
   build:
     commands:
       # db-client
       - cd apps/db-client
       - make test
       - make package
+      - aws cloudformation package --template-file stacks/sandbox-administrator-account/db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/db-client --output-template-file stacks/sandbox-administrator-account/db-client.yml
       - cd ../..
       # auth-client
       - cd apps/auth-client

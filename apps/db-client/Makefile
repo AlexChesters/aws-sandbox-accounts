@@ -2,13 +2,13 @@
 
 clean:
 	( \
-		rm -rf build && \
-		pip uninstall -r requirements.txt -y \
+		rm -rf build .venv \
 	)
 
-install: clean requirements
+install: clean
 	( \
-			pip install -r requirements.txt \
+			poetry install && \
+			poetry env use python3.11 \
 	)
 
 test: install
@@ -18,24 +18,12 @@ test: install
 			export AWS_SESSION_TOKEN='testing' && \
 			export AWS_SECURITY_TOKEN='testing' && \
 			export PATH="${HOME}/.poetry/bin:${PATH}" && \
-			pylint db_client \
+			poetry run ruff check db_client \
 	)
 
-requirements: all_requirements prod_requirements
-
-all_requirements:
-	poetry export -f requirements.txt --output requirements.txt --with dev
-
-prod_requirements:
-	poetry export -f requirements.txt --output requirements.prod.txt --only main
-
-package: clean requirements
+package: install
 	( \
-		pip install -r requirements.prod.txt -t deps && \
-		mkdir build && \
-		cp -R deps/* build/ && \
-		cp -R db_client/ build/ && \
-		aws cloudformation package --template-file stacks/sandbox-administrator-account/db-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/db-client --output-template-file stacks/sandbox-administrator-account/db-client.yml \
+		sh package.sh \
 	)
 
 run:

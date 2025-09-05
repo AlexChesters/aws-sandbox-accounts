@@ -18,22 +18,6 @@ Resources:
               Service: codebuild.amazonaws.com
       ManagedPolicyArns:
         - !ImportValue ci-infrastructure-codebuild-base-iam-policy
-      Policies:
-          - PolicyName: ecr-policy
-            PolicyDocument:
-              Statement:
-                - Effect: Allow
-                  Action:
-                    - ecr:GetAuthorizationToken
-                  Resource:
-                    - "*"
-                - Effect: Allow
-                  Action:
-                    - ecr:BatchCheckLayerAvailability
-                    - ecr:GetDownloadUrlForLayer
-                    - ecr:BatchGetImage
-                  Resource:
-                    - !Sub "arn:${AWS::Partition}:ecr:${AWS::Region}:${AWS::AccountId}:repository/lambda-build-image"
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -46,10 +30,9 @@ Resources:
         NamespaceType: BUILD_ID
       Description: Builds aws-sandbox-accounts
       Environment:
-        ComputeType: BUILD_LAMBDA_1GB
-        Image: aws/codebuild/amazonlinux-aarch64-lambda-standard:python3.11
-        ImagePullCredentialsType: CODEBUILD
-        Type: ARM_LAMBDA_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux-aarch64-standard:3.0
+        Type: ARM_CONTAINER
         EnvironmentVariables:
           - Value: !ImportValue ci-infrastructure-artifacts-bucket-name
             Name: ARTIFACTS_BUCKET

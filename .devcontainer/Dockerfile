@@ -30,13 +30,12 @@ RUN mv ./rain-v1.23.0_linux-arm64/rain /usr/local/bin/rain
 RUN add-apt-repository ppa:deadsnakes/ppa -y && \
     apt-get update -y && \
     apt-get install -y python3.11 python3.11-venv python3.11-dev python3-pip
-RUN python3.11 -m pip install --upgrade pip
 
 # install cfn-lint
 RUN pip install cfn-lint
 
 # install poetry
-RUN pipx install poetry==2.1.2
+RUN pipx install poetry==2.1.4
 ENV PATH="$PATH:/root/.local/bin"
 RUN poetry config virtualenvs.options.always-copy true
 RUN poetry config virtualenvs.in-project true
