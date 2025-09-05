@@ -8,4 +8,4 @@ export VENV_PATH=$(poetry env info -p)
 
 mkdir build
 cp -R ${VENV_PATH}/lib/python3.*/site-packages/* build/
-cp -R db_client build/
+cp -R auth_client build/

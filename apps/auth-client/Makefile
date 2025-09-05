@@ -16,8 +16,10 @@ test: install
 			export AWS_SESSION_TOKEN='testing' && \
 			export AWS_SECURITY_TOKEN='testing' && \
 			export PATH="${HOME}/.poetry/bin:${PATH}" && \
-			poetry run pylint auth_client \
+			poetry run ruff check auth_client \
 	)
 
-prod_requirements:
-	poetry export -f requirements.txt --output requirements.prod.txt --only main
+package: install
+	( \
+		sh package.sh \
+	)
