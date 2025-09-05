@@ -312,7 +312,7 @@ Resources:
               RunOrder: 2
               Name: Interface-Static-Files
               Configuration:
-                ProjectName: !Ref CodeBuildProject
+                ProjectName: !Ref CodeBuildDeployProject
                 EnvironmentVariables:
                   Fn::ToJsonString:
                     - name: BUCKET_NAME
@@ -497,7 +497,7 @@ Resources:
               RunOrder: 2
               Name: Interface-Static-Files
               Configuration:
-                ProjectName: !Ref CodeBuildProject
+                ProjectName: !Ref CodeBuildDeployProject
                 EnvironmentVariables:
                   Fn::ToJsonString:
                     - name: BUCKET_NAME
