@@ -30,3 +30,8 @@ phases:
       - npm run build
 artifacts:
   files: "**/*"
+  secondary-artifacts:
+    interface:
+      files: "**/*"
+      base-directory: apps/interface/build
+      discard-paths: no
