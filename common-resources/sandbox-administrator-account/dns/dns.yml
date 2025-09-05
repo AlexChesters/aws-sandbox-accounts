@@ -24,15 +24,15 @@ Resources:
       TTL: '60'
       ResourceRecords:
         - "127.0.0.1"
-  # AuthCertificate:
-  #   Type: AWS::CertificateManager::Certificate
-  #   Properties:
-  #     DomainName: !Sub
-  #       - "auth.${Domain}"
-  #       - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
-  #     ValidationMethod: DNS
-  #     DomainValidationOptions:
-  #       - DomainName: !Sub
-  #           - "auth.${Domain}"
-  #           - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
-  #         HostedZoneId: Z0160324S0RM0YHSCT4L
+  AuthCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub
+        - "auth.${Domain}"
+        - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !Sub
+            - "auth.${Domain}"
+            - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
+          HostedZoneId: Z0160324S0RM0YHSCT4L
