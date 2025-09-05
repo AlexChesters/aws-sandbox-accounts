@@ -7,6 +7,8 @@ Parameters:
     AllowedValues:
       - test
       - live
+Conditions:
+  IsTest: !Equals [!Ref Environment, test]
 Mappings:
   EnvMap:
     test:
@@ -28,12 +30,20 @@ Resources:
         - !Sub
           - "https://${Domain}/auth/_callback"
           - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
+        - !If
+          - IsTest
+          - http://localhost:5173/auth/callback
+          - !Ref AWS::NoValue
       ClientName: !Sub "${Environment}-aws-sandbox-interface-client"
       GenerateSecret: false
       LogoutURLs:
         - !Sub
           - "https://${Domain}/auth/logout"
           - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
+        - !If
+          - IsTest
+          - http://localhost:5173/auth/logout
+          - !Ref AWS::NoValue
       PreventUserExistenceErrors: ENABLED
       SupportedIdentityProviders:
         - COGNITO
