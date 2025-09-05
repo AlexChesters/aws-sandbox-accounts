@@ -39,4 +39,11 @@ Resources:
         - COGNITO
       UserPoolId:
         Fn::ImportValue: !Sub "${Environment}-cognito-user-pool-user-pool-id"
-
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        RestrictPublicBuckets: true
