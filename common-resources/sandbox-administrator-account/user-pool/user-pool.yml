@@ -51,3 +51,14 @@ Resources:
       CustomDomainConfig:
         CertificateArn: !FindInMap [EnvMap, !Ref Environment, CertificateArn]
       UserPoolId: !GetAtt UserPool.Outputs.UserPoolId
+  UserPoolDomainRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !ImportValue hosted-zone-id
+      Name: !Sub
+        - "auth.${Domain}"
+        - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt UserPoolDomain.CloudFrontDistribution
+        HostedZoneId: Z2FDTNDATAQYW2
