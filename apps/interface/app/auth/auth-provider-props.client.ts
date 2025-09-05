@@ -1,7 +1,7 @@
-import type { AuthProviderProps } from 'react-oidc-context';
-import { WebStorageStateStore } from 'oidc-client-ts';
+import type { AuthProviderProps } from 'react-oidc-context'
+import { WebStorageStateStore } from 'oidc-client-ts'
 
-import authConfig from '../config/auth';
+import authConfig from '../config/auth'
 
 export default {
   authority: authConfig.authority,
@@ -22,4 +22,4 @@ export default {
       window.location.replace('/')
     }
   }
-} satisfies AuthProviderProps;
+} satisfies AuthProviderProps

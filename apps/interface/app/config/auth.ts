@@ -12,4 +12,4 @@ export default {
   redirectUri: 'http://localhost:5173/auth/callback',
   responseType: 'code',
   scope: 'email openid profile'
-} satisfies AuthConfig;
+} satisfies AuthConfig
