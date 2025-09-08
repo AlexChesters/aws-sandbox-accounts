@@ -13,5 +13,6 @@ export default {
   onSigninCallback: () => {
     // Clean up OIDC params from the URL
     window.history.replaceState({}, document.title, window.location.pathname)
+    window.location.replace('/')
   }
 } satisfies AuthProviderProps
