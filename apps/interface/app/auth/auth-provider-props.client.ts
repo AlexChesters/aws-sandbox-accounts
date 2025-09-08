@@ -13,13 +13,5 @@ export default {
   onSigninCallback: () => {
     // Clean up OIDC params from the URL
     window.history.replaceState({}, document.title, window.location.pathname)
-    // Redirect to the originally intended path, if present
-    const redirectPath = window.localStorage.getItem('postLoginRedirectPath')
-    if (redirectPath) {
-      window.localStorage.removeItem('postLoginRedirectPath')
-      window.location.replace(redirectPath)
-    } else {
-      window.location.replace('/')
-    }
   }
 } satisfies AuthProviderProps
