@@ -1,4 +1,3 @@
-// routes/_auth.tsx
 import { Outlet, useLocation, Navigate } from 'react-router'
 import { useAuth } from 'react-oidc-context'
 
