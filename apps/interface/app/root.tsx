@@ -8,10 +8,16 @@ import {
 } from 'react-router'
 import { AuthProvider } from 'react-oidc-context'
 
-import type { Route } from './+types/root'
-import './app.css'
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
 
 import authProviderProps from './auth/auth-provider-props.client'
+import BottomNavigation from '~/components/bottom-navigation'
+
+import type { Route } from './+types/root'
+import './app.css'
 
 export const links: Route.LinksFunction = () => []
 
@@ -26,6 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <BottomNavigation />
         <ScrollRestoration />
         <Scripts />
       </body>
