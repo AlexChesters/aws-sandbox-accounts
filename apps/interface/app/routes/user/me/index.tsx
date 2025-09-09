@@ -1,5 +1,6 @@
 import { useAuth } from 'react-oidc-context'
 import Paper from '@mui/material/Paper'
+import Typography from '@mui/material/Typography'
 
 export default function Me() {
   const auth = useAuth()
@@ -13,9 +14,9 @@ export default function Me() {
 
   return (
     <Paper sx={{ p: 2, m: 2 }}>
-      <h1>My profile</h1>
+      <Typography variant="h3" component="h1" gutterBottom>My profile</Typography>
 
-      <p>{auth.user.profile.email}</p>
+      <Typography variant="body1" gutterBottom>{auth.user.profile.email}</Typography>
     </Paper>
   )
 }
