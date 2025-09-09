@@ -13,8 +13,10 @@ Mappings:
   EnvMap:
     test:
       DomainName: test.sandbox.alexchesters.com
+      CertificateArn: arn:aws:acm:us-east-1:654654632738:certificate/8a84dc1e-b880-47e4-b1d4-7afed6ae0a15
     live:
       DomainName: sandbox.alexchesters.com
+      CertificateArn: arn:aws:acm:us-east-1:654654632738:certificate/373f8dc5-ca8a-4f81-aa39-19202e82d7b8
 Resources:
   Client:
     Type: AWS::Cognito::UserPoolClient
@@ -85,32 +87,32 @@ Resources:
               - User-Agent
           QueryStringsConfig:
             QueryStringBehavior: none
-  # Distribution:
-  #   Type: AWS::CloudFront::Distribution
-  #   Properties:
-  #     DistributionConfig:
-  #       Aliases:
-  #         - !FindInMap [EnvMap, !Ref Environment, DomainName]
-  #       CustomErrorResponses:
-  #         - ErrorCode: 404
-  #           ResponsePagePath: /index.html
-  #           ResponseCode: 200
-  #           ErrorCachingMinTTL: 0
-  #       Enabled: true
-  #       DefaultCacheBehavior:
-  #         TargetOriginId: BucketOrigin
-  #         ViewerProtocolPolicy: redirect-to-https
-  #         AllowedMethods:
-  #           - GET
-  #           - HEAD
-  #         CachePolicyId: !Ref CachePolicy
-  #       Origins:
-  #         - Id: BucketOrigin
-  #           DomainName: !GetAtt Bucket.RegionalDomainName
-  #           S3OriginConfig: {}
-  #           OriginAccessControlId: !Ref OAC
-  #       DefaultRootObject: index.html
-  #       PriceClass: PriceClass_100
-  #       ViewerCertificate:
-  #         AcmCertificateArn: !Ref Certificate
-  #         SslSupportMethod: sni-only
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !FindInMap [EnvMap, !Ref Environment, DomainName]
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponsePagePath: /index.html
+            ResponseCode: 200
+            ErrorCachingMinTTL: 0
+        Enabled: true
+        DefaultCacheBehavior:
+          TargetOriginId: BucketOrigin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachePolicyId: !Ref CachePolicy
+        Origins:
+          - Id: BucketOrigin
+            DomainName: !GetAtt Bucket.RegionalDomainName
+            S3OriginConfig: {}
+            OriginAccessControlId: !Ref OAC
+        DefaultRootObject: index.html
+        PriceClass: PriceClass_100
+        ViewerCertificate:
+          AcmCertificateArn: !FindInMap [EnvMap, !Ref Environment, CertificateArn]
+          SslSupportMethod: sni-only
