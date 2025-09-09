@@ -3,6 +3,8 @@ import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 
+import authConfig from '~/config/auth'
+
 export default function Me() {
   const auth = useAuth()
 
@@ -12,7 +14,12 @@ export default function Me() {
   }
 
   const onSignOut = () => {
-    auth.signoutRedirect()
+    auth.signoutRedirect({
+      extraQueryParams: {
+        client_id: authConfig.clientId,
+        logout_uri: authConfig.logoutRedirectUri
+      }
+    })
   }
 
   return (
