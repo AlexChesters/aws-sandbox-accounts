@@ -13,17 +13,6 @@ Mappings:
     live:
       DomainName: sandbox.alexchesters.com
 Resources:
-  # an A record is required for cognito custom domains
-  # https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-add-custom-domain.html#cognito-user-pools-add-custom-domain-prereq
-  CognitoARecord:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: Z0160324S0RM0YHSCT4L
-      Name: !FindInMap [EnvMap, !Ref Environment, DomainName]
-      Type: A
-      TTL: '60'
-      ResourceRecords:
-        - "127.0.0.1"
   AuthCertificate:
     Type: AWS::CertificateManager::Certificate
     Properties:
