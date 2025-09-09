@@ -30,7 +30,7 @@ Resources:
         - profile
       CallbackURLs:
         - !Sub
-          - "https://${Domain}/auth/_callback"
+          - "https://${Domain}/auth/callback"
           - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
         - !If
           - IsTest
