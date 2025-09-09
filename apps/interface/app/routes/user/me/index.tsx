@@ -16,7 +16,7 @@ export default function Me() {
     <Paper sx={{ p: 2, m: 2 }}>
       <Typography variant="h3" component="h1" gutterBottom>My profile</Typography>
 
-      <Typography variant="body1" gutterBottom>{auth.user.profile.email}</Typography>
+      <Typography variant="body1" gutterBottom>Email address: {auth.user.profile.email}</Typography>
     </Paper>
   )
 }
