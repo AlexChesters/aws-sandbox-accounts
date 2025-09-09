@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
 import RestoreIcon from '@mui/icons-material/Restore'
@@ -10,7 +10,7 @@ export default function BottomNavigationComponent() {
   const [value, setValue] = useState(0)
 
   return (
-    <Box sx={{ width: 500 }}>
+    <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
       <BottomNavigation
         showLabels
         value={value}
@@ -22,6 +22,6 @@ export default function BottomNavigationComponent() {
         <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
         <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
       </BottomNavigation>
-    </Box>
+    </Paper>
   )
 }
