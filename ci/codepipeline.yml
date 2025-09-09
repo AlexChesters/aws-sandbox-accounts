@@ -292,6 +292,23 @@ Resources:
               InputArtifacts:
                 - Name: BuildArtifact
               RunOrder: 1
+              Name: Certificate
+              Region: us-east-1
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-certificate
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/certificate.yml
+                TemplateConfiguration: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/parameters/certificate/test.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuildArtifact
+              RunOrder: 2
               Name: Interface
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
@@ -309,7 +326,7 @@ Resources:
                 - Name: BuildArtifact
               OutputArtifacts:
                 - Name: TestDeployArtifact
-              RunOrder: 2
+              RunOrder: 3
               Name: Interface-Static-Files
               Configuration:
                 ProjectName: !Ref CodeBuildDeployProject
@@ -477,6 +494,23 @@ Resources:
               InputArtifacts:
                 - Name: BuildArtifact
               RunOrder: 1
+              Name: Certificate
+              Region: us-east-1
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-certificate
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/certificate.yml
+                TemplateConfiguration: BuildArtifact::apps/interface/stacks/sandbox-administrator-account/parameters/certificate/live.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuildArtifact
+              RunOrder: 2
               Name: Interface
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
@@ -494,7 +528,7 @@ Resources:
                 - Name: BuildArtifact
               OutputArtifacts:
                 - Name: LiveDeployArtifact
-              RunOrder: 2
+              RunOrder: 3
               Name: Interface-Static-Files
               Configuration:
                 ProjectName: !Ref CodeBuildDeployProject

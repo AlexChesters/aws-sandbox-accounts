@@ -1,0 +1,25 @@
+Transform: AWS::Serverless-2016-10-31
+Description: Certificate for aws-sandbox-accounts interface
+Parameters:
+  Environment:
+    Description: The infrastructure environment
+    Type: String
+    AllowedValues:
+      - test
+      - live
+Mappings:
+  EnvMap:
+    test:
+      DomainName: test.sandbox.alexchesters.com
+    live:
+      DomainName: sandbox.alexchesters.com
+Resources:
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      CertificateTransparencyLoggingPreference: ENABLED
+      DomainName: !FindInMap [EnvMap, !Ref Environment, DomainName]
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !FindInMap [EnvMap, !Ref Environment, DomainName]
+          HostedZoneId: Z0160324S0RM0YHSCT4L
