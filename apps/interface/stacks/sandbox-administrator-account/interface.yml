@@ -85,3 +85,12 @@ Resources:
               - User-Agent
           QueryStringsConfig:
             QueryStringBehavior: none
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      CertificateTransparencyLoggingPreference: ENABLED
+      DomainName: !FindInMap [EnvMap, !Ref Environment, DomainName]
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !FindInMap [EnvMap, !Ref Environment, DomainName]
+          HostedZoneId: !ImportValue hosted-zone-id
