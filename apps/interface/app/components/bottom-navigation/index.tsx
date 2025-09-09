@@ -1,13 +1,27 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Paper from '@mui/material/Paper'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
-import RestoreIcon from '@mui/icons-material/Restore'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+
+interface BottomNavigationItems {
+  label: string;
+  icon: React.ElementType;
+  destination: string;
+}
 
 export default function BottomNavigationComponent() {
   const [value, setValue] = useState(0)
+
+  const items: BottomNavigationItems[] = [
+    { label: 'Home', icon: HomeRoundedIcon, destination: '/' },
+    { label: 'Profile', icon: AccountCircleIcon, destination: '/user/me' }
+  ]
+
+  useEffect(() => {
+    console.log('selected item', items[value])
+  }, [value])
 
   return (
     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
@@ -18,9 +32,9 @@ export default function BottomNavigationComponent() {
           setValue(newValue)
         }}
       >
-        <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-        <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+        {items.map((item, index) => (
+          <BottomNavigationAction key={index} label={item.label} icon={<item.icon />} />
+        ))}
       </BottomNavigation>
     </Paper>
   )
