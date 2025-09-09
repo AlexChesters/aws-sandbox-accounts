@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 import Paper from '@mui/material/Paper'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
@@ -13,6 +14,7 @@ interface BottomNavigationItems {
 
 export default function BottomNavigationComponent() {
   const [value, setValue] = useState(0)
+  const navigate = useNavigate()
 
   const items: BottomNavigationItems[] = [
     { label: 'Home', icon: HomeRoundedIcon, destination: '/' },
@@ -20,7 +22,7 @@ export default function BottomNavigationComponent() {
   ]
 
   useEffect(() => {
-    console.log('selected item', items[value])
+    navigate(items[value].destination)
   }, [value])
 
   return (
