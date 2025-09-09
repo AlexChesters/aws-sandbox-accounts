@@ -14,6 +14,8 @@ export default function Me() {
   return (
     <Paper sx={{ p: 2, m: 2 }}>
       <h1>My profile</h1>
+
+      <p>{auth.user.profile.email}</p>
     </Paper>
   )
 }
