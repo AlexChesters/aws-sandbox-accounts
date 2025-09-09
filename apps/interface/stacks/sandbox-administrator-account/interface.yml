@@ -94,3 +94,32 @@ Resources:
       DomainValidationOptions:
         - DomainName: !FindInMap [EnvMap, !Ref Environment, DomainName]
           HostedZoneId: !ImportValue hosted-zone-id
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !FindInMap [EnvMap, !Ref Environment, DomainName]
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponsePagePath: /index.html
+            ResponseCode: 200
+            ErrorCachingMinTTL: 0
+        Enabled: true
+        DefaultCacheBehavior:
+          TargetOriginId: BucketOrigin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachePolicyId: !Ref CachePolicy
+        Origins:
+          - Id: BucketOrigin
+            DomainName: !GetAtt Bucket.RegionalDomainName
+            S3OriginConfig: {}
+            OriginAccessControlId: !Ref OAC
+        DefaultRootObject: index.html
+        PriceClass: PriceClass_100
+        ViewerCertificate:
+          AcmCertificateArn: !Ref Certificate
+          SslSupportMethod: sni-only
