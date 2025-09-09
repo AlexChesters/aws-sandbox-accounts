@@ -12,17 +12,17 @@ interface BottomNavigationItems {
   destination: string;
 }
 
+const bottomNavigationItems: BottomNavigationItems[] = [
+  { label: 'Home', icon: HomeRoundedIcon, destination: '/' },
+  { label: 'Profile', icon: AccountCircleIcon, destination: '/user/me' }
+]
+
 export default function BottomNavigationComponent() {
   const [value, setValue] = useState(0)
   const navigate = useNavigate()
 
-  const items: BottomNavigationItems[] = [
-    { label: 'Home', icon: HomeRoundedIcon, destination: '/' },
-    { label: 'Profile', icon: AccountCircleIcon, destination: '/user/me' }
-  ]
-
   useEffect(() => {
-    navigate(items[value].destination)
+    navigate(bottomNavigationItems[value].destination)
   }, [value])
 
   return (
@@ -34,7 +34,7 @@ export default function BottomNavigationComponent() {
           setValue(newValue)
         }}
       >
-        {items.map((item, index) => (
+        {bottomNavigationItems.map((item, index) => (
           <BottomNavigationAction key={index} label={item.label} icon={<item.icon />} />
         ))}
       </BottomNavigation>
