@@ -23,12 +23,10 @@ export default function Me() {
   }
 
   return (
-    <Paper sx={{ p: 2, m: 2 }}>
+    <Paper sx={{ p: 2, m: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Typography variant="h3" component="h1" gutterBottom>My profile</Typography>
-
       <Typography variant="body1" gutterBottom>Email address: {auth.user.profile.email}</Typography>
-
-      <Button variant="contained" onClick={onSignOut}>Sign out</Button>
+      <Button sx={{ marginTop: 'auto', alignSelf: 'flex-start' }} variant="contained" onClick={onSignOut}>Sign out</Button>
     </Paper>
   )
 }
