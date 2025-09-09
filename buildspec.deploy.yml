@@ -4,6 +4,6 @@ phases:
   build:
     commands:
       - cd apps/interface/build/client
-      - ls -alh
+      - aws s3 sync . s3://$BUCKET_NAME --delete --cache-control max-age=60
 artifacts:
   files: "**/*"
