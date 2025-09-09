@@ -2,14 +2,10 @@ import { useAuth } from 'react-oidc-context'
 
 import authConfig from '~/config/auth'
 import UserComponent from '~/routes/user/me/components/user'
+import Alert from '~/components/alert'
 
 export default function Me() {
   const auth = useAuth()
-
-  if (!auth.user || !auth.user.profile.email) {
-    // TODO: handle error
-    return <p>Error: User not authenticated</p>
-  }
 
   const onSignOut = () => {
     auth.signoutRedirect({
@@ -18,6 +14,13 @@ export default function Me() {
         logout_uri: authConfig.logoutRedirectUri
       }
     })
+  }
+
+  if (!auth.user || !auth.user.profile.email) {
+    return <Alert
+      message="Something went wrong, unfortunately we'll need to log you out."
+      onAcknowledge={onSignOut}
+    />
   }
 
   return (
