@@ -1,6 +1,7 @@
 import { useAuth } from 'react-oidc-context'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 
 export default function Me() {
   const auth = useAuth()
@@ -10,13 +11,17 @@ export default function Me() {
     return <p>Error: User not authenticated</p>
   }
 
-  console.log(auth.user.profile)
+  const onSignOut = () => {
+    auth.signoutRedirect()
+  }
 
   return (
     <Paper sx={{ p: 2, m: 2 }}>
       <Typography variant="h3" component="h1" gutterBottom>My profile</Typography>
 
       <Typography variant="body1" gutterBottom>Email address: {auth.user.profile.email}</Typography>
+
+      <Button variant="contained" onClick={onSignOut}>Sign out</Button>
     </Paper>
   )
 }
