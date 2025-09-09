@@ -18,11 +18,19 @@ const bottomNavigationItems: BottomNavigationItems[] = [
 ]
 
 export default function BottomNavigationComponent() {
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState<number | null>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
-    navigate(bottomNavigationItems[value].destination)
+    const currentPath = window.location.pathname
+    const currentIndex = bottomNavigationItems.findIndex(item => item.destination === currentPath)
+    setValue(currentIndex === -1 ? 0 : currentIndex)
+  }, [])
+
+  useEffect(() => {
+    if (value !== null) {
+      navigate(bottomNavigationItems[value].destination)
+    }
   }, [value])
 
   return (
