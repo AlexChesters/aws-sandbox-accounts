@@ -24,7 +24,7 @@ Resources:
       Artifacts:
         Type: CODEPIPELINE
         Location: !ImportValue ci-infrastructure-artifacts-bucket-name
-        Path: /artifacts/aws-sandbox-accounts/build
+        Path: /artifacts/aws-sandbox-accounts/apps/build
         Packaging: NONE
         Name: build
         NamespaceType: BUILD_ID
@@ -37,7 +37,7 @@ Resources:
           - Value: !ImportValue ci-infrastructure-artifacts-bucket-name
             Name: ARTIFACTS_BUCKET
             Type: PLAINTEXT
-      Name: aws-sandbox-accounts-build
+      Name: aws-sandbox-accounts-apps
       ServiceRole: !GetAtt CodeBuildRole.Arn
       Source:
         Type: CODEPIPELINE
@@ -54,7 +54,7 @@ Resources:
           ArtifactStore:
             Type: S3
             Location: atc-ci-artifacts-654654632738-us-east-1
-      Name: aws-sandbox-accounts
+      Name: aws-sandbox-accounts-apps
       RestartExecutionOnUpdate: true
       RoleArn: !ImportValue ci-infrastructure-codepipeline-base-execution-iam-role
       PipelineType: V2
@@ -68,8 +68,8 @@ Resources:
                     - !Ref Branch
                 FilePaths:
                   Includes:
-                    - apps/**
-                    - common-resources/**
+                    - apps/auth-client/**
+                    - apps/db-client/**
       Stages:
         - Name: Source
           Actions:
