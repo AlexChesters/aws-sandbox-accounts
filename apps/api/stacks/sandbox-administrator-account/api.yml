@@ -7,6 +7,12 @@ Parameters:
     AllowedValues:
       - test
       - live
+Mappings:
+  EnvMap:
+    test:
+      DomainName: test.api.sandbox.alexchesters.com
+    live:
+      DomainName: api.sandbox.alexchesters.com
 Resources:
   FunctionLogGroup:
     Type: AWS::Logs::LogGroup
@@ -61,3 +67,12 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+  APICertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      CertificateTransparencyLoggingPreference: ENABLED
+      DomainName: !FindInMap [EnvMap, !Ref Environment, DomainName]
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !FindInMap [EnvMap, !Ref Environment, DomainName]
+          HostedZoneId: !ImportValue hosted-zone-id
