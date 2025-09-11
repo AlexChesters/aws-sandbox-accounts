@@ -25,16 +25,16 @@ const configs: Record<string, AuthConfig> = {
   [Hostname.Test]: {
     authority: 'https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_t4m80oL3Y',
     clientId: '3sjic4vag51jg3734gfb2s6kki',
-    redirectUri: 'http://test.sandbox.alexchesters.com/auth/callback',
-    logoutRedirectUri: 'http://test.sandbox.alexchesters.com/auth/logout',
+    redirectUri: 'https://test.sandbox.alexchesters.com/auth/callback',
+    logoutRedirectUri: 'https://test.sandbox.alexchesters.com/auth/logout',
     responseType: 'code',
     scope: 'email openid profile'
   },
   [Hostname.Live]: {
     authority: 'https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_bQT90t9tf',
     clientId: '3sjic4vag51jg3734gfb2s6kki',
-    redirectUri: 'http://sandbox.alexchesters.com/auth/callback',
-    logoutRedirectUri: 'http://sandbox.alexchesters.com/auth/logout',
+    redirectUri: 'https://sandbox.alexchesters.com/auth/callback',
+    logoutRedirectUri: 'https://sandbox.alexchesters.com/auth/logout',
     responseType: 'code',
     scope: 'email openid profile'
   }
