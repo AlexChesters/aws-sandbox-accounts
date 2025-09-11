@@ -48,7 +48,7 @@ Resources:
       ArtifactStore:
         Type: S3
         Location: !ImportValue ci-infrastructure-artifacts-bucket-name
-      Name: aws-sandbox-accounts
+      Name: aws-sandbox-accounts-api
       RestartExecutionOnUpdate: true
       RoleArn: !ImportValue ci-infrastructure-codepipeline-base-execution-iam-role
       PipelineType: V2
