@@ -7,6 +7,8 @@ Parameters:
     AllowedValues:
       - test
       - live
+Conditions:
+  IsTest: !Equals [!Ref Environment, test]
 Mappings:
   EnvMap:
     test:
@@ -75,4 +77,44 @@ Resources:
       ValidationMethod: DNS
       DomainValidationOptions:
         - DomainName: !FindInMap [EnvMap, !Ref Environment, DomainName]
+          HostedZoneId: !ImportValue hosted-zone-id
+  APIAccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub "${Environment}-aws-sandbox-accounts-api-access-logs"
+      RetentionInDays: 7
+  API:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      AccessLogSettings:
+        DestinationArn: !GetAtt APIAccessLogGroup.Arn
+        Format: $context.requestId
+      Auth:
+        Authorizers:
+          OAuth2Authorizer:
+            JwtConfiguration:
+              issuer:
+                Fn::ImportValue: !Sub "${Environment}-cognito-user-pool-provider-url"
+              audience:
+                - Fn::ImportValue: !Sub "${Environment}-aws-sandbox-accounts-interface-client-id"
+            IdentitySource: $request.header.Authorization
+        DefaultAuthorizer: OAuth2Authorizer
+      CorsConfiguration:
+        AllowHeaders:
+          - authorization
+          - client
+        AllowMethods:
+          - GET
+          - OPTIONS
+        AllowOrigins:
+          - !FindInMap [EnvMap, !Ref Environment, DomainName]
+          - !If [IsTest, "http://localhost:5173", !Ref AWS::NoValue]
+        MaxAge: 60
+      Domain:
+        CertificateArn: !Ref APICertificate
+        DomainName: !FindInMap [EnvMap, !Ref Environment, DomainName]
+        MutualTlsAuthentication: false
+        Route53:
           HostedZoneId: !ImportValue hosted-zone-id
