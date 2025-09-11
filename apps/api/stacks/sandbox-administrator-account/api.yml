@@ -112,9 +112,9 @@ Resources:
           - !FindInMap [EnvMap, !Ref Environment, DomainName]
           - !If [IsTest, "http://localhost:5173", !Ref AWS::NoValue]
         MaxAge: 60
-      Domain:
-        CertificateArn: !Ref APICertificate
-        DomainName: !FindInMap [EnvMap, !Ref Environment, DomainName]
-        MutualTlsAuthentication: false
-        Route53:
-          HostedZoneId: !ImportValue hosted-zone-id
+      # Domain:
+      #   CertificateArn: !Ref APICertificate
+      #   DomainName: !FindInMap [EnvMap, !Ref Environment, DomainName]
+      #   MutualTlsAuthentication: false
+      #   Route53:
+      #     HostedZoneId: !ImportValue hosted-zone-id
