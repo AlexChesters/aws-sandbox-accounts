@@ -14,7 +14,7 @@ dynamodb = session.client("dynamodb")
 args_map = {
     "test": {
         "table_name": "test-aws-sandbox-accounts-account-pool",
-        "accounts": []
+        "accounts": ["227301199018"]
     },
     "live": {
         "table_name": "live-aws-sandbox-accounts-account-pool",
