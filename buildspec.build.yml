@@ -4,7 +4,6 @@ phases:
   install:
     runtime-versions:
       python: 3.11
-      nodejs: 22
   build:
     commands:
       # install poetry
@@ -24,9 +23,5 @@ phases:
       - make package
       - aws cloudformation package --template-file stacks/sandbox-administrator-account/auth-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/auth-client --output-template-file stacks/sandbox-administrator-account/auth-client.yml
       - cd ../..
-      # interface
-      - cd apps/interface
-      - npm ci
-      - npm run build
 artifacts:
   files: "**/*"
