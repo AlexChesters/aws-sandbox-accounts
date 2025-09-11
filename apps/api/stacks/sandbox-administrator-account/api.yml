@@ -50,25 +50,6 @@ Resources:
                     - dynamodb:UpdateItem
                   Resource:
                     - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Environment}-aws-sandbox-accounts-account-pool"
-  Function:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: aws_sandbox_accounts_api.main.handler
-      Runtime: python3.11
-      CodeUri: ../../build
-      Role: !GetAtt FunctionExecutionRole.Arn
-      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-api"
-      LoggingConfig:
-        ApplicationLogLevel: INFO
-        LogGroup: !Ref FunctionLogGroup
-        LogFormat: JSON
-        SystemLogLevel: WARN
-      MemorySize: 256
-      Timeout: 5
-      Tracing: Active
-      Environment:
-        Variables:
-          TABLE_NAME: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
   APICertificate:
     Type: AWS::CertificateManager::Certificate
     Properties:
@@ -120,3 +101,38 @@ Resources:
         MutualTlsAuthentication: false
         Route53:
           HostedZoneId: !ImportValue hosted-zone-id
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: aws_sandbox_accounts_api.main.handler
+      Runtime: python3.11
+      CodeUri: ../../build
+      Role: !GetAtt FunctionExecutionRole.Arn
+      FunctionName: !Sub "${Environment}-aws-sandbox-accounts-api"
+      LoggingConfig:
+        ApplicationLogLevel: INFO
+        LogGroup: !Ref FunctionLogGroup
+        LogFormat: JSON
+        SystemLogLevel: WARN
+      MemorySize: 256
+      Timeout: 5
+      Tracing: Active
+      Environment:
+        Variables:
+          TABLE_NAME: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+      Events:
+        API:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref API
+            Path: /{proxy+}
+            Method: ANY
+        # https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-cors.html#http-api-cors-default-route
+        OptionsPreflight:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref API
+            Path: /{proxy+}
+            Method: OPTIONS
+            Auth:
+              Authorizer: NONE
