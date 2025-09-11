@@ -5,12 +5,23 @@ import boto3
 from db_seeder.utils.serialiser import serialise
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--table-name", required=True)
+parser.add_argument("--env", required=True, choices=["test", "live"], help="The environment to seed the database for.")
 args = parser.parse_args()
 
 session = boto3.Session(profile_name="sandbox-administrator", region_name="eu-west-1")
 dynamodb = session.client("dynamodb")
-table_name = args.table_name
+
+args_map = {
+    "test": {
+        "table_name": "test-aws-sandbox-accounts-account-pool",
+        "accounts": []
+    },
+    "live": {
+        "table_name": "live-aws-sandbox-accounts-account-pool",
+        "accounts": ["905418121097", "891377354273", "471112670300"]
+    }
+}
+table_name = args_map[args.env]["table_name"]
 
 response = dynamodb.scan(
     TableName=table_name,
@@ -34,7 +45,7 @@ dynamodb.transact_write_items(
                     "TableName": table_name,
                     "Item": serialise({
                         "pk": "account_status#all",
-                        "data": ["905418121097", "891377354273", "471112670300"]
+                        "data": args_map[args.env]["accounts"]
                     })
                 }
             },
@@ -61,7 +72,7 @@ dynamodb.transact_write_items(
                     "TableName": table_name,
                     "Item": serialise({
                         "pk": "account_status#dirty",
-                        "data": ["905418121097", "891377354273", "471112670300"]
+                        "data": args_map[args.env]["accounts"]
                     })
                 }
             },
