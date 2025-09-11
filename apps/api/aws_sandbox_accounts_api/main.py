@@ -22,5 +22,5 @@ def index():
     return {"message": "Hello, world!"}
 
 @logger.inject_lambda_context(log_event=True, correlation_id_path=correlation_paths.API_GATEWAY_HTTP)
-def lambda_handler(event: dict, context: LambdaContext) -> dict:
+def handler(event: dict, context: LambdaContext) -> dict:
     return app.resolve(event, context)
