@@ -24,6 +24,12 @@ phases:
       - make package
       - aws cloudformation package --template-file stacks/sandbox-administrator-account/auth-client.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/auth-client --output-template-file stacks/sandbox-administrator-account/auth-client.yml
       - cd ../..
+      # api
+      - cd apps/api
+      - make test
+      - make package
+      - aws cloudformation package --template-file stacks/sandbox-administrator-account/api.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/api --output-template-file stacks/sandbox-administrator-account/api.yml
+      - cd ../..
       # interface
       - cd apps/interface
       - npm ci
