@@ -1,0 +1,134 @@
+Transform:
+  - AWS::LanguageExtensions
+Description: pipeline to deploy aws-sandbox-accounts api
+Parameters:
+  Branch:
+    Type: String
+    Default: main
+    Description: The branch to build from
+Resources:
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+      ManagedPolicyArns:
+        - !ImportValue ci-infrastructure-codebuild-base-iam-policy
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+        Location: !ImportValue ci-infrastructure-artifacts-bucket-name
+        Path: /artifacts/aws-sandbox-accounts/api
+        Packaging: NONE
+        Name: build
+        NamespaceType: BUILD_ID
+      Description: Builds aws-sandbox-accounts api
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux-aarch64-standard:3.0
+        Type: ARM_CONTAINER
+        EnvironmentVariables:
+          - Value: !ImportValue ci-infrastructure-artifacts-bucket-name
+            Name: ARTIFACTS_BUCKET
+            Type: PLAINTEXT
+      Name: aws-sandbox-accounts-api
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: apps/api/buildspec.yml
+  CodePipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      ArtifactStore:
+        Type: S3
+        Location: !ImportValue ci-infrastructure-artifacts-bucket-name
+      Name: aws-sandbox-accounts
+      RestartExecutionOnUpdate: true
+      RoleArn: !ImportValue ci-infrastructure-codepipeline-base-execution-iam-role
+      PipelineType: V2
+      Triggers:
+        - ProviderType: CodeStarSourceConnection
+          GitConfiguration:
+            SourceActionName: Clone-From-GitHub
+            Push:
+              - Branches:
+                  Includes:
+                    - !Ref Branch
+                FilePaths:
+                  Includes:
+                    - apps/api/**
+      Stages:
+        - Name: Source
+          Actions:
+            - ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: "1"
+                Provider: CodeStarSourceConnection
+              OutputArtifacts:
+                - Name: GitHubSource
+              RunOrder: 1
+              Name: Clone-From-GitHub
+              Namespace: SourceVariables
+              Configuration:
+                ConnectionArn: !ImportValue ci-infrastructure-github-codestar-connection
+                FullRepositoryId: AlexChesters/aws-sandbox-accounts
+                BranchName: main
+                OutputArtifactFormat: CODE_ZIP
+        - Name: Build
+          Actions:
+            - ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: "1"
+                Provider: CodeBuild
+              InputArtifacts:
+                - Name: GitHubSource
+              OutputArtifacts:
+                - Name: BuildArtifact
+              RunOrder: 1
+              Name: Build
+              Configuration:
+                ProjectName: !Ref CodeBuildProject
+        - Name: Deploy-API-To-Test
+          Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuildArtifact
+              RunOrder: 1
+              Name: API
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-api
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuildArtifact::apps/api/stacks/sandbox-administrator-account/api.yml
+                TemplateConfiguration: BuildArtifact::apps/api/stacks/sandbox-administrator-account/parameters/api/test.json
+        - Name: Deploy-API-To-Live
+          Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuildArtifact
+              RunOrder: 1
+              Name: API
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-api
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuildArtifact::apps/api/stacks/sandbox-administrator-account/api.yml
+                TemplateConfiguration: BuildArtifact::apps/api/stacks/sandbox-administrator-account/parameters/api/live.json

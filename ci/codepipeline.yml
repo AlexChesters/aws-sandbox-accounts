@@ -329,24 +329,6 @@ Resources:
                     - name: BUCKET_NAME
                       value: test-aws-sandbox-accounts-interface-bucket-tgksqlpowtj1
                       type: PLAINTEXT
-        - Name: Deploy-API-To-Test
-          Actions:
-            - ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Version: "1"
-                Provider: CloudFormation
-              InputArtifacts:
-                - Name: BuildArtifact
-              RunOrder: 1
-              Name: API
-              Configuration:
-                ActionMode: REPLACE_ON_FAILURE
-                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: test-aws-sandbox-accounts-api
-                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuildArtifact::apps/api/stacks/sandbox-administrator-account/api.yml
-                TemplateConfiguration: BuildArtifact::apps/api/stacks/sandbox-administrator-account/parameters/api/test.json
         - Name: Deploy-Common-Resources-To-Live
           Actions:
             - ActionTypeId:
@@ -549,21 +531,3 @@ Resources:
                     - name: BUCKET_NAME
                       value: live-aws-sandbox-accounts-interface-bucket-czgvayyk9fif
                       type: PLAINTEXT
-        - Name: Deploy-API-To-Live
-          Actions:
-            - ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Version: "1"
-                Provider: CloudFormation
-              InputArtifacts:
-                - Name: BuildArtifact
-              RunOrder: 1
-              Name: API
-              Configuration:
-                ActionMode: REPLACE_ON_FAILURE
-                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
-                StackName: live-aws-sandbox-accounts-api
-                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: BuildArtifact::apps/api/stacks/sandbox-administrator-account/api.yml
-                TemplateConfiguration: BuildArtifact::apps/api/stacks/sandbox-administrator-account/parameters/api/live.json

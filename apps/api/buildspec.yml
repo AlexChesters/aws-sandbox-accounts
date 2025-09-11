@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+      nodejs: 22
+  build:
+    commands:
+      # install poetry
+      - dnf install -y python3-pip
+      - python3 -m pip install --user pipx
+      - export PATH=$PATH:/root/.local/bin
+      - pipx install poetry==2.1.4
+      # api
+      - cd apps/api
+      - make test
+      - make package
+      - aws cloudformation package --template-file stacks/sandbox-administrator-account/api.yml --s3-bucket $ARTIFACTS_BUCKET --s3-prefix artifacts/aws-sandbox-accounts/apps/api --output-template-file stacks/sandbox-administrator-account/api.yml
+artifacts:
+  files: "**/*"
