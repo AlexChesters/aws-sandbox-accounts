@@ -92,14 +92,8 @@ Resources:
                     - !Ref Branch
                 FilePaths:
                   Includes:
-                    - apps/account-cleaner/**
-                    - apps/account-manager/**
-                    - apps/auth-client/**
-                    - apps/db-client/**
-                    - apps/lease-creator/**
-                    - apps/lease-janitor/**
-                    - common-resources/sandbox-administrator-account/**
-                    - apps/interface/**
+                    - apps/**
+                    - common-resources/**
       Stages:
         - Name: Source
           Actions:
@@ -282,6 +276,22 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuildArtifact::apps/auth-client/stacks/sandbox-administrator-account/auth-client.yml
                 TemplateConfiguration: BuildArtifact::apps/auth-client/stacks/sandbox-administrator-account/parameters/auth-client/test.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuildArtifact
+              RunOrder: 1
+              Name: API
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-api
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuildArtifact::apps/api/stacks/sandbox-administrator-account/api.yml
+                TemplateConfiguration: BuildArtifact::apps/api/stacks/sandbox-administrator-account/parameters/api/test.json
         - Name: Deploy-Interface-To-Test
           Actions:
             - ActionTypeId:
@@ -484,6 +494,22 @@ Resources:
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
                 TemplatePath: BuildArtifact::apps/auth-client/stacks/sandbox-administrator-account/auth-client.yml
                 TemplateConfiguration: BuildArtifact::apps/auth-client/stacks/sandbox-administrator-account/parameters/auth-client/live.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuildArtifact
+              RunOrder: 1
+              Name: API
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-api
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuildArtifact::apps/api/stacks/sandbox-administrator-account/api.yml
+                TemplateConfiguration: BuildArtifact::apps/api/stacks/sandbox-administrator-account/parameters/api/live.json
         - Name: Deploy-Interface-To-Live
           Actions:
             - ActionTypeId:
