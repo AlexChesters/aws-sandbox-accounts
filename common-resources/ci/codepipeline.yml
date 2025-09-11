@@ -1,0 +1,156 @@
+Transform:
+  - AWS::LanguageExtensions
+Description: pipeline to deploy aws-sandbox-accounts common resources
+Parameters:
+  Branch:
+    Type: String
+    Default: main
+    Description: The branch to build from
+Resources:
+  CodePipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      ArtifactStores:
+        - Region: eu-west-1
+          ArtifactStore:
+            Type: S3
+            Location: atc-ci-artifacts-654654632738-eu-west-1
+        - Region: us-east-1
+          ArtifactStore:
+            Type: S3
+            Location: atc-ci-artifacts-654654632738-us-east-1
+      Name: aws-sandbox-accounts-common-resources
+      RestartExecutionOnUpdate: true
+      RoleArn: !ImportValue ci-infrastructure-codepipeline-base-execution-iam-role
+      PipelineType: V2
+      Triggers:
+        - ProviderType: CodeStarSourceConnection
+          GitConfiguration:
+            SourceActionName: Clone-From-GitHub
+            Push:
+              - Branches:
+                  Includes:
+                    - !Ref Branch
+                FilePaths:
+                  Includes:
+                    - common-resources/**
+      Stages:
+        - Name: Source
+          Actions:
+            - ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: "1"
+                Provider: CodeStarSourceConnection
+              OutputArtifacts:
+                - Name: GitHubSource
+              RunOrder: 1
+              Name: Clone-From-GitHub
+              Namespace: SourceVariables
+              Configuration:
+                ConnectionArn: !ImportValue ci-infrastructure-github-codestar-connection
+                FullRepositoryId: AlexChesters/aws-sandbox-accounts
+                BranchName: main
+                OutputArtifactFormat: CODE_ZIP
+        - Name: Deploy-Common-Resources-To-Test
+          Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: GitHubSource
+              RunOrder: 1
+              Name: Pool-Store
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-pool-store
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/pool-store/pool-store.yml
+                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/pool-store/parameters/test.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: GitHubSource
+              RunOrder: 1
+              Name: User-Pool
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-user-pool
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/user-pool/user-pool.yml
+                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/user-pool/parameters/test.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: GitHubSource
+              RunOrder: 1
+              Name: DNS
+              Region: us-east-1
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-dns
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/dns/dns.yml
+                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/dns/parameters/test.json
+        - Name: Deploy-Common-Resources-To-Live
+          Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: GitHubSource
+              RunOrder: 1
+              Name: Pool-Store
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-pool-store
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/pool-store/pool-store.yml
+                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/pool-store/parameters/live.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: GitHubSource
+              RunOrder: 1
+              Name: User-Pool
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-user-pool
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/user-pool/user-pool.yml
+                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/user-pool/parameters/live.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: GitHubSource
+              RunOrder: 1
+              Name: DNS
+              Region: us-east-1
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-dns
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/dns/dns.yml
+                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/dns/parameters/live.json
