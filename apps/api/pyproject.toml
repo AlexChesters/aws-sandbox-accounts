@@ -1,0 +1,24 @@
+[project]
+name = "aws-sandbox-accounts-api"
+version = "0.1.0"
+description = "API for AWS Sandbox Accounts"
+authors = [
+    {name = "Alex Chesters",email = "alex@cheste.rs"}
+]
+license = {text = "MIT"}
+requires-python = "==3.11"
+dependencies = [
+    "aws-lambda-powertools (>=3.20.0,<4.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.13.0"
+
