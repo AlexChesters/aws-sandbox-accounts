@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch interface",
+      "type": "firefox",
+      "profile": "main",
+      "request": "launch",
+      "reAttach": false,
+      "url": "http://localhost:5173/",
+      "webRoot": "${workspaceFolder}/apps/interface"
+    }
+  ]
+}
