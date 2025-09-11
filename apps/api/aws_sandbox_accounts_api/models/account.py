@@ -3,10 +3,10 @@ from enum import Enum
 from pydantic import BaseModel
 
 class AccountStatus(str, Enum):
-    AVAILABLE = "AVAILABLE"
-    LEASED = "LEASED"
-    DIRTY = "DIRTY"
-    FAILED = "FAILED"
+    AVAILABLE = "available"
+    LEASED = "leased"
+    DIRTY = "dirty"
+    FAILED = "failed"
 
 class Account(BaseModel):
     account_id: str
