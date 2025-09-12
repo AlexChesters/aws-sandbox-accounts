@@ -105,6 +105,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: aws_sandbox_accounts_api.main.handler
+      Architectures:
+        - arm64
       Runtime: python3.11
       CodeUri: ../../build
       Role: !GetAtt FunctionExecutionRole.Arn
