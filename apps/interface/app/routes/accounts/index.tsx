@@ -5,6 +5,7 @@ import type { Route } from '../accounts/+types'
 import { AWSSandboxAccountsService } from '~/services/aws-sandbox-accounts-api'
 import { AccountStatus, type Account } from '~/models/types'
 
+import Loading from '~/components/loading'
 import AccountsSection from './components/accounts-section'
 
 export function meta(_: Route.MetaArgs) {
@@ -15,6 +16,7 @@ export function meta(_: Route.MetaArgs) {
 
 export default function Accounts() {
   const auth = useAuth()
+  const [loading, setLoading] = useState(true)
   const [accounts, setAccounts] = useState<Record<AccountStatus, Account[]>>({
     [AccountStatus.Available]: [],
     [AccountStatus.Leased]: [],
@@ -30,12 +32,18 @@ export default function Accounts() {
         .then(data => {
           console.log('API Response:', data)
           setAccounts(data)
+          setLoading(false)
         })
         .catch(error => {
           console.error('API Error:', error)
+          setLoading(false)
         })
     }
   }, [auth])
+
+  if (loading) {
+    return <Loading />
+  }
 
   return (
     <main>
