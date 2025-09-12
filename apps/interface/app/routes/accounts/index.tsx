@@ -4,6 +4,7 @@ import { useAuth } from 'react-oidc-context'
 import type { Route } from '../accounts/+types'
 import { AWSSandboxAccountsService } from '~/services/aws-sandbox-accounts-api'
 import { AccountStatus, type Account } from '~/models/types'
+import { AccountsActionsContext } from './accounts-actions-context'
 
 import Loading from '~/components/loading'
 import AccountsSection from './components/accounts-section'
@@ -51,11 +52,12 @@ export default function Accounts() {
 
   return (
     <main>
-      {/* TODO - sort this mess out, passing create lease to non-avialable sections */}
-      <AccountsSection status={AccountStatus.Available} accounts={accounts[AccountStatus.Available]} onCreateLease={onCreateLease} />
-      <AccountsSection status={AccountStatus.Leased} accounts={accounts[AccountStatus.Leased]} onCreateLease={onCreateLease} />
-      <AccountsSection status={AccountStatus.Dirty} accounts={accounts[AccountStatus.Dirty]} onCreateLease={onCreateLease} />
-      <AccountsSection status={AccountStatus.Failed} accounts={accounts[AccountStatus.Failed]} onCreateLease={onCreateLease} />
+      <AccountsActionsContext value={{ onCreateLease }}>
+        <AccountsSection status={AccountStatus.Available} accounts={accounts[AccountStatus.Available]} />
+        <AccountsSection status={AccountStatus.Leased} accounts={accounts[AccountStatus.Leased]} />
+        <AccountsSection status={AccountStatus.Dirty} accounts={accounts[AccountStatus.Dirty]} />
+        <AccountsSection status={AccountStatus.Failed} accounts={accounts[AccountStatus.Failed]} />
+      </AccountsActionsContext>
     </main>
   )
 }
