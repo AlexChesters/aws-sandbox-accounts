@@ -1,9 +1,6 @@
 import { APIClient } from '~/networking/aws-sandbox-accounts-api'
-import { AccountStatus, type Account } from '~/models/types'
-
-type FetchAllAccountsResponse = {
-  [key in AccountStatus]: Account[]
-}
+import { AccountStatus } from '~/models/types'
+import type { FetchAllAccountsResponse } from './types'
 
 export class AWSSandboxAccountsService {
   #apiClient: APIClient
