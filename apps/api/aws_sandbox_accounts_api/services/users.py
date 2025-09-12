@@ -7,6 +7,7 @@ from aws_sandbox_accounts_api.utils.flatten import flatten
 MANAGEMENT_ACCOUNT_ROLE_ARN = os.environ["MANAGEMENT_ACCOUNT_ROLE_ARN"]
 
 def get_all_users() -> list[User]:
+    users = []
     management_account_session = assume_role(role_arn=MANAGEMENT_ACCOUNT_ROLE_ARN)
 
     identity_store = management_account_session.client("identitystore")
@@ -19,4 +20,15 @@ def get_all_users() -> list[User]:
     )
     flat_results = flatten(result["GroupMemberships"] for result in results)
 
-    return flat_results
+    for membership in flat_results:
+        user_id = membership["MemberId"]["UserId"]
+        user_details = identity_store.describe_user(
+            IdentityStoreId="d-93677ee9b2",
+            UserId=user_id
+        )
+        users.append(User(
+            user_id=user_details["UserId"],
+            user_name=user_details["UserName"]
+        ))
+
+    return users
