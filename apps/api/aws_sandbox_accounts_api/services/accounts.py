@@ -6,10 +6,10 @@ from aws_sandbox_accounts_api.database_client import get_item
 logger = Logger()
 
 known_sandbox_accounts = {
-    "227301199018": "testing",
-    "905418121097": "alpha",
-    "891377354273": "bravo",
-    "471112670300": "charlie",
+    "227301199018": "Sandbox Testing",
+    "905418121097": "Sandbox Alpha",
+    "891377354273": "Sandbox Bravo",
+    "471112670300": "Sandbox Charlie",
 }
 
 def get_all_accounts() -> list[Account]:
