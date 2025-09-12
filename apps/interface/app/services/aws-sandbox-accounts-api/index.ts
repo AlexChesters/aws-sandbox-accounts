@@ -9,9 +9,9 @@ export class APIClient {
     }
   }
 
-  async helloWorld() {
+  async fetchAllAccounts() {
     const res = await fetch(
-      `${this.baseUrl}/`,
+      `${this.baseUrl}/accounts`,
       {
         headers: {
           ...this.#requestHeaders

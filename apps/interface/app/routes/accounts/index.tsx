@@ -17,7 +17,7 @@ export default function Accounts() {
     if (auth.isAuthenticated && auth.user) {
       const apiClient = new APIClient(auth.user?.access_token)
 
-      apiClient.helloWorld()
+      apiClient.fetchAllAccounts()
         .then(data => {
           console.log('API Response:', data)
         })
