@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 
 import { AccountStatus, type Account } from '~/models/types'
-import AccountCard from './components/account-card'
+import AccountCard from './accounts-section/account-card'
 
 type AccountsSectionProps = {
   status: AccountStatus,
