@@ -5,22 +5,27 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import AssignmentAddIcon from '@mui/icons-material/AssignmentAdd'
 
-import type { Account } from '~/models/types'
+import { AccountStatus, type Account } from '~/models/types'
 
 type AccountCardProps = {
   account: Account
+  status: AccountStatus
 }
 
-export default function AccountCard({ account }: AccountCardProps) {
+export default function AccountCard({ account, status }: AccountCardProps) {
   return (
     <Card variant='outlined' key={account.accountId}>
       <CardContent>
         <Typography variant='h5' component='h2'>{account.name}</Typography>
         <Typography gutterBottom sx={{ color: 'text.secondary' }}>{account.accountId}</Typography>
 
-        <CardActions>
-          <Button size='small' variant='contained' startIcon={<AssignmentAddIcon />}>Create lease</Button>
-        </CardActions>
+        {
+          status == AccountStatus.Available && (
+            <CardActions>
+              <Button size='small' variant='contained' startIcon={<AssignmentAddIcon />}>Create lease</Button>
+            </CardActions>
+          )
+        }
       </CardContent>
     </Card>
   )

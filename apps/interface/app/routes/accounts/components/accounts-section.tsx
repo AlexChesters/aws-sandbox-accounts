@@ -22,7 +22,7 @@ export default function AccountsSection({ status, accounts }: AccountsSectionPro
       <Grid container spacing={2}>
         {
           accounts.map((account) => (
-            <AccountCard account={account} key={account.accountId} />
+            <AccountCard key={account.accountId} account={account} status={status} />
           ))
         }
       </Grid>
