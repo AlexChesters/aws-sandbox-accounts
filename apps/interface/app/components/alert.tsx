@@ -16,14 +16,14 @@ export default function Alert({ title, message, onAcknowledge }: AlertProps) {
     <Dialog
       open={true}
       onClose={() => { }}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
+      aria-labelledby='alert-dialog-title'
+      aria-describedby='alert-dialog-description'
     >
       {
-        title && <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+        title && <DialogTitle id='alert-dialog-title'>{title}</DialogTitle>
       }
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
+        <DialogContentText id='alert-dialog-description'>
           {message}
         </DialogContentText>
       </DialogContent>

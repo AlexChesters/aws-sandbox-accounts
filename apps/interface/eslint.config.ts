@@ -26,6 +26,7 @@ export default defineConfig([
       '@stylistic/indent': ['error', 2],
       '@stylistic/comma-dangle': ['error', 'never'],
       '@stylistic/quotes': ['error', 'single'],
+      '@stylistic/jsx-quotes': ['error', 'prefer-single'],
       '@typescript-eslint/no-unused-vars': ['error', {
         'args': 'all',
         'argsIgnorePattern': '^_',

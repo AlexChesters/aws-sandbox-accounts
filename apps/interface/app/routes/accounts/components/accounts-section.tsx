@@ -13,10 +13,10 @@ type AccountsSectionProps = {
 export default function AccountsSection({ status, accounts }: AccountsSectionProps) {
   return (
     <Paper elevation={2} sx={{ p: 2, m: 2 }}>
-      <Typography variant="h4" component="h1" className='capitalized' sx={{ mb: 1.5 }}>{status}</Typography>
+      <Typography variant='h4' component='h1' className='capitalized' sx={{ mb: 1.5 }}>{status}</Typography>
       {
         accounts.length === 0 && (
-          <Typography variant="body1">No {status} accounts in the pool.</Typography>
+          <Typography variant='body1'>No {status} accounts in the pool.</Typography>
         )
       }
       <Grid container spacing={2}>

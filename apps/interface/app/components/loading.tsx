@@ -4,7 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 export default function Loading () {
   return (
     <Backdrop open={true} sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}>
-      <CircularProgress color="inherit" />
+      <CircularProgress color='inherit' />
     </Backdrop>
   )
 }

@@ -12,7 +12,7 @@ export default function AuthLayout() {
   if (!auth.isAuthenticated) {
     return (
       <Navigate
-        to="/auth/login"
+        to='/auth/login'
         state={{ from: location }}
         replace
       />
