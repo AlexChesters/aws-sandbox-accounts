@@ -5,7 +5,7 @@ from aws_lambda_powertools.event_handler import APIGatewayHttpResolver, CORSConf
 from aws_lambda_powertools.logging import correlation_paths
 from aws_lambda_powertools.utilities.typing import LambdaContext
 
-from aws_sandbox_accounts_api.routers import accounts_router, leases_router
+from aws_sandbox_accounts_api.routers import accounts_router, leases_router, users_router
 
 environment = os.getenv("ENVIRONMENT", "live")
 
@@ -21,6 +21,7 @@ app = APIGatewayHttpResolver(cors=cors_config)
 
 app.include_router(accounts_router, prefix="/accounts")
 app.include_router(leases_router, prefix="/leases")
+app.include_router(users_router, prefix="/users")
 
 @logger.inject_lambda_context(log_event=True, correlation_id_path=correlation_paths.API_GATEWAY_HTTP)
 def handler(event: dict, context: LambdaContext) -> dict:
