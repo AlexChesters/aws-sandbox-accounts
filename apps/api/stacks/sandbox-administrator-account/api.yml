@@ -122,6 +122,7 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
+          MANAGEMENT_ACCOUNT_ROLE_ARN: arn:aws:iam::008356366354:role/sandbox-accounts-api-identity-centre
       Events:
         API:
           Type: HttpApi

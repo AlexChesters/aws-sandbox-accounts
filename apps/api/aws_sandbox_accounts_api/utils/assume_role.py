@@ -4,7 +4,7 @@ import boto3
 
 function_name = os.environ["AWS_LAMBDA_FUNCTION_NAME"]
 
-def assume_role(role_arn: str):
+def assume_role(*, role_arn: str) -> boto3.Session:
     sts = boto3.client("sts")
     assumed_role_object = sts.assume_role(
         RoleArn=role_arn,
