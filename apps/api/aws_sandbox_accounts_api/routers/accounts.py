@@ -7,7 +7,7 @@ from aws_sandbox_accounts_api.services import accounts as accounts_service
 logger = Logger()
 router = Router()
 
-@router.get("/accounts")
+@router.get("/")
 def list_accounts():
     accounts = accounts_service.get_all_accounts()
 
