@@ -6,6 +6,6 @@ def get_all_accounts() -> list[Account]:
 
     for status in AccountStatus:
         accounts = get_item(pk=f"account_status#{status.value}")
-        results[status] = accounts
+        results[status] = accounts["data"]
 
     return results
