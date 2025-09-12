@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router'
 import Paper from '@mui/material/Paper'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import InventoryIcon from '@mui/icons-material/Inventory'
 
 interface BottomNavigationItems {
   label: string;
@@ -13,7 +13,7 @@ interface BottomNavigationItems {
 }
 
 const bottomNavigationItems: BottomNavigationItems[] = [
-  { label: 'Home', icon: HomeRoundedIcon, destination: '/' },
+  { label: 'Accounts', icon: InventoryIcon, destination: '/' },
   { label: 'Profile', icon: AccountCircleIcon, destination: '/user/me' }
 ]
 

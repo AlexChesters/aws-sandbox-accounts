@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useAuth } from 'react-oidc-context'
 
-import type { Route } from './+types/home'
+import type { Route } from '../+types/home'
 import { APIClient } from '~/services/aws-sandbox-accounts-api'
 
 export function meta(_: Route.MetaArgs) {
@@ -10,7 +10,7 @@ export function meta(_: Route.MetaArgs) {
   ]
 }
 
-export default function Home() {
+export default function Accounts() {
   const auth = useAuth()
 
   useEffect(() => {
