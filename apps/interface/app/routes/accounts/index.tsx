@@ -31,7 +31,6 @@ export default function Accounts() {
 
       service.fetchAllAccounts()
         .then(data => {
-          console.log('API Response:', data)
           setAccounts(data)
           setLoading(false)
         })
