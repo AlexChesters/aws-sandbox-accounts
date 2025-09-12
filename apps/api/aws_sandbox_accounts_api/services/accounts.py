@@ -5,7 +5,7 @@ def get_all_accounts() -> list[Account]:
     results = []
 
     for status in AccountStatus:
-        accounts = get_item(f"account_status#{status.value}")
+        accounts = get_item(pk=f"account_status#{status.value}")
         results.extend(accounts)
 
     return results
