@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useAuth } from 'react-oidc-context'
 
-import type { Route } from '../+types/home'
-import { APIClient } from '~/services/aws-sandbox-accounts-api'
+import type { Route } from '../accounts/+types'
+import { AWSSandboxAccountsService } from '~/services/aws-sandbox-accounts-api'
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -15,9 +15,9 @@ export default function Accounts() {
 
   useEffect(() => {
     if (auth.isAuthenticated && auth.user) {
-      const apiClient = new APIClient(auth.user?.access_token)
+      const service = new AWSSandboxAccountsService(auth.user.access_token)
 
-      apiClient.fetchAllAccounts()
+      service.fetchAllAccounts()
         .then(data => {
           console.log('API Response:', data)
         })
