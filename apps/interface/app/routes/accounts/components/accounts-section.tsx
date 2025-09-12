@@ -3,14 +3,15 @@ import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 
 import { AccountStatus, type Account } from '~/models/types'
-import AccountCard from './accounts-section/account-card'
+import AvailableAccountCard from './accounts-section/available-account-card'
 
 type AccountsSectionProps = {
   status: AccountStatus,
-  accounts: Account[]
+  accounts: Account[],
+  onCreateLease: (accountId: string) => void
 }
 
-export default function AccountsSection({ status, accounts }: AccountsSectionProps) {
+export default function AccountsSection({ status, accounts, onCreateLease }: AccountsSectionProps) {
   return (
     <Paper elevation={2} sx={{ p: 2, m: 2 }}>
       <Typography variant='h4' component='h1' className='capitalized' sx={{ mb: 1.5 }}>{status}</Typography>
@@ -21,11 +22,17 @@ export default function AccountsSection({ status, accounts }: AccountsSectionPro
       }
       <Grid container spacing={2}>
         {
-          accounts.map((account) => (
-            <AccountCard key={account.accountId} account={account} status={status} />
-          ))
+          accounts.map((account) => {
+            switch (status) {
+              case AccountStatus.Available:
+                return (
+                  <AvailableAccountCard key={account.accountId} account={account} onCreateLease={onCreateLease} />
+                )
+            }
+          })
         }
       </Grid>
     </Paper>
   )
 }
+

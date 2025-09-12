@@ -41,16 +41,21 @@ export default function Accounts() {
     }
   }, [auth])
 
+  const onCreateLease = (accountId: string) => {
+    console.log(`Create lease for account ID: ${accountId}`)
+  }
+
   if (loading) {
     return <Loading />
   }
 
   return (
     <main>
-      <AccountsSection status={AccountStatus.Available} accounts={accounts[AccountStatus.Available]} />
-      <AccountsSection status={AccountStatus.Leased} accounts={accounts[AccountStatus.Leased]} />
-      <AccountsSection status={AccountStatus.Dirty} accounts={accounts[AccountStatus.Dirty]} />
-      <AccountsSection status={AccountStatus.Failed} accounts={accounts[AccountStatus.Failed]} />
+      {/* TODO - sort this mess out, passing create lease to non-avialable sections */}
+      <AccountsSection status={AccountStatus.Available} accounts={accounts[AccountStatus.Available]} onCreateLease={onCreateLease} />
+      <AccountsSection status={AccountStatus.Leased} accounts={accounts[AccountStatus.Leased]} onCreateLease={onCreateLease} />
+      <AccountsSection status={AccountStatus.Dirty} accounts={accounts[AccountStatus.Dirty]} onCreateLease={onCreateLease} />
+      <AccountsSection status={AccountStatus.Failed} accounts={accounts[AccountStatus.Failed]} onCreateLease={onCreateLease} />
     </main>
   )
 }
