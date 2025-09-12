@@ -1,11 +1,4 @@
-interface AccountDTO {
-  account_id: string
-  name: string
-  status: string
-}
-type FetchAllAccountsResponse = {
-  [key: string]: AccountDTO[]
-}
+import type { FetchAllAccountsResponse } from './types'
 
 export class APIClient {
   #baseUrl: string = 'https://test.api.sandbox.alexchesters.com'
