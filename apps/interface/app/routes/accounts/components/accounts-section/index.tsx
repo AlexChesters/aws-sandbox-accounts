@@ -11,7 +11,7 @@ type AccountsSectionProps = {
 export default function AccountsSection({ status }: AccountsSectionProps) {
   return (
     <Paper elevation={2} sx={{ p: 2, m: 2 }}>
-      <Typography variant="h2" className='capitalized'>{status}</Typography>
+      <Typography variant="h4" component="h1" className='capitalized'>{status}</Typography>
     </Paper>
   )
 }
