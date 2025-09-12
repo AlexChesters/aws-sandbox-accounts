@@ -122,12 +122,21 @@ Resources:
       Bucket: !Ref Bucket
       PolicyDocument:
         Statement:
-          - Sid: AllowCloudFrontServicePrincipal
-            Effect: Allow
+          - Effect: Allow
             Principal:
               Service: cloudfront.amazonaws.com
-            Action: s3:GetObject
+            Action:
+              - s3:GetObject
             Resource: !Sub "${Bucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
+          - Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action:
+              - s3:ListBucket
+            Resource: !GetAtt Bucket.Arn
             Condition:
               StringEquals:
                 AWS:SourceArn: !Sub "arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
