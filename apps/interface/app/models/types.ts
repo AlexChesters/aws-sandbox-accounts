@@ -7,4 +7,6 @@ export enum AccountStatus {
 
 export interface Account {
   accountId: string
+  name: string
+  status: string
 }

@@ -21,6 +21,7 @@ export default function AccountsSection({ status, accounts }: AccountsSectionPro
         accounts.map((account) => (
           <div key={account.accountId}>
             <Typography variant="body1">Account ID: {account.accountId}</Typography>
+            <Typography variant="body1">Name: {account.name}</Typography>
             <hr />
           </div>
         ))

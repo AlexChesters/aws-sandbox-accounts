@@ -30,8 +30,10 @@ export class AWSSandboxAccountsService {
         console.warn(`Unknown account status: ${status}`)
         continue
       }
-      accounts[accountStatus] = accountIds.map((accountId) => ({
-        accountId
+      accounts[accountStatus] = accountIds.map((account) => ({
+        accountId: account.account_id,
+        name: account.name,
+        status: account.status
       }))
     }
 

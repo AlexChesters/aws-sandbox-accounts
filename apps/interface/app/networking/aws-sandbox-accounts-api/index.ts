@@ -1,5 +1,10 @@
+interface AccountDTO {
+  account_id: string
+  name: string
+  status: string
+}
 type FetchAllAccountsResponse = {
-  [key: string]: string[]
+  [key: string]: AccountDTO[]
 }
 
 export class APIClient {
