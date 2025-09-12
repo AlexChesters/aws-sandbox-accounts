@@ -10,10 +10,12 @@ class AccountStatus(str, Enum):
 
 class Account(BaseModel):
     account_id: str
+    name: str
     status: AccountStatus
 
     def to_json(self):
         return {
             "account_id": self.account_id,
+            "name": self.name,
             "status": self.status.value
         }
