@@ -1,8 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from 'react-oidc-context'
 
 import type { Route } from '../accounts/+types'
 import { AWSSandboxAccountsService } from '~/services/aws-sandbox-accounts-api'
+import { AccountStatus, type Account } from '~/models/types'
+
+import AccountsSection from './components/accounts-section'
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -12,6 +15,12 @@ export function meta(_: Route.MetaArgs) {
 
 export default function Accounts() {
   const auth = useAuth()
+  const [accounts, setAccounts] = useState<Record<AccountStatus, Account[]>>({
+    [AccountStatus.Available]: [],
+    [AccountStatus.Leased]: [],
+    [AccountStatus.Dirty]: [],
+    [AccountStatus.Failed]: []
+  })
 
   useEffect(() => {
     if (auth.isAuthenticated && auth.user) {
@@ -20,6 +29,7 @@ export default function Accounts() {
       service.fetchAllAccounts()
         .then(data => {
           console.log('API Response:', data)
+          setAccounts(data)
         })
         .catch(error => {
           console.error('API Error:', error)
@@ -29,7 +39,10 @@ export default function Accounts() {
 
   return (
     <main>
-      <h1>Hello, world!</h1>
+      <AccountsSection status={AccountStatus.Available} accounts={accounts[AccountStatus.Available]} />
+      <AccountsSection status={AccountStatus.Leased} accounts={accounts[AccountStatus.Leased]} />
+      <AccountsSection status={AccountStatus.Dirty} accounts={accounts[AccountStatus.Dirty]} />
+      <AccountsSection status={AccountStatus.Failed} accounts={accounts[AccountStatus.Failed]} />
     </main>
   )
 }

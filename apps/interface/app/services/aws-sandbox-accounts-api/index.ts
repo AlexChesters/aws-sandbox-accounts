@@ -1,14 +1,6 @@
 import { APIClient } from '~/networking/aws-sandbox-accounts-api'
+import { AccountStatus, type Account } from '~/models/types'
 
-enum AccountStatus {
-  Available = 'available',
-  Leased = 'leased',
-  Dirty = 'dirty',
-  Failed = 'failed'
-}
-interface Account {
-  accountId: string
-}
 type FetchAllAccountsResponse = {
   [key in AccountStatus]: Account[]
 }
