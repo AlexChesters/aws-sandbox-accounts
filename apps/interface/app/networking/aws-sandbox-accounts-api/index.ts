@@ -8,7 +8,7 @@ type FetchAllAccountsResponse = {
 }
 
 export class APIClient {
-  baseUrl: string = 'https://test.api.sandbox.alexchesters.com'
+  #baseUrl: string = 'https://test.api.sandbox.alexchesters.com'
   #requestHeaders: Record<string, string>
 
   constructor(accessToken: string) {
@@ -20,7 +20,7 @@ export class APIClient {
 
   async fetchAllAccounts(): Promise<FetchAllAccountsResponse> {
     const res = await fetch(
-      `${this.baseUrl}/accounts`,
+      `${this.#baseUrl}/accounts`,
       {
         headers: {
           ...this.#requestHeaders
