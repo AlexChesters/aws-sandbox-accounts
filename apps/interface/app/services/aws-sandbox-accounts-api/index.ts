@@ -1,6 +1,6 @@
 import { APIClient } from '~/networking/aws-sandbox-accounts-api'
 import { AccountStatus } from '~/models/types'
-import type { FetchAllAccountsResponse } from './types'
+import type { FetchAllAccountsResult } from './types'
 
 export class AWSSandboxAccountsService {
   #apiClient: APIClient
@@ -9,9 +9,9 @@ export class AWSSandboxAccountsService {
     this.#apiClient = new APIClient(accessToken)
   }
 
-  async fetchAllAccounts(): Promise<FetchAllAccountsResponse> {
+  async fetchAllAccounts(): Promise<FetchAllAccountsResult> {
     const apiResponse = await this.#apiClient.fetchAllAccounts()
-    const accounts: FetchAllAccountsResponse = {
+    const accounts: FetchAllAccountsResult = {
       [AccountStatus.Available]: [],
       [AccountStatus.Leased]: [],
       [AccountStatus.Dirty]: [],
