@@ -4,7 +4,6 @@ phases:
   install:
     runtime-versions:
       python: 3.11
-      nodejs: 22
   build:
     commands:
       # install poetry
