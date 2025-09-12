@@ -45,9 +45,15 @@ Resources:
   CodePipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
-      ArtifactStore:
-        Type: S3
-        Location: !ImportValue ci-infrastructure-artifacts-bucket-name
+      ArtifactStores:
+        - Region: eu-west-1
+          ArtifactStore:
+            Type: S3
+            Location: atc-ci-artifacts-654654632738-eu-west-1
+        - Region: us-east-1
+          ArtifactStore:
+            Type: S3
+            Location: atc-ci-artifacts-654654632738-us-east-1
       Name: aws-sandbox-accounts-api
       RestartExecutionOnUpdate: true
       RoleArn: !ImportValue ci-infrastructure-codepipeline-base-execution-iam-role
@@ -106,6 +112,23 @@ Resources:
               InputArtifacts:
                 - Name: BuildArtifact
               RunOrder: 1
+              Name: Edge-Certificate
+              Region: us-east-1
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: test-aws-sandbox-accounts-edge-certificate
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuildArtifact::apps/api/stacks/sandbox-administrator-account/edge-certificate.yml
+                TemplateConfiguration: BuildArtifact::apps/api/stacks/sandbox-administrator-account/parameters/edge-certificate/test.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuildArtifact
+              RunOrder: 2
               Name: API
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
@@ -124,6 +147,23 @@ Resources:
               InputArtifacts:
                 - Name: BuildArtifact
               RunOrder: 1
+              Name: Edge-Certificate
+              Region: us-east-1
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                StackName: live-aws-sandbox-accounts-edge-certificate
+                RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
+                TemplatePath: BuildArtifact::apps/api/stacks/sandbox-administrator-account/edge-certificate.yml
+                TemplateConfiguration: BuildArtifact::apps/api/stacks/sandbox-administrator-account/parameters/edge-certificate/live.json
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuildArtifact
+              RunOrder: 2
               Name: API
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
