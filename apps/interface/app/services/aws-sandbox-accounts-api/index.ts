@@ -1,6 +1,6 @@
 import { APIClient } from '~/networking/aws-sandbox-accounts-api'
 import { AccountStatus } from '~/models/types'
-import type { FetchAllAccountsResult } from './types'
+import type { FetchAllAccountsResult, FetchAllUsersResult } from './types'
 
 export class AWSSandboxAccountsService {
   #apiClient: APIClient
@@ -35,5 +35,13 @@ export class AWSSandboxAccountsService {
     }
 
     return accounts
+  }
+
+  async fetchAllUsers(): Promise<FetchAllUsersResult> {
+    const apiResponse = await this.#apiClient.fetchAllUsers()
+    return apiResponse.map((user) => ({
+      userId: user.user_id,
+      userName: user.user_name
+    }))
   }
 }

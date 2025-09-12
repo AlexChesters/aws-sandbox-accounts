@@ -43,6 +43,21 @@ export default function Accounts() {
 
   const onCreateLease = (accountId: string) => {
     console.log(`Create lease for account ID: ${accountId}`)
+
+    if (auth.isAuthenticated && auth.user) {
+      setLoading(true)
+      const service = new AWSSandboxAccountsService(auth.user.access_token)
+
+      service.fetchAllUsers()
+        .then(users => {
+          console.log('Fetched users:', users)
+          setLoading(false)
+        })
+        .catch(error => {
+          console.error('API Error:', error)
+          setLoading(false)
+        })
+    }
   }
 
   if (loading) {
