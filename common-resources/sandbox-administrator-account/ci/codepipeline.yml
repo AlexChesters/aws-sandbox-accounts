@@ -68,8 +68,8 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-pool-store
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/pool-store/pool-store.yml
-                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/pool-store/parameters/test.json
+                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/stacks/pool-store/pool-store.yml
+                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/stacks/pool-store/parameters/test.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
@@ -84,8 +84,8 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-user-pool
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/user-pool/user-pool.yml
-                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/user-pool/parameters/test.json
+                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/stacks/user-pool/user-pool.yml
+                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/stacks/user-pool/parameters/test.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
@@ -101,8 +101,8 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: test-aws-sandbox-accounts-dns
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/dns/dns.yml
-                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/dns/parameters/test.json
+                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/stacks/dns/dns.yml
+                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/stacks/dns/parameters/test.json
         - Name: Deploy-Common-Resources-To-Live
           Actions:
             - ActionTypeId:
@@ -119,8 +119,8 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-pool-store
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/pool-store/pool-store.yml
-                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/pool-store/parameters/live.json
+                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/stacks/pool-store/pool-store.yml
+                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/stacks/pool-store/parameters/live.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
@@ -135,8 +135,8 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-user-pool
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/user-pool/user-pool.yml
-                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/user-pool/parameters/live.json
+                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/stacks/user-pool/user-pool.yml
+                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/stacks/user-pool/parameters/live.json
             - ActionTypeId:
                 Category: Deploy
                 Owner: AWS
@@ -152,5 +152,5 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 StackName: live-aws-sandbox-accounts-dns
                 RoleArn: !ImportValue ci-infrastructure-codepipeline-base-cloudformation-iam-role
-                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/dns/dns.yml
-                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/dns/parameters/live.json
+                TemplatePath: GitHubSource::common-resources/sandbox-administrator-account/stacks/dns/dns.yml
+                TemplateConfiguration: GitHubSource::common-resources/sandbox-administrator-account/stacks/dns/parameters/live.json
