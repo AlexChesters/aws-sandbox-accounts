@@ -42,9 +42,11 @@ export default function LeaseCreationDialog (props: LeaseCreationDialogProps) {
               }
             }}
           >
-            {props.users.map(user => (
-              <MenuItem key={user.userId} value={user.userId}>{user.userName}</MenuItem>
-            ))}
+            {
+              props.users.map(user => (
+                <MenuItem key={user.userId} value={user.userId}>{user.userName}</MenuItem>
+              ))
+            }
           </Select>
         </FormControl>
       </DialogContent>
