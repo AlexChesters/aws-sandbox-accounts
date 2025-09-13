@@ -20,6 +20,7 @@ export default function Accounts() {
   const [loading, setLoading] = useState(true)
   const [accounts, setAccounts] = useState<Record<AccountStatus, Account[]>>({
     [AccountStatus.Available]: [],
+    [AccountStatus.Pending]: [],
     [AccountStatus.Leased]: [],
     [AccountStatus.Dirty]: [],
     [AccountStatus.Failed]: []

@@ -13,6 +13,7 @@ export class AWSSandboxAccountsService {
     const apiResponse = await this.#apiClient.fetchAllAccounts()
     const accounts: FetchAllAccountsResult = {
       [AccountStatus.Available]: [],
+      [AccountStatus.Pending]: [],
       [AccountStatus.Leased]: [],
       [AccountStatus.Dirty]: [],
       [AccountStatus.Failed]: []
