@@ -3,7 +3,7 @@ import { useAuth } from 'react-oidc-context'
 
 import type { Route } from '../accounts/+types'
 import { AWSSandboxAccountsService } from '~/services/aws-sandbox-accounts-api'
-import { AccountStatus, type Account } from '~/models/types'
+import { AccountStatus, type Account, type User } from '~/models/types'
 import { AccountsActionsContext } from './accounts-actions-context'
 
 import Loading from '~/components/loading'
@@ -25,6 +25,25 @@ export default function Accounts() {
     [AccountStatus.Dirty]: [],
     [AccountStatus.Failed]: []
   })
+  const [users, setUsers] = useState<User[]>([])
+
+  const fetchUsers = async () => {
+    if (auth.isAuthenticated && auth.user) {
+      const service = new AWSSandboxAccountsService(auth.user.access_token)
+
+      service.fetchAllUsers()
+        .then(data => {
+          setUsers(data)
+        })
+        .catch(error => {
+          console.error('API Error when fetching users:', error)
+        })
+    }
+  }
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
 
   useEffect(() => {
     if (auth.isAuthenticated && auth.user) {
@@ -36,28 +55,23 @@ export default function Accounts() {
           setLoading(false)
         })
         .catch(error => {
-          console.error('API Error:', error)
+          console.error('API Error when fetching accounts:', error)
           setLoading(false)
         })
     }
   }, [auth])
 
-  const onCreateLease = (accountId: string) => {
+  const onCreateLease = async (accountId: string) => {
     console.log(`Create lease for account ID: ${accountId}`)
 
     if (auth.isAuthenticated && auth.user) {
-      setLoading(true)
-      const service = new AWSSandboxAccountsService(auth.user.access_token)
+      const _ = new AWSSandboxAccountsService(auth.user.access_token)
 
-      service.fetchAllUsers()
-        .then(users => {
-          console.log('Fetched users:', users)
-          setLoading(false)
-        })
-        .catch(error => {
-          console.error('API Error:', error)
-          setLoading(false)
-        })
+      if (!users.length) {
+        await fetchUsers()
+      }
+
+      console.log('Users:', users)
     }
   }
 
