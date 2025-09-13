@@ -69,6 +69,7 @@ export default function Accounts() {
     <main>
       <AccountsActionsContext value={{ onCreateLease }}>
         <AccountsSection status={AccountStatus.Available} accounts={accounts[AccountStatus.Available]} />
+        <AccountsSection status={AccountStatus.Pending} accounts={accounts[AccountStatus.Pending]} />
         <AccountsSection status={AccountStatus.Leased} accounts={accounts[AccountStatus.Leased]} />
         <AccountsSection status={AccountStatus.Dirty} accounts={accounts[AccountStatus.Dirty]} />
         <AccountsSection status={AccountStatus.Failed} accounts={accounts[AccountStatus.Failed]} />
