@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 class AccountStatus(str, Enum):
     AVAILABLE = "available"
+    PENDING = "pending"
     LEASED = "leased"
     DIRTY = "dirty"
     FAILED = "failed"
