@@ -14,6 +14,7 @@ import { type User } from '~/models/types'
 type LeaseCreationDialogProps = {
   users: User[]
   handleSubmit: ({ user } : { user: User }) => void
+  handleCancel: () => void
 }
 
 export default function LeaseCreationDialog (props: LeaseCreationDialogProps) {
@@ -48,7 +49,7 @@ export default function LeaseCreationDialog (props: LeaseCreationDialogProps) {
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => {}}>Cancel</Button>
+        <Button onClick={props.handleCancel}>Cancel</Button>
         <Button onClick={handleSubmit}>Subscribe</Button>
       </DialogActions>
     </Dialog>

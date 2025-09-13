@@ -89,6 +89,7 @@ export default function Accounts() {
     return (
       <LeaseCreationDialog
         handleSubmit={handleLeaseCreation}
+        handleCancel={() => setShowLeaseDialog(false)}
         users={users}
       />
     )
