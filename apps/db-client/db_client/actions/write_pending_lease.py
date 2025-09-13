@@ -45,7 +45,7 @@ def write_pending_lease(event, dynamo_client, table_name):
     )
 
     pending_leases.leases.add(lease_id)
-    pending_accounts.leases.add(account_id)
+    pending_accounts.accounts.add(account_id)
 
     dynamo_client.transact_write_items(
         TransactItems=[
