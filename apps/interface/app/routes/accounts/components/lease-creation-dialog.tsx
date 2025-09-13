@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -11,14 +12,15 @@ import Button from '@mui/material/Button'
 import { type User } from '~/models/types'
 
 type LeaseCreationDialogProps = {
-  handleSubmit: (user: User) => void
+  users: User[]
+  handleSubmit: ({ user } : { user: User }) => void
 }
 
-export default function LeaseCreationDialog (_props: LeaseCreationDialogProps) {
-  const handleSubmit = () => {
-    console.log('submit')
+export default function LeaseCreationDialog (props: LeaseCreationDialogProps) {
+  const [selectedUser, setSelectedUser] = useState<User>(props.users[0])
 
-    // props.handleSubmit()
+  const handleSubmit = () => {
+    props.handleSubmit({ user: selectedUser })
   }
 
   return (
@@ -32,13 +34,18 @@ export default function LeaseCreationDialog (_props: LeaseCreationDialogProps) {
           <Select
             labelId='demo-simple-select-label'
             id='demo-simple-select'
-            value={10}
+            value={selectedUser.userId}
             label='Age'
-            onChange={() => {}}
+            onChange={(event) => {
+              const user = props.users.find(user => user.userId === event.target.value)
+              if (user) {
+                setSelectedUser(user)
+              }
+            }}
           >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {props.users.map(user => (
+              <MenuItem key={user.userId} value={user.userId}>{user.userName}</MenuItem>
+            ))}
           </Select>
         </FormControl>
       </DialogContent>

@@ -73,9 +73,12 @@ export default function Accounts() {
         await fetchUsers()
       }
 
-      console.log('Users:', users)
       setShowLeaseDialog(true)
     }
+  }
+
+  const handleLeaseCreation = ({ user }: { user: User }) => {
+    console.log('Creating lease for user:', user)
   }
 
   if (loading) {
@@ -83,7 +86,12 @@ export default function Accounts() {
   }
 
   if (showLeaseDialog) {
-    return <LeaseCreationDialog handleSubmit={(user: User) => { console.log('selected user:', user) }} />
+    return (
+      <LeaseCreationDialog
+        handleSubmit={handleLeaseCreation}
+        users={users}
+      />
+    )
   }
 
   // TODO: fix bug where bottom navigation covers part of the accounts list
