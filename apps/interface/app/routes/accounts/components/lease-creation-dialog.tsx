@@ -1,6 +1,7 @@
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import Select from '@mui/material/Select'
 import FormControl from '@mui/material/FormControl'
@@ -24,6 +25,9 @@ export default function LeaseCreationDialog (_props: LeaseCreationDialogProps) {
     <Dialog open={true}>
       <DialogTitle>Create lease</DialogTitle>
       <DialogContent>
+        <DialogContentText sx={{ mb: 2 }}>
+          Create a lease for an account using the form below.
+        </DialogContentText>
         <FormControl fullWidth>
           <Select
             labelId='demo-simple-select-label'
