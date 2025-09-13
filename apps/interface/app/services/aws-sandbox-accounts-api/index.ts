@@ -40,6 +40,7 @@ export class AWSSandboxAccountsService {
 
   async fetchAllUsers(): Promise<FetchAllUsersResult> {
     const apiResponse = await this.#apiClient.fetchAllUsers()
+
     return apiResponse.map((user) => ({
       userId: user.user_id,
       userName: user.user_name

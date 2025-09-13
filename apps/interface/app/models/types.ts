@@ -11,3 +11,8 @@ export interface Account {
   name: string
   status: string
 }
+
+export interface User {
+  userId: string
+  userName: string
+}
