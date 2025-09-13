@@ -64,8 +64,6 @@ export default function Accounts() {
   }, [auth])
 
   const onCreateLease = async () => {
-    console.log('Create lease called')
-
     if (auth.isAuthenticated && auth.user) {
       const _ = new AWSSandboxAccountsService(auth.user.access_token)
 
