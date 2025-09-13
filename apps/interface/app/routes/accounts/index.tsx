@@ -8,6 +8,7 @@ import { AccountsActionsContext } from './accounts-actions-context'
 
 import Loading from '~/components/loading'
 import AccountsSection from './components/accounts-section'
+import LeaseCreationDialog from './components/lease-creation-dialog'
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -26,6 +27,7 @@ export default function Accounts() {
     [AccountStatus.Failed]: []
   })
   const [users, setUsers] = useState<User[]>([])
+  const [showLeaseDialog, setShowLeaseDialog] = useState(false)
 
   const fetchUsers = async () => {
     if (auth.isAuthenticated && auth.user) {
@@ -72,11 +74,16 @@ export default function Accounts() {
       }
 
       console.log('Users:', users)
+      setShowLeaseDialog(true)
     }
   }
 
   if (loading) {
     return <Loading />
+  }
+
+  if (showLeaseDialog) {
+    return <LeaseCreationDialog handleSubmit={(user: User) => { console.log('selected user:', user) }} />
   }
 
   // TODO: fix bug where bottom navigation covers part of the accounts list
