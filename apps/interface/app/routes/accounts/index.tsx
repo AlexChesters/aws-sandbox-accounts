@@ -65,6 +65,7 @@ export default function Accounts() {
     return <Loading />
   }
 
+  // TODO: fix bug where bottom navigation covers part of the accounts list
   return (
     <main>
       <AccountsActionsContext value={{ onCreateLease }}>
