@@ -8,7 +8,7 @@ import { AccountsActionsContext } from './accounts-actions-context'
 
 import Loading from '~/components/loading'
 import AccountsSection from './components/accounts-section'
-import LeaseCreationDialog from './components/lease-creation-dialog'
+import LeaseCreationDialog, { type Duration } from './components/lease-creation-dialog'
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -75,8 +75,8 @@ export default function Accounts() {
     }
   }
 
-  const handleLeaseCreation = ({ user }: { user: User }) => {
-    console.log('Creating lease for user:', user)
+  const handleLeaseCreation = ({ user, duration }: { user: User, duration: Duration }) => {
+    console.log('Creating lease for user:', user, 'with duration:', duration)
   }
 
   if (loading) {
