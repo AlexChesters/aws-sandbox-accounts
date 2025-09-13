@@ -8,7 +8,7 @@ authors = [
 license = {text = "MIT"}
 requires-python = ">=3.11,<3.12"
 dependencies = [
-    "aws-lambda-powertools (>=3.20.0,<4.0.0)",
+    "aws-lambda-powertools[parser] (>=3.20.0,<4.0.0)",
     "pydantic (>=2.11.7,<3.0.0)",
     "boto3 (>=1.40.28,<2.0.0)"
 ]

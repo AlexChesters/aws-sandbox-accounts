@@ -55,6 +55,11 @@ Resources:
                     - sts:AssumeRole
                   Resource:
                     - arn:aws:iam::008356366354:role/sandbox-accounts-api-identity-centre
+                - Effect: Allow
+                  Action:
+                    - states:StartExecution
+                  Resource:
+                    - !Sub ""
   APICertificate:
     Type: AWS::CertificateManager::Certificate
     Properties:
@@ -128,6 +133,7 @@ Resources:
         Variables:
           TABLE_NAME: !Sub "${Environment}-aws-sandbox-accounts-account-pool"
           MANAGEMENT_ACCOUNT_ROLE_ARN: arn:aws:iam::008356366354:role/sandbox-accounts-api-identity-centre
+          LEASE_CREATOR_STEP_FUNCTION_ARN: !Sub "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${Environment}-aws-sandbox-accounts-lease-creator"
       Events:
         API:
           Type: HttpApi

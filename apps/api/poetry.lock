@@ -26,6 +26,7 @@ files = [
 
 [package.dependencies]
 jmespath = ">=1.0.1,<2.0.0"
+pydantic = {version = ">=2.4.0,<3.0.0", optional = true, markers = "extra == \"parser\" or extra == \"all\""}
 typing-extensions = ">=4.11.0,<5.0.0"
 
 [package.extras]
@@ -349,4 +350,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.12"
-content-hash = "edf48e50d821c2358a7c81466cba1a48ba57693c0253aa5b60b923832005d388"
+content-hash = "c71a45ac03a3bfced89817ff6f6714157a3ac45f490fddd14a0bf0bc3bb802b8"
