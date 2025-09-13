@@ -28,7 +28,8 @@ def write_pending_lease(event, dynamo_client, table_name):
         RequestItems={
             table_name: {
                 "Keys": [
-                    python_to_dynamo({ "pk": "lease_status#pending" })
+                    python_to_dynamo({ "pk": "lease_status#pending" }),
+                    python_to_dynamo({ "pk": "account_status#pending" })
                 ]
             }
         }
