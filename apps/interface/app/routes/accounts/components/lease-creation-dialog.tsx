@@ -32,10 +32,8 @@ export default function LeaseCreationDialog (props: LeaseCreationDialogProps) {
         </DialogContentText>
         <FormControl fullWidth>
           <Select
-            labelId='demo-simple-select-label'
-            id='demo-simple-select'
             value={selectedUser.userId}
-            label='Age'
+            label='User'
             onChange={(event) => {
               const user = props.users.find(user => user.userId === event.target.value)
               if (user) {
