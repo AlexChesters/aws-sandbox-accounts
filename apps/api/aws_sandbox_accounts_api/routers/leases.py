@@ -1,7 +1,7 @@
 from aws_lambda_powertools import Logger
 from aws_lambda_powertools.event_handler.api_gateway import Router
 from aws_lambda_powertools.event_handler import Response, content_types
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, ValidationError, field_validator
 from aws_lambda_powertools.utilities.parser import parse
 
 from aws_sandbox_accounts_api.services import leases as leases_service
@@ -12,6 +12,15 @@ router = Router()
 class LeaseRequest(BaseModel):
     user_id: str
     duration: str
+
+    @field_validator("duration")
+    def validate_duration(cls, value):
+        valid_durations = {"5m", "30m", "1h", "3h", "6h", "12h", "24h", "3d", "7d"}
+
+        if value not in valid_durations:
+            raise ValueError(f"Invalid duration. Must be one of: {', '.join(valid_durations)}")
+
+        return value
 
 @router.post("/")
 def create_lease():
