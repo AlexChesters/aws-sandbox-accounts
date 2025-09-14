@@ -5,3 +5,7 @@ export type FetchAllAccountsResult = {
 }
 
 export type FetchAllUsersResult = User[]
+
+export type CreateLeaseResult = {
+  executionArn: string
+}

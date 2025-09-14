@@ -1,4 +1,4 @@
-import type { FetchAllAccountsResponse, FetchAllUsersResponse } from './types'
+import type { FetchAllAccountsResponse, FetchAllUsersResponse, CreateLeaseResponse } from './types'
 
 export class APIClient {
   #baseUrl: string = 'https://test.api.sandbox.alexchesters.com'
@@ -34,6 +34,25 @@ export class APIClient {
         headers: {
           ...this.#requestHeaders
         }
+      }
+    )
+    if (!res.ok) {
+      throw new Error('Network response was not ok')
+    }
+
+    return res.json()
+  }
+
+  async createLease(userId: string, duration: string): Promise<CreateLeaseResponse> {
+    const res = await fetch(
+      `${this.#baseUrl}/leases`,
+      {
+        method: 'POST',
+        headers: {
+          ...this.#requestHeaders,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user_id: userId, duration })
       }
     )
     if (!res.ok) {

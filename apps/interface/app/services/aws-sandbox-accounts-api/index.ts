@@ -1,6 +1,6 @@
 import { APIClient } from '~/networking/aws-sandbox-accounts-api'
 import { AccountStatus } from '~/models/types'
-import type { FetchAllAccountsResult, FetchAllUsersResult } from './types'
+import type { CreateLeaseResult, FetchAllAccountsResult, FetchAllUsersResult } from './types'
 
 export class AWSSandboxAccountsService {
   #apiClient: APIClient
@@ -45,5 +45,13 @@ export class AWSSandboxAccountsService {
       userId: user.user_id,
       userName: user.user_name
     }))
+  }
+
+  async createLease(userId: string, duration: string): Promise<CreateLeaseResult> {
+    const apiResponse = await this.#apiClient.createLease(userId, duration)
+
+    return {
+      executionArn: apiResponse.execution_arn
+    }
   }
 }

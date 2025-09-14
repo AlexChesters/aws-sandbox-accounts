@@ -12,3 +12,7 @@ interface UserDTO {
   user_name: string
 }
 export type FetchAllUsersResponse = UserDTO[]
+
+export type CreateLeaseResponse = {
+  execution_arn: string
+}
