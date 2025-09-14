@@ -34,7 +34,7 @@ def create_lease():
             body={"error": "Invalid request", "details": e.errors()},
         )
 
-    execution_arn = leases_service.create_lease(lease_request.user_id, lease_request.duration)
+    execution_arn = leases_service.create_lease(user_id=lease_request.user_id, duration=lease_request.duration)
 
     return Response(
         status_code=202, content_type=content_types.APPLICATION_JSON, body={"execution_arn": execution_arn}
