@@ -77,6 +77,7 @@ export default function Accounts() {
 
   const handleLeaseCreation = ({ user, duration }: { user: User, duration: Duration }) => {
     console.log('Creating lease for user:', user, 'with duration:', duration)
+    // TODO: Implement lease creation API call
   }
 
   if (loading) {
