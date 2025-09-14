@@ -7,7 +7,7 @@ import Button from '@mui/material/Button'
 import AssignmentAddIcon from '@mui/icons-material/AssignmentAdd'
 
 import { AccountStatus, type Account } from '~/models/types'
-import AvailableAccountCard from './accounts-section/available-account-card'
+import AccountCard from './accounts-section/account-card'
 import { AccountsActionsContext } from '../accounts-actions-context'
 
 type AccountsSectionProps = {
@@ -42,12 +42,9 @@ export default function AccountsSection({ status, accounts }: AccountsSectionPro
       <Grid container spacing={2}>
         {
           accounts.map((account) => {
-            switch (status) {
-              case AccountStatus.Available:
-                return (
-                  <AvailableAccountCard key={account.accountId} account={account} />
-                )
-            }
+            return (
+              <AccountCard key={account.accountId} account={account} />
+            )
           })
         }
       </Grid>

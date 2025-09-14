@@ -4,11 +4,11 @@ import Typography from '@mui/material/Typography'
 
 import { type Account } from '~/models/types'
 
-type AvailableAccountCard = {
+type AccountCardProps = {
   account: Account
 }
 
-export default function AvailableAccountCard({ account }: AvailableAccountCard) {
+export default function AccountCard({ account }: AccountCardProps) {
   return (
     <Card variant='outlined' key={account.accountId}>
       <CardContent>
