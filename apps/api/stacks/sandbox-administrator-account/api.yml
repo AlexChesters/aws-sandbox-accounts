@@ -59,7 +59,7 @@ Resources:
                   Action:
                     - states:StartExecution
                   Resource:
-                    - !Sub ""
+                    - !Sub "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${Environment}-aws-sandbox-accounts-lease-creator"
   APICertificate:
     Type: AWS::CertificateManager::Certificate
     Properties:
@@ -99,6 +99,7 @@ Resources:
         AllowMethods:
           - GET
           - OPTIONS
+          - POST
         AllowOrigins:
           - !Sub
             - "https://${Domain}"
