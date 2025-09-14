@@ -96,6 +96,7 @@ Resources:
         AllowHeaders:
           - authorization
           - client
+          - content-type
         AllowMethods:
           - GET
           - OPTIONS
