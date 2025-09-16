@@ -42,34 +42,23 @@ Resources:
             - "alex@cheste.rs"
         - Key: ExportNamePrefix
           Value: !Ref Environment
-  # an A record is required for cognito custom domains
-  # https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-add-custom-domain.html#cognito-user-pools-add-custom-domain-prereq
-  CognitoARecord:
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: !Sub
+        - "auth.${Domain}"
+        - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
+      CustomDomainConfig:
+        CertificateArn: !FindInMap [EnvMap, !Ref Environment, CertificateArn]
+      UserPoolId: !GetAtt UserPool.Outputs.UserPoolId
+  UserPoolDomainRecord:
     Type: AWS::Route53::RecordSet
     Properties:
       HostedZoneId: !ImportValue hosted-zone-id
-      Name: !FindInMap [EnvMap, !Ref Environment, DomainName]
+      Name: !Sub
+        - "auth.${Domain}"
+        - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
       Type: A
-      TTL: '60'
-      ResourceRecords:
-        - "127.0.0.1"
-  # UserPoolDomain:
-  #   Type: AWS::Cognito::UserPoolDomain
-  #   Properties:
-  #     Domain: !Sub
-  #       - "auth.${Domain}"
-  #       - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
-  #     CustomDomainConfig:
-  #       CertificateArn: !FindInMap [EnvMap, !Ref Environment, CertificateArn]
-  #     UserPoolId: !GetAtt UserPool.Outputs.UserPoolId
-  # UserPoolDomainRecord:
-  #   Type: AWS::Route53::RecordSet
-  #   Properties:
-  #     HostedZoneId: !ImportValue hosted-zone-id
-  #     Name: !Sub
-  #       - "auth.${Domain}"
-  #       - Domain: !FindInMap [EnvMap, !Ref Environment, DomainName]
-  #     Type: A
-  #     AliasTarget:
-  #       DNSName: !GetAtt UserPoolDomain.CloudFrontDistribution
-  #       HostedZoneId: Z2FDTNDATAQYW2
+      AliasTarget:
+        DNSName: !GetAtt UserPoolDomain.CloudFrontDistribution
+        HostedZoneId: Z2FDTNDATAQYW2
