@@ -11,8 +11,9 @@
 		"--network=host"
 	],
 	"mounts": [
-		"type=bind,source=${localEnv:HOME}/.aws/personal.config,target=/root/.aws/config",
-		"type=bind,source=${localEnv:HOME}/.aws/sso,target=/root/.aws/sso"
+		"type=bind,source=${localEnv:HOME}/.aws/config,target=/root/.aws/config",
+		"type=bind,source=${localEnv:HOME}/.aws/sso,target=/root/.aws/sso",
+		"type=bind,source=${localEnv:HOME}/.ssh,target=/root/.ssh"
 	],
 	"customizations": {
 		"vscode": {
