@@ -54,7 +54,7 @@ CloudFormation stacks for the DynamoDB table (pool-store), DNS, and user pool. A
 
 ### CI/CD
 
-`buildspec.build.yml` drives AWS CodeBuild: installs Python 3.11 + Poetry, runs `make test && make package` per app, uploads artifacts to S3, then `aws cloudformation package` for SAM templates. Pipeline defined in `ci/codepipeline.yml`.
+`buildspec.build.yml` drives AWS CodeBuild: installs Python 3.11 + UV, runs `make test && make package` per app, uploads artifacts to S3, then `aws cloudformation package` for SAM templates. Pipeline defined in `ci/codepipeline.yml`.
 
 ## Key Conventions
 
