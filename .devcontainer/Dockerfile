@@ -34,15 +34,9 @@ RUN add-apt-repository ppa:deadsnakes/ppa -y && \
 # install cfn-lint
 RUN pip install cfn-lint
 
-# install poetry
-RUN pipx install poetry==2.1.4
-ENV PATH="$PATH:/root/.local/bin"
-RUN poetry config virtualenvs.options.always-copy true
-RUN poetry config virtualenvs.in-project true
-
-# install nodejs
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-RUN apt-get install -y nodejs
+# install uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV UV_LINK_MODE=copy
 
 # configure bash aliases
 RUN echo "alias ls='ls -alh'" >> /root/.bashrc

@@ -1,5 +1,5 @@
 install:
-	poetry install
+	uv sync
 
 run:
-	poetry run python -m lease_manager.main
+	uv run python -m lease_manager.main

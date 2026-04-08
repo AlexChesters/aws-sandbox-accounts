@@ -8,10 +8,10 @@ AWS Sandbox Accounts is a system for managing a pool of temporary, leased AWS ac
 
 ## Commands
 
-All apps and tools use Poetry + Makefile. From any `apps/*` or `tools/*` directory:
+All apps and tools use uv + Makefile. From any `apps/*` or `tools/*` directory:
 
 ```bash
-make install   # Install dependencies (Poetry)
+make install   # Install dependencies (uv sync)
 make test      # Run Ruff linting
 make package   # Build Lambda-deployable zip in build/
 ```
@@ -26,7 +26,7 @@ cd tools/pool-manager && make run     # Interactive account pool CLI
 
 Linting a specific app:
 ```bash
-cd apps/db-client && poetry run ruff check db_client
+cd apps/db-client && uv run ruff check db_client
 ```
 
 ## Architecture
@@ -58,7 +58,7 @@ CloudFormation stacks for the DynamoDB table (pool-store), DNS, and user pool. A
 
 ## Key Conventions
 
-- Python 3.11 everywhere; Poetry for dependency management; all `poetry.lock` files committed.
+- Python 3.11 everywhere; uv for dependency management; all `uv.lock` files committed.
 - AWS Lambda Powertools used in Lambda functions for logging and tracing.
 - `ruff` is the linter (no pytest — linting only for `make test`).
 - Two environments: `test` and `live`. Environment name is passed as a CloudFormation/Lambda parameter.

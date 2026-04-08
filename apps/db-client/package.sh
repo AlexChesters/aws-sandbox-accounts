@@ -1,11 +1,7 @@
 set -e
 
-export PATH="${HOME}/.poetry/bin:${PATH}"
-
-poetry install --without dev
-
-export VENV_PATH=$(poetry env info -p)
+uv sync --no-dev
 
 mkdir build
-cp -R ${VENV_PATH}/lib/python3.*/site-packages/* build/
+cp -R .venv/lib/python3.*/site-packages/* build/
 cp -R db_client build/

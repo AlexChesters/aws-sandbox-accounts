@@ -6,10 +6,7 @@ clean:
 	)
 
 install: clean
-	( \
-			poetry install && \
-			poetry env use python3.11 \
-	)
+	uv sync
 
 test: install
 	( \
@@ -17,8 +14,7 @@ test: install
 			export AWS_SECRET_ACCESS_KEY='testing' && \
 			export AWS_SESSION_TOKEN='testing' && \
 			export AWS_SECURITY_TOKEN='testing' && \
-			export PATH="${HOME}/.poetry/bin:${PATH}" && \
-			poetry run ruff check db_client \
+			uv run ruff check db_client \
 	)
 
 package: install
@@ -30,5 +26,5 @@ run:
 	( \
 		export TABLE_NAME=test-aws-sandbox-accounts-account-pool && \
 		export AWS_PROFILE=sandbox-administrator && \
-		poetry run python run.py \
+		uv run python run.py \
 	)

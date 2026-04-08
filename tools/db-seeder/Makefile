@@ -1,8 +1,8 @@
 install:
-	poetry install
+	uv sync
 
 test_db:
-	poetry run python -m db_seeder.main --env test
+	uv run python -m db_seeder.main --env test
 
 live_db:
-	poetry run python -m db_seeder.main --env live
+	uv run python -m db_seeder.main --env live
