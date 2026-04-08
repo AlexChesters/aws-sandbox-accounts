@@ -1,9 +1,0 @@
-{
-  "Parameters": {
-    "Environment": "test"
-  },
-  "Tags": {
-    "Project": "aws-sandbox-accounts",
-    "Environment": "test"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "Parameters": {
-    "Environment": "live"
-  },
-  "Tags": {
-    "Project": "aws-sandbox-accounts",
-    "Environment": "live"
-  }
-}
