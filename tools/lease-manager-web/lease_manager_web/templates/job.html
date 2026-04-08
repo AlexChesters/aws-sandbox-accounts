@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Job Status</h2>
+<div
+  id="job-status-container"
+  hx-get="/jobs/{{ job.id }}/status"
+  hx-trigger="every 3s"
+  hx-swap="outerHTML">
+  {% include "partials/job_status.html" %}
+</div>
+{% endblock %}

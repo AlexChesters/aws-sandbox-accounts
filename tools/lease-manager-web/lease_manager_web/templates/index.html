@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Active Leases</h2>
+<div
+  id="leases-container"
+  hx-get="/leases"
+  hx-trigger="every 30s"
+  hx-swap="innerHTML">
+  {% include "partials/leases_table.html" %}
+</div>
+{% endblock %}

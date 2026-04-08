@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Invalidate Lease</h2>
+
+{% if error %}
+<p style="color: var(--pico-color-red-500);">{{ error }}</p>
+{% endif %}
+
+<form method="post" action="/invalidate">
+  <label for="lease_id">Lease ID</label>
+  <input
+    type="text"
+    id="lease_id"
+    name="lease_id"
+    value="{{ lease_id }}"
+    placeholder="e.g. 550e8400-e29b-41d4-a716-446655440000"
+    required>
+
+  <button type="submit" class="secondary">Invalidate Lease</button>
+</form>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% if job.status.value == "running" %}
+<div
+  id="job-status-container"
+  hx-get="/jobs/{{ job.id }}/status"
+  hx-trigger="every 3s"
+  hx-swap="outerHTML">
+  <p aria-busy="true">Working...</p>
+</div>
+{% elif job.status.value == "succeeded" %}
+<div id="job-status-container">
+  <p>{{ job.message }}</p>
+  <a href="/">Back to leases</a>
+</div>
+{% else %}
+<div id="job-status-container">
+  <p style="color: var(--pico-color-red-500);">{{ job.message }}</p>
+  {% if job.detail %}<pre>{{ job.detail }}</pre>{% endif %}
+  <a href="/">Back to leases</a>
+</div>
+{% endif %}

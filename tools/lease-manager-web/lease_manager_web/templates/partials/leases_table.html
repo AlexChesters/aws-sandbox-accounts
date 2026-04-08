@@ -1,0 +1,26 @@
+{% if leases %}
+<table>
+  <thead>
+    <tr>
+      <th>Lease ID</th>
+      <th>User</th>
+      <th>Account ID</th>
+      <th>Expires</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for lease_id, lease in leases.items() %}
+    <tr>
+      <td><code>{{ lease_id }}</code></td>
+      <td>{{ lease.username }}</td>
+      <td>{{ lease.account }}</td>
+      <td title="{{ lease.expires_iso }}">{{ lease.expires_iso }} ({{ lease.expires_human }})</td>
+      <td><a href="/invalidate?lease_id={{ lease_id }}">Invalidate</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No active leases.</p>
+{% endif %}
