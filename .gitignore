@@ -172,3 +172,6 @@ apps/*/deps
 
 # emacs backup files
 *~
+
+# claude stuff
+project-plans/
